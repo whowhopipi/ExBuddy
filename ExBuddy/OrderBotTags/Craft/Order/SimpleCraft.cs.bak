@@ -1,0 +1,73 @@
+﻿namespace ExBuddy.OrderBotTags.Craft.Order
+{
+    using Buddy.Coroutines;
+    using ff14bot;
+    using ff14bot.Managers;
+    using Helpers;
+    using OrderBotTags.Craft;
+    using System.Threading.Tasks;
+
+    public sealed class SimpleCraft : BaseCraftOrder
+    {
+        public override int MiniCp
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        public override string Name
+        {
+            get
+            {
+                return "Simple";
+            }
+        }
+        
+        public override async Task<bool> CheckSkills()
+        {
+            await Coroutine.Yield();
+            return true; 
+        }
+
+        public override async Task<bool> Execute()
+        {
+            Ability makeAction;
+
+            if (CanCast(Ability.CarefulSynthesis2))
+            {
+                makeAction = Ability.CarefulSynthesis2;
+            } else if (CanCast(Ability.CarefulSynthesis))
+            {
+                makeAction = Ability.CarefulSynthesis;
+            } else
+            {
+                makeAction = Ability.BasicSynthesis;
+            }
+            
+            while (IsCrafting())
+            {
+                // 判断耐久是否还剩最后一次
+                int durability = CraftingManager.Durability;
+                if(durability == 10 || durability == 5)
+                {
+                    if (CanCast(Ability.MakersMark))
+                    {
+                        await Cast(Ability.MakersMark);
+                    }
+                }
+
+                if(makeAction == Ability.BasicSynthesis && CanCast(Ability.SteadyHand) && !Core.Me.HasAura(253))
+                {
+                    await Cast(Ability.SteadyHand);
+                }
+
+                await Cast(makeAction);
+            }
+
+            return true;
+        }
+
+    }
+}

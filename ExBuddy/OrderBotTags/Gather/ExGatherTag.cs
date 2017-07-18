@@ -396,15 +396,21 @@
 				   || Node.EnglishName.IndexOf("legendary", StringComparison.InvariantCultureIgnoreCase) >= 0;
 		}
 
-		/// <summary>
-		/// called by moveto.
-		/// </summary>
-		/// <param name="distance">Distance to our target</param>
-		/// <param name="radius">Radius we passed into the moveto</param>
-		/// <returns></returns>
-		internal bool MovementStopCallback(float distance, float radius)
-		{
-			return distance <= radius || !WhileFunc() || ExProfileBehavior.Me.IsDead;
+        /// <summary>
+        /// called by moveto.
+        /// </summary>
+        /// <param name="distance">Distance to our target</param>
+        /// <param name="radius">Radius we passed into the moveto</param>
+        /// <returns></returns>
+        int lastTime = 0;
+        internal bool MovementStopCallback(float distance, float radius)
+        {
+            int now = System.DateTime.Now.Millisecond;
+            if (now - 3000 >= lastTime)
+            {
+                return distance <= radius || !WhileFunc() || ExProfileBehavior.Me.IsDead;
+            }
+            return true;
 		}
 
 		internal void ResetInternal()
@@ -1572,7 +1578,7 @@
 
 		private bool SetGatherItem(ICollection<GatheringItem> windowItems)
 		{
-			foreach (var item in Items)
+			foreach (var item in Items.Where(i=>i.ConditionResult))
 			{
 				var items = windowItems.Where(i => i.IsFilled && !i.IsUnknown).ToArray();
 

@@ -6,15 +6,15 @@
 	using System.Collections.Generic;
 
 	[XmlElement("Items")]
-	public class NamedItemCollection : IList<INamedItem>
+	public class NamedItemCollection : IList<IConditionNamedItem>
 	{
 		public NamedItemCollection()
 		{
-			Items = new List<INamedItem>();
+			Items = new List<IConditionNamedItem>();
 		}
 
 		[XmlElement(XmlEngine.GENERIC_BODY)]
-		private List<INamedItem> Items { get; set; }
+		private List<IConditionNamedItem> Items { get; set; }
 
 		#region IEnumerable Members
 
@@ -27,7 +27,7 @@
 
 		#region IEnumerable<INamedItem> Members
 
-		public IEnumerator<INamedItem> GetEnumerator()
+		public IEnumerator<IConditionNamedItem> GetEnumerator()
 		{
 			return Items.GetEnumerator();
 		}
@@ -46,7 +46,7 @@
 			get { return false; }
 		}
 
-		public void Add(INamedItem item)
+		public void Add(IConditionNamedItem item)
 		{
 			Items.Add(item);
 		}
@@ -56,17 +56,17 @@
 			Items.Clear();
 		}
 
-		public bool Contains(INamedItem item)
+		public bool Contains(IConditionNamedItem item)
 		{
 			return Items.Contains(item);
 		}
 
-		public void CopyTo(INamedItem[] array, int arrayIndex)
+		public void CopyTo(IConditionNamedItem[] array, int arrayIndex)
 		{
 			Items.CopyTo(array, arrayIndex);
 		}
 
-		public bool Remove(INamedItem item)
+		public bool Remove(IConditionNamedItem item)
 		{
 			return Items.Remove(item);
 		}
@@ -75,17 +75,17 @@
 
 		#region IList<INamedItem> Members
 
-		public int IndexOf(INamedItem item)
+		public int IndexOf(IConditionNamedItem item)
 		{
 			return Items.IndexOf(item);
 		}
 
-		public void Insert(int index, INamedItem item)
+		public void Insert(int index, IConditionNamedItem item)
 		{
 			Items.Insert(index, item);
 		}
 
-		public INamedItem this[int index]
+		public IConditionNamedItem this[int index]
 		{
 			get { return Items[index]; }
 			set { Items[index] = value; }

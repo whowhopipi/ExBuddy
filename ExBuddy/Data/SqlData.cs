@@ -1,13 +1,15 @@
 ﻿namespace ExBuddy.Data
 {
-	using ff14bot.Managers;
-	using SQLite;
-	using System;
-	using System.Collections.Generic;
-	using System.IO;
-	using System.Linq;
+    using ff14bot.Enums;
+    using ff14bot.Managers;
+    using OrderBotTags.Objects;
+    using SQLite;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
 
-	public class SqlData : SQLiteConnection
+    public class SqlData : SQLiteConnection
 	{
 #if RB_CN
 		private const string DbFileName = "ExBuddy_CN.s3db";
@@ -17,17 +19,20 @@
 		public static readonly string DataFilePath;
 
 		public static readonly SqlData Instance;
+        public static readonly SqlData RecipeInstance;
 
-		private readonly Dictionary<uint, MasterpieceSupplyDutyResult> masterpieceSupplyDutyCache;
+        private readonly Dictionary<uint, MasterpieceSupplyDutyResult> masterpieceSupplyDutyCache;
 
 		// TODO: look into what localizedDictionary does for us??
 		private readonly Dictionary<uint, RequiredItemResult> requiredItemCache;
+        private readonly Dictionary<int, RecipeItem> recipeItemCache;
 
-		static SqlData()
+        static SqlData()
 		{
 			var path = Path.Combine(Environment.CurrentDirectory, "Plugins\\ExBuddy\\Data\\" + DbFileName);
+            var recipePath = Path.Combine(Environment.CurrentDirectory, "Plugins\\ExBuddy\\Data\\recipes.db3");
 
-			if (File.Exists(path))
+            if (File.Exists(path))
 			{
 				DataFilePath = path;
 			}
@@ -35,17 +40,26 @@
 			{
 				DataFilePath =
 					Directory.GetFiles(PluginManager.PluginDirectory, "*" + DbFileName, SearchOption.AllDirectories).FirstOrDefault();
-			}
+            }
 
-			Instance = new SqlData(DataFilePath);
-		}
+            if (!File.Exists(recipePath))
+            {
+                recipePath =
+                    Directory.GetFiles(PluginManager.PluginDirectory, "*" + "recipes.db3", SearchOption.AllDirectories).FirstOrDefault();
+            }
+
+
+            Instance = new SqlData(DataFilePath);
+            RecipeInstance = new SqlData(recipePath);
+        }
 
 		internal SqlData(string path)
 			: base(path)
 		{
 			masterpieceSupplyDutyCache = Table<MasterpieceSupplyDutyResult>().ToDictionary(key => key.Id, val => val);
 			requiredItemCache = Table<RequiredItemResult>().ToDictionary(key => key.Id, val => val);
-		}
+            recipeItemCache = Table<RecipeItem>().ToDictionary(key => key.Id, val => val);
+        }
 
 		public uint? GetIndexByEngName(string engName)
 		{
@@ -118,6 +132,18 @@
 			}
 
 			return masterpieceSupplyDuty.Index;
-		}
-	}
+        }
+
+        public RecipeItem GetRecipeByName(string RecipeName, ClassJobType Job)
+        {
+            Item item = DataManager.GetItem(RecipeName);
+
+            if (item == null)
+            {
+                return null;
+            }
+
+            return recipeItemCache.Values.FirstOrDefault(recipe => recipe.ItemName.Equals(item.EnglishName) && recipe.ClassJob == Job);
+        }
+    }
 }

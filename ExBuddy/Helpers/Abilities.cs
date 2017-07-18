@@ -1,7 +1,7 @@
 ﻿namespace ExBuddy.Helpers
 {
-	using ff14bot.Enums;
 	using System.Collections.Generic;
+	using ff14bot.Enums;
 
 	internal static class Abilities
 	{
@@ -24,10 +24,10 @@
 						{Ability.IncreaseGatherQuality10, 225},
 						{Ability.IncreaseGatherQuality30, 226},
 						{Ability.Truth, 221},
-						{Ability.IncreaseGatherQuality30100, 271},
-						{Ability.IncreaseGatherChance50, 294},
-						{Ability.ImpulsiveAppraisalII, 302},
-						{Ability.IncreaseGatherChanceOnce15, 4086},
+                        {Ability.IncreaseGatherQuality30100, 271},
+                        {Ability.IncreaseGatherChance50, 294},
+                        {Ability.ImpulsiveAppraisalII, 302},
+                        {Ability.IncreaseGatherChanceOnce15, 4086},
 						{Ability.IncreaseGatherYieldOnce, 4087},
 						{Ability.CollectorsGlove, 4088},
 						{Ability.MethodicalAppraisal, 4089},
@@ -58,10 +58,10 @@
 						{Ability.IncreaseGatherQuality10, 242},
 						{Ability.IncreaseGatherQuality30, 243},
 						{Ability.Truth, 238},
-						{Ability.IncreaseGatherQuality30100, 270},
-						{Ability.IncreaseGatherChance50, 295},
-						{Ability.ImpulsiveAppraisalII, 301},
-						{Ability.IncreaseGatherChanceOnce15, 4072},
+                        {Ability.IncreaseGatherQuality30100, 270},
+                        {Ability.IncreaseGatherChance50, 295},
+                        {Ability.ImpulsiveAppraisalII, 301},
+                        {Ability.IncreaseGatherChanceOnce15, 4072},
 						{Ability.IncreaseGatherYieldOnce, 4073},
 						{Ability.CollectorsGlove, 4074},
 						{Ability.MethodicalAppraisal, 4075},
@@ -80,19 +80,33 @@
 	}
 
 	internal enum AbilityAura : short
-	{
-		None = -1,
+    {
+        None = -1,
 
-		Stealth = 47,
+        Stealth = 47,
 
-		TruthOfForests = 221,
+        Food = 48,
 
-		TruthOfMountains = 222,
+        TruthOfForests = 221,
 
-		DiscerningEye = 757,
+        TruthOfMountains = 222,
 
-		CollectorsGlove = 805
-	}
+        DiscerningEye = 757,
+
+        Snagging = 761,
+
+        FishEyes = 762,
+
+        Chum = 763,
+
+        CollectorsGlove = 805,
+
+        Patience = 850,
+
+        MakersMark = 878,
+
+        CollectorsMake = 903
+    }
 
 	internal enum Ability : byte
 	{
@@ -122,13 +136,13 @@
 
 		Truth, // = 238,221
 
-		IncreaseGatherQuality30100, // = 238,221
+        IncreaseGatherQuality30100, // = 238,221
 
-		IncreaseGatherChance50, // = 295,294
+        IncreaseGatherChance50, // = 295,294
 
-		ImpulsiveAppraisalII, // = 301,302
+        ImpulsiveAppraisalII, // = 301,302
 
-		IncreaseGatherChanceOnce15, // 4072, 4086
+        IncreaseGatherChanceOnce15, // 4072, 4086
 
 		IncreaseGatherYieldOnce, // 4073, 4087
 

@@ -1,17 +1,16 @@
 namespace ExBuddy.Helpers
 {
+	using System.Threading.Tasks;
 	using Buddy.Coroutines;
 	using ExBuddy.Logging;
 	using ff14bot;
 	using ff14bot.Managers;
 	using ff14bot.Objects;
-	using System.Threading.Tasks;
-
 #if RB_CN
     using ActionManager = ff14bot.Managers.Actionmanager;
 #endif
 
-	internal static class Actions
+    internal static class Actions
 	{
 		internal static async Task<bool> Cast(uint id, int delay)
 		{
@@ -26,7 +25,7 @@ namespace ExBuddy.Helpers
 			var result = ActionManager.DoAction(id, Core.Player);
 
 			var ticks = 0;
-			while (result == false && ticks++ < 10 && Behaviors.ShouldContinue)
+			while (result == false && ticks++ < 5 && Behaviors.ShouldContinue)
 			{
 				result = ActionManager.DoAction(id, Core.Player);
 				await Coroutine.Yield();
@@ -68,9 +67,9 @@ namespace ExBuddy.Helpers
 			var result = false;
 			if (auraId == -1 || !Core.Player.HasAura(
 #if !RB_CN
-				(uint)
+                (uint)
 #endif
-				auraId))
+                auraId))
 			{
 				SpellData spellData;
 				if (GatheringManager.ShouldPause(spellData = DataManager.SpellCache[spellId]))
@@ -98,9 +97,9 @@ namespace ExBuddy.Helpers
 				//Wait till we have the aura
 				await Coroutine.Wait(3500, () => Core.Player.HasAura(
 #if !RB_CN
-					(uint)
+                    (uint)
 #endif
-					auraId));
+                    auraId));
 				if (delay > 0)
 				{
 					await Coroutine.Sleep(delay);
@@ -118,5 +117,41 @@ namespace ExBuddy.Helpers
 		{
 			return await CastAura(Abilities.Map[Core.Player.CurrentJob][ability], delay, (int)aura);
 		}
-	}
+
+        public static bool CanCast(uint id)
+        {
+            return ff14bot.Managers.ActionManager.CanCast(id, Core.Me);
+        }
+
+        public static bool CanCast(Ability ability)
+        {
+            return CanCast(Abilities.Map[Core.Player.CurrentJob][ability]);
+        }
+
+        public static async Task<bool> HasAction(Ability ability)
+        {
+            await Coroutine.Yield();
+            bool result = ff14bot.Managers.ActionManager.CurrentActions.ContainsKey(Abilities.Map[Core.Player.CurrentJob][ability]);
+
+            var tickit = 0;
+            while (result == false && tickit < 6)
+            {
+                await Coroutine.Sleep(5000);
+                result = ff14bot.Managers.ActionManager.CurrentActions.ContainsKey(Abilities.Map[Core.Player.CurrentJob][ability]);
+            }
+
+            return result;
+        }
+
+        public static bool HasAura(AbilityAura auraId)
+        {
+            return HasAura((uint)auraId);
+        }
+
+        public static bool HasAura(uint auraId)
+        {
+            return Core.Me.HasAura(auraId);
+        }
+
+    }
 }

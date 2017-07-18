@@ -3,16 +3,17 @@
 	public enum Locations
 	{
 		Custom,
-#if RB_CN
-		MorDhona,
 
-		Idyllshire,
+        MorDhona,
+
+        Idyllshire,
+#if RB_CN
 
 		UldahStepsOfNald,
 
 		LimsaLominsaLowerDecks
 #else
-		UldahStepsOfNald,
+        UldahStepsOfNald,
 
 		LimsaLominsaLowerDecks,
 

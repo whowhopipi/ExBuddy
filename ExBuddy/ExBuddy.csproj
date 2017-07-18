@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;RB_64</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;RB_64,RB_X64</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -31,13 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Clio.Localization, Version=1.0.104.0, Culture=neutral, PublicKeyToken=48d7174f8a943034, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Assembly\Clio.Localization.dll</HintPath>
+    <Reference Include="Clio.Localization">
+      <HintPath>..\..\..\..\国际服\Clio.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="GreyMagic, Version=1.0.41.0, Culture=neutral, PublicKeyToken=260525fa2b0e778a, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Assembly\GreyMagic.dll</HintPath>
+    <Reference Include="GreyMagic">
+      <HintPath>..\..\..\..\国际服\GreyMagic.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -45,7 +43,7 @@
       <HintPath>..\Assembly\Quest Behaviors_1537820551.dll</HintPath>
     </Reference>
     <Reference Include="RebornBuddy">
-      <HintPath>..\Assembly\RebornBuddy.exe</HintPath>
+      <HintPath>..\..\..\..\国际服\RebornBuddy.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -65,7 +63,12 @@
     <Compile Include="Data\MasterpieceSupplyDutyResult.cs" />
     <Compile Include="Data\RequiredItemResult.cs" />
     <Compile Include="Data\SqlData.cs" />
+    <Compile Include="GameObjects\Npcs\PersonnelOfficer.cs" />
+    <Compile Include="GameObjects\Npcs\ShopExchangeItem.cs" />
     <Compile Include="Helpers\ConditionTimer.cs" />
+    <Compile Include="Helpers\CraftActions.cs" />
+    <Compile Include="Helpers\FishActions.cs" />
+    <Compile Include="Interfaces\ICraftOrder.cs" />
     <Compile Include="Localization\Localization.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -75,6 +78,22 @@
     <Compile Include="Navigation\FlightEnabledNavigatorbeta.cs" />
     <Compile Include="Navigation\FlightEnabledNavigatorCN.cs" />
     <Compile Include="Offsets\SecondaryOffsets.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExChocobo.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExFinderTag.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExGardenner.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExGrandCompanySupply.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExHalfTimeWait.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExLevelSync.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExRepair.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExRetainer.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExShopExchange.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExSuitChange.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExWaitWhile.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExWhile.cs" />
+    <Compile Include="OrderBotTags\Craft\BaseCraftOrder.cs" />
+    <Compile Include="OrderBotTags\Craft\CraftOrderManager.cs" />
+    <Compile Include="OrderBotTags\Craft\Order\CustomOrder.cs" />
+    <Compile Include="OrderBotTags\Craft\Synthesize.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect321GatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect346GatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect390GatheringRotation.cs" />
@@ -91,6 +110,18 @@
     <Compile Include="OrderBotTags\Gather\Rotations\LightningElementGatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\WaterElementGatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\WindElementGatheringRotation.cs" />
+    <Compile Include="OrderBotTags\Objects\RecipeItem.cs" />
+    <Compile Include="OrderBotTags\RemoteWindows\ExInteract.cs" />
+    <Compile Include="OrderBotTags\RemoteWindows\ExLoading.cs" />
+    <Compile Include="OrderBotTags\RemoteWindows\ExRemoteWindowsBase.cs" />
+    <Compile Include="OrderBotTags\RemoteWindows\ExSelect.cs" />
+    <Compile Include="OrderBotTags\RemoteWindows\ExSelectYesno.cs" />
+    <Compile Include="OrderBotTags\RemoteWindows\ExShopExchangeItem.cs" />
+    <Compile Include="OrderBotTags\RemoteWindows\ExTalk.cs" />
+    <Compile Include="OrderBotTags\WhoFish\FishStrategy.cs" />
+    <Compile Include="OrderBotTags\WhoFish\HookAction.cs" />
+    <Compile Include="OrderBotTags\WhoFish\WhoFishSpot.cs" />
+    <Compile Include="OrderBotTags\WhoFish\WhoFishTag.cs" />
     <Compile Include="Plugins\Skywatcher\Objects\Location.cs" />
     <Compile Include="Plugins\Skywatcher\Objects\LocationIndex.cs" />
     <Compile Include="Plugins\Skywatcher\Objects\WeatherRate.cs" />
@@ -160,7 +191,7 @@
     <Compile Include="OrderBotTags\Gather\GatherSpots\RandomApproachGatherSpot.cs" />
     <Compile Include="OrderBotTags\Gather\GatherSpots\StealthApproachGatherSpot.cs" />
     <Compile Include="OrderBotTags\Gather\GatherSpots\StealthGatherSpot.cs" />
-    <Compile Include="Interfaces\INamedItem.cs" />
+    <Compile Include="Interfaces\IConditionNamedItem.cs" />
     <Compile Include="OrderBotTags\Gather\NamedItemCollection.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect505GatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect499GatheringRotation.cs" />
@@ -205,11 +236,15 @@
     <Compile Include="Agents\Agent{T}.cs" />
     <Compile Include="Agents\Desynthesis.cs" />
     <Compile Include="Windows\Bait.cs" />
+    <Compile Include="Windows\ExContentsFinder.cs" />
     <Compile Include="Windows\FreeCompanyChest.cs" />
     <Compile Include="Windows\Gathering.cs" />
     <Compile Include="Windows\GatheringMasterpiece.cs" />
+    <Compile Include="Windows\GrandCompanySupplyList.cs" />
+    <Compile Include="Windows\GrandCompanySupplyReward.cs" />
     <Compile Include="Windows\GuildLeve.cs" />
     <Compile Include="Windows\InputNumeric.cs" />
+    <Compile Include="Windows\ItemAppraisal.cs" />
     <Compile Include="Windows\MasterPieceSupply.cs" />
     <Compile Include="Windows\PurifyDialog.cs" />
     <Compile Include="Windows\PurifyItemSelector.cs" />
@@ -220,11 +255,15 @@
     <Compile Include="Windows\SelectYesnoCount.cs" />
     <Compile Include="Windows\SelectYesNoItem.cs" />
     <Compile Include="Windows\ShopExchangeCurrency.cs" />
+    <Compile Include="Windows\ShopExchangeItem.cs" />
+    <Compile Include="Windows\ShopExchangeItemDialog.cs" />
     <Compile Include="Windows\Window{TWindow,TAgent}.cs" />
     <Compile Include="Windows\Window{TWindow}.cs" />
     <None Include="Data\ExBuddy.s3db" />
+    <None Include="Data\ExBuddySB.s3db" />
     <None Include="Data\ExBuddy_CN.s3db" />
     <None Include="Data\locationIndex.json" />
+    <None Include="Data\recipes.db3" />
     <None Include="Data\weatherRateIndex.json" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect115GatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect345GatheringRotation.cs" />
@@ -264,6 +303,8 @@
     <Content Include="Data\msd_cn.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="OrderBotTags\Craft\Order\FlawlessCraft.cs.bak" />
+    <None Include="OrderBotTags\Craft\Order\SimpleCraft.cs.bak" />
     <None Include="OrderBotTags\Schema\Fish.xsd">
       <SubType>Designer</SubType>
     </None>
