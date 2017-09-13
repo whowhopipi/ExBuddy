@@ -1,18 +1,20 @@
 ﻿namespace ExBuddy.Helpers
 {
-	using Clio.Utilities;
-	using ExBuddy.Logging;
-	using ff14bot.Forms.ugh;
-	using ff14bot.Managers;
-	using ff14bot.NeoProfiles;
-	using Localization;
-	using System;
-	using System.Collections.Concurrent;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Reflection;
+    using Clio.Utilities;
+    using ExBuddy.Logging;
+    using ff14bot.Behavior;
+    using ff14bot.Enums;
+    using ff14bot.Forms.ugh;
+    using ff14bot.Managers;
+    using ff14bot.NeoProfiles;
+    using Localization;
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
 
-	public static class Condition
+    public static class Condition
 	{
 		public static readonly TimeSpan OneDay = new TimeSpan(1, 0, 0, 0);
 
@@ -130,7 +132,22 @@
 			return true;
 		}
 
-		internal static void AddNamespacesToScriptManager(params string[] param)
+        public static bool IsLoading()
+        {
+            return CommonBehaviors.IsLoading;
+        }
+
+        public static bool CheckFateStatus(uint fateId, params FateStatus[] status)
+        {
+            FateData fate = FateManager.GetFateById(fateId);
+
+            if (fate == null)
+                return false;
+
+            return status.Any(s => s == fate.Status);
+        }
+
+        internal static void AddNamespacesToScriptManager(params string[] param)
 		{
 			var field =
 				typeof(ScriptManager).GetFields(BindingFlags.Static | BindingFlags.NonPublic)
