@@ -3,18 +3,23 @@
 	public enum ShopType
 	{
 #if RB_CN
-#else
-#endif
-#if RB_CN
-		BlueCrafter,
-
-		RedCrafter,
-
-		BlueGatherer,
-
-		RedGatherer
-#else
 		RedCrafter50,
+
+		RedCrafter61,
+
+		RedGatherer50,
+
+		RedGatherer61,
+
+		YellowCrafter,
+
+		YellowCrafterItems,
+
+		YellowGatherer,
+
+		YellowGathererItems
+#else
+        RedCrafter50,
 
 		RedCrafter61,
 

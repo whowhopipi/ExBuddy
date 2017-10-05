@@ -4,8 +4,9 @@
 	using ExBuddy.Interfaces;
 	using ff14bot;
 	using System.Threading.Tasks;
+	using Helpers;
 
-	// Get One ++
+    // Get One ++
 	[GatheringRotation("Collect550", 33, 600)]
 	public sealed class Collect550GatheringRotation : CollectableGatheringRotation, IGetOverridePriority
 	{
@@ -26,13 +27,10 @@
 
 		public override async Task<bool> ExecuteRotation(ExGatherTag tag)
 		{
-			if (tag.IsUnspoiled())
+			if (tag.Node.IsUnspoiled())
 			{
 				await UtmostCaution(tag);
 				await AppraiseAndRebuff(tag);
-#if RB_CN
-				await UtmostCaution(tag);
-#endif
 				await Methodical(tag);
 				await AppraiseAndRebuff(tag);
 				await Methodical(tag);
@@ -44,7 +42,7 @@
 				if (tag.GatherItem.Chance < 98 && Core.Player.CurrentGP >= 600)
 				{
 					// if 60 or cordial is ready and is 58
-					if (tag.GatherItem.Chance < 97 || tag.CanUseCordial(Attributes.RequiredTimeInSeconds))
+					if (tag.GatherItem.Chance < 97)
 					{
 						var appraisalsRemaining = 4;
 						await Impulsive(tag);
@@ -61,9 +59,6 @@
 
 						if (HasDiscerningEye)
 						{
-#if RB_CN
-							await UtmostSingleMindMethodical(tag);
-#else
 							if (appraisalsRemaining == 1)
 							{
 								await SingleMindMethodical(tag);
@@ -72,7 +67,6 @@
 							{
 								await UtmostSingleMindMethodical(tag);
 							}
-#endif
 							appraisalsRemaining--;
 						}
 
@@ -83,11 +77,7 @@
 
 						if (appraisalsRemaining == 1)
 						{
-#if RB_CN
-							await UtmostSingleMindMethodical(tag);
-#else
 							await SingleMindMethodical(tag);
-#endif
 						}
 
 						await IncreaseChance(tag);
@@ -97,9 +87,9 @@
 
 				await Impulsive(tag);
 				await Impulsive(tag);
-				await Instinctual(tag);
+			    await Instinctual(tag);
 
-				return true;
+                return true;
 			}
 
 			return true;

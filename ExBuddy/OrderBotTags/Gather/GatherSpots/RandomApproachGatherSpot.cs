@@ -41,10 +41,10 @@
 				result &= await tag.CastAura(Ability.Stealth);
 			}
 
-            //change the approach location for the next time we go to this node.
-		    approachLocation = HotSpots.Shuffle().First();
+			//change the approach location for the next time we go to this node.
+			approachLocation = HotSpots.Shuffle().First();
 
-            return result;
+			return result;
 		}
 
 		public override async Task<bool> MoveToSpot(ExGatherTag tag)
@@ -56,8 +56,8 @@
 				return false;
 			}
 
-            if(approachLocation == null)
-			    approachLocation = HotSpots.Shuffle().First();
+			if (approachLocation == null)
+				approachLocation = HotSpots.Shuffle().First();
 
 			var result = await approachLocation.MoveToPointWithin(dismountAtDestination: Stealth);
 

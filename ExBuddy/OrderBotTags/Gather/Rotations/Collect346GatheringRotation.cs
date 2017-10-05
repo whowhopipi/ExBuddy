@@ -4,8 +4,9 @@
 	using ff14bot;
 	using Interfaces;
 	using System.Threading.Tasks;
+	using Helpers;
 
-	[GatheringRotation("Collect346", 35, 600)]
+    [GatheringRotation("Collect346", 35, 600)]
 	public sealed class Collect346GatheringRotation : CollectableGatheringRotation, IGetOverridePriority
 	{
 		#region IGetOverridePriority Members
@@ -24,7 +25,7 @@
 
 		public override async Task<bool> ExecuteRotation(ExGatherTag tag)
 		{
-			if (tag.IsUnspoiled())
+			if (tag.Node.IsUnspoiled())
 			{
 				await SingleMindMethodical(tag);
 				await SingleMindMethodical(tag);
@@ -33,13 +34,8 @@
 			}
 			else
 			{
-#if RB_CN
-				if (Core.Player.CurrentGP >= 600 && tag.GatherItem.Chance < 98)
-				{
-#else
 				if (Core.Player.CurrentGP >= 600)
 				{
-#endif
 					await SingleMindMethodical(tag);
 					await SingleMindMethodical(tag);
 					await SingleMindMethodical(tag);
@@ -49,9 +45,9 @@
 				{
 					await Impulsive(tag);
 					await Impulsive(tag);
-					await Instinctual(tag);
-				}
-			}
+				    await Instinctual(tag);
+                }
+            }
 
 			return true;
 		}

@@ -2,14 +2,15 @@
 
 namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 {
-	using Clio.Utilities;
+    using Clio.Utilities;
 	using Clio.XmlEngine;
 	using ExBuddy.Helpers;
 	using ExBuddy.Interfaces;
 	using System.ComponentModel;
-	using System.Threading.Tasks;
+    using System.Threading.Tasks;
+    using ff14bot.Managers;
 
-	[XmlElement("GatherSpot")]
+    [XmlElement("GatherSpot")]
 	public class GatherSpot : IGatherSpot
 	{
 		[DefaultValue(true)]
@@ -35,9 +36,28 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 
 		public virtual async Task<bool> MoveToSpot(ExGatherTag tag)
 		{
-			tag.StatusText = "Moving to " + this;
+		    tag.StatusText = "Moving to " + this;
 
-			var result =
+		    Vector3 randomApproachLocation;
+		    if (MovementManager.IsFlying || MovementManager.IsDiving)
+            {
+		        randomApproachLocation = NodeLocation.AddRandomDirection(3.0f, SphereType.TopHalf);
+		    }
+		    else
+		    {
+		        randomApproachLocation = NodeLocation.AddRandomDirection2D(3.0f);
+		    }
+
+		    var result = await
+		        randomApproachLocation.MoveTo(
+		            UseMesh,
+		            radius: tag.Distance,
+		            name: tag.Node.EnglishName,
+		            stopCallback: tag.MovementStopCallback);
+
+            if (!result) return false;
+
+		    result =
 				await
 					NodeLocation.MoveTo(
 						UseMesh,
@@ -45,7 +65,7 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 						name: tag.Node.EnglishName,
 						stopCallback: tag.MovementStopCallback);
 
-			return result;
+		    return result;
 		}
 
 		#endregion IGatherSpot Members

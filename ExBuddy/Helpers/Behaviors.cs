@@ -16,16 +16,9 @@ namespace ExBuddy.Helpers
 	using System;
 	using System.Linq;
 	using System.Threading.Tasks;
+    using ff14bot.Pathing;
 
-#if RB_CN
-    using ActionManager = ff14bot.Managers.Actionmanager;
-#else
-
-	using ff14bot.Pathing;
-
-#endif
-
-	public static class Behaviors
+    public static class Behaviors
 	{
 		public static readonly Func<float, float, bool> DontStopInRange = (d, r) => false;
 
@@ -194,7 +187,7 @@ namespace ExBuddy.Helpers
 			Func<float, float, bool> stopCallback = null,
 			bool dismountAtDestination = false)
 		{
-			await Mount(destination, mountId);
+			await Mount(destination, CharacterSettings.Instance.MountId);
 			await MoveToNoMount(destination, useMesh, radius, name, stopCallback);
 			return !dismountAtDestination || await Dismount();
 		}
@@ -225,11 +218,7 @@ namespace ExBuddy.Helpers
 					   && (!stopCallback(distance = Core.Player.Location.Distance3D(destination), radius)
 						   || stopCallback == DontStopInRange) && !(moveResult.IsDoneMoving()))
 				{
-#if RB_CN
-                    moveResult = Navigator.MoveTo(destination, name);
-#else
 					moveResult = Navigator.MoveTo(new MoveToParameters(destination));
-#endif
 
 					await Coroutine.Yield();
 
@@ -275,23 +264,22 @@ namespace ExBuddy.Helpers
 			string name = null,
 			bool dismountAtDestination = false)
 		{
-			await Mount(destination, mountId);
+			await Mount(destination, CharacterSettings.Instance.MountId);
 			await MoveToPointWithinNoMount(destination, radius, name);
 			return !dismountAtDestination || await Dismount();
 		}
 
-		public static async Task<bool> MoveToPointWithinNoMount(this Vector3 destination, float radius, string name = null)
+		public static async Task<bool> MoveToPointWithinNoMount(
+            this Vector3 destination, 
+            float radius, 
+            string name = null)
 		{
 			var sprintDistance = Math.Min(20.0f, CharacterSettings.Instance.MountDistance);
 
 			var moveResult = MoveResult.GeneratingPath;
 			while (Behaviors.ShouldContinue && !(moveResult.IsDoneMoving()))
 			{
-#if RB_CN
-                moveResult = Navigator.MoveToPointWithin(destination, radius, name);
-#else
 				moveResult = Navigator.MoveTo(new MoveToParameters(destination));
-#endif
 				await Coroutine.Yield();
 
 				var distance = Core.Player.Location.Distance3D(destination);
@@ -346,11 +334,7 @@ namespace ExBuddy.Helpers
 
 		public static async Task<bool> Sprint(int timeout = 500)
 		{
-			if (ActionManager.IsSprintReady && !Core.Player.IsCasting && !Core.Player.IsMounted
-#if RB_CN
-                && Core.Player.CurrentTP == 1000
-#endif
-				&& MovementManager.IsMoving)
+			if (ActionManager.IsSprintReady && !Core.Player.IsCasting && !Core.Player.IsMounted && MovementManager.IsMoving)
 			{
 				ActionManager.Sprint();
 
@@ -395,7 +379,7 @@ namespace ExBuddy.Helpers
 			}
 
 			await Coroutine.Wait(5000, () => CommonBehaviors.IsLoading);
-			await Coroutine.Wait(10000, () => !CommonBehaviors.IsLoading);
+			await Coroutine.Wait(100000, () => !CommonBehaviors.IsLoading);
 
 			return true;
 		}

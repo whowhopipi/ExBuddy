@@ -47,7 +47,7 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 			var rarity = CurrentRarity;
 			tag.Logger.Info("Post non-plus Rarity: " + rarity);
 
-			if (rarity >= 119 && rarity <= 124)
+			if (rarity <= 124)
 			{
 				if (level >= 53)
 				{
@@ -185,7 +185,7 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 			//Get One - Level 51 Minimum
 			await DiscerningMethodical(tag);
 			await UtmostMethodical(tag);
-			await UtmostMethodical(tag);
+			await Methodical(tag);
 			await IncreaseChance(tag);
 			return true;
 		}
@@ -196,7 +196,7 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 			await UtmostCaution(tag);
 			await AppraiseAndRebuff(tag);
 			await Methodical(tag);
-			await UtmostMethodical(tag);
+			await Methodical(tag);
 			await IncreaseChance(tag);
 			return true;
 		}
@@ -207,7 +207,6 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 			await UtmostCaution(tag);
 			await AppraiseAndRebuff(tag);
 			await Methodical(tag);
-			await UtmostCaution(tag);
 			await AppraiseAndRebuff(tag);
 			await Methodical(tag);
 			await IncreaseChance(tag);
@@ -261,7 +260,7 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 			if (HasDiscerningEye)
 			{
 				tag.Logger.Info("Discerning Eye Proc!");
-				await UtmostMethodical(tag);
+				await Methodical(tag);
 				await DiscerningMethodical(tag);
 				await IncreaseChance(tag);
 			}
@@ -269,7 +268,7 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 			{
 				tag.Logger.Info("No Discerning Eye Proc!");
 				await DiscerningImpulsive(tag);
-				await UtmostMethodical(tag);
+				await Methodical(tag);
 				await IncreaseChance(tag);
 			}
 
@@ -281,7 +280,7 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 			//Try Harder - Level 53 Minimum
 			await DiscerningImpulsive(tag);
 			await UtmostImpulsive(tag);
-			await UtmostMethodical(tag);
+			await Methodical(tag);
 			await IncreaseChance(tag);
 			return true;
 		}

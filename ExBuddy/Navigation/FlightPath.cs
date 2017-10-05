@@ -34,7 +34,9 @@ namespace ExBuddy.Navigation
 
 			Vector3 hit;
 			Vector3 distances;
-			var useStraight = MovementManager.IsDiving || !WorldManager.Raycast(Start, End, out hit, out distances);
+			bool isDiving = false;
+			isDiving = MovementManager.IsDiving;
+			var useStraight = isDiving || !WorldManager.Raycast(Start, End, out hit, out distances);
 
 			for (var i = 0.0f + (1.0f / ((float)desiredNumberOfPoints)); i <= 1.0f; i += (1.0f / ((float)desiredNumberOfPoints)))
 			{

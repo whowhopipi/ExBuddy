@@ -20,10 +20,6 @@
 	using System.Text;
 	using System.Threading.Tasks;
 
-#if RB_CN
-    using ActionManager = ff14bot.Managers.Actionmanager;
-#endif
-
 	[Flags]
 	public enum SphereType
 	{
@@ -176,6 +172,13 @@
 			// There's no check to see if min > max.
 			return value;
 		}
+
+	    public static TimeSpan Clamp(this TimeSpan value, TimeSpan min, TimeSpan max)
+	    {
+	        if (value < min) return min;
+	        if (value > max) return max;
+	        return value;
+	    }
 
 		/// <summary>
 		///     String conversion to typeof nulllable(bool) utility
@@ -668,8 +671,7 @@
 				return false;
 			}
 		}
-
-#if RB_X64
+        
         public static SendActionResult TrySendAction(this AtkAddonControl window, int pairCount, params ulong[] param)
 		{
 			if (window == null || !window.IsValid)
@@ -688,28 +690,6 @@
 				return SendActionResult.InjectionError;
 			}
 		}
-#else
-
-		public static SendActionResult TrySendAction(this AtkAddonControl window, int pairCount, params uint[] param)
-		{
-			if (window == null || !window.IsValid)
-			{
-				return SendActionResult.InvalidWindow;
-			}
-
-			try
-			{
-				window.SendAction(pairCount, param);
-				return SendActionResult.Success;
-			}
-			catch (Exception ex)
-			{
-				Logger.Instance.Error(ex.Message);
-				return SendActionResult.InjectionError;
-			}
-		}
-
-#endif
 
 		private static float StandardDeviation(IEnumerable<Vector3> vectors, out float average)
 		{

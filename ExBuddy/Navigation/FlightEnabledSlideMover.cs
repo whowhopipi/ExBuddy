@@ -18,10 +18,6 @@
 	using System.Threading.Tasks;
 	using System.Windows.Media;
 
-#if RB_CN
-    using ActionManager = ff14bot.Managers.Actionmanager;
-#endif
-
 	public class FlightEnabledSlideMover : LogColors, IFlightEnabledPlayerMover
 	{
 		private static Func<Vector3, bool> shouldFlyToFunc = ShouldFlyInternal;
@@ -104,12 +100,12 @@
 						{
 							Logger.Info(Localization.Localization.FlightEnabledSlideMover_TakeoffStart);
 							takeoffTask = Task.Factory.StartNew(
-								() =>
+                                () =>
 								{
 									try
 									{
-									    Coroutine coroutine = null;
-                                        while (!MovementManager.IsFlying && Behaviors.ShouldContinue && IsMovingTowardsLocation)
+										Coroutine coroutine = null;
+										while (!MovementManager.IsFlying && Behaviors.ShouldContinue && IsMovingTowardsLocation)
 										{
 											if (takeoffStopwatch.ElapsedMilliseconds > 10000)
 											{
@@ -117,21 +113,21 @@
 												InnerMover.MoveStop();
 												IsTakingOff = false;
 												return;
-											}
+										    }
 
-											if (coroutine == null || coroutine.IsFinished)
-											{
-												Logger.Verbose(Localization.Localization.FlightEnabledSlideMover_TakeoffNew);
-												coroutine = new Coroutine(() => CommonTasks.TakeOff());
-											}
+										    if (coroutine == null || coroutine.IsFinished)
+										    {
+										        Logger.Verbose(Localization.Localization.FlightEnabledSlideMover_TakeoffNew);
+										        coroutine = new Coroutine(async () => await CommonTasks.TakeOff());
+										    }
 
-											if (!coroutine.IsFinished && !MovementManager.IsFlying && Behaviors.ShouldContinue)
-											{
-												Logger.Verbose(Localization.Localization.FlightEnabledSlideMover_TakeoffResumed);
-												coroutine.Resume();
-											}
+                                            if (!coroutine.IsFinished && !MovementManager.IsFlying && Behaviors.ShouldContinue)
+										    {
+										        Logger.Verbose(Localization.Localization.FlightEnabledSlideMover_TakeoffResumed);
+										        coroutine.Resume();
+										    }
 
-											Thread.Sleep(66);
+                                            Thread.Sleep(66);
 										}
 									}
 									finally
@@ -162,13 +158,9 @@
 
 		public void ForceLanding()
 		{
-#if RB_CN
-            if (MovementManager.IsFlying)
-#else
 			if (!IsDiving && MovementManager.IsFlying)
-#endif
 			{
-				Logger.Info("Lading Task Started: {0} {1}", IsDiving, MovementManager.IsFlying);
+				Logger.Info("Landing Task Started: {0} {1}", IsDiving, MovementManager.IsFlying);
 
 				if (!landingStopwatch.IsRunning)
 				{
@@ -216,8 +208,8 @@
 													var move = Core.Player.Location.AddRandomDirection2D(10).GetFloor(8);
 													MovementManager.StopDescending();
 													MovementManager.Jump();
-													landingCoroutine = new Coroutine(() => move.MoveToNoMount(false, 0.8f));
-													Logger.Info(Localization.Localization.FlightEnabledSlideMover_LandNew, move);
+												    landingCoroutine = new Coroutine(async () => await move.MoveToNoMount(false, 0.8f));
+                                                    Logger.Info(Localization.Localization.FlightEnabledSlideMover_LandNew, move);
 												}
 
 												if (!landingCoroutine.IsFinished && MovementManager.IsFlying && !IsDiving)
@@ -319,12 +311,8 @@
 
 			return CanFly && (ShouldFly = shouldFlyToFunc(destination));
 		}
-
-#if RB_CN
-        public bool IsDiving => false;
-#else
+        
 		public bool IsDiving => MovementManager.IsDiving;
-#endif
 
 		#endregion IFlightEnabledPlayerMover Members
 
@@ -349,22 +337,25 @@
 
 		public void MoveTowards(Vector3 location)
 		{
-		    if (IsLanding && location.Distance3D(Core.Me.Location) < CharacterSettings.Instance.MountDistance)
-		    {
-		        ForceLanding();
-		        return;
-		    }
+			if (IsLanding && location.Distance3D(Core.Me.Location) < CharacterSettings.Instance.MountDistance)
+			{
+				ForceLanding();
+				return;
+			}
 			if (ShouldFly && !MovementManager.IsFlying && !IsTakingOff)
 			{
 				IsTakingOff = true;
 				IsMovingTowardsLocation = true;
 				EnsureFlying();
-			}
+		    }
 
-			if (!IsTakingOff)
+		    //Logger.Info("IsTakingOff : " + IsTakingOff);
+
+            if (!IsTakingOff)
 			{
 				IsMovingTowardsLocation = true;
-				InnerMover.MoveTowards(location);
+			    //Logger.Info("MoveTowards " + location);
+                InnerMover.MoveTowards(location);
 			}
 		}
 

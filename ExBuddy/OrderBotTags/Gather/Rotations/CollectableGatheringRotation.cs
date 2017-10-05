@@ -6,8 +6,9 @@
 	using ff14bot.Managers;
 	using ff14bot.RemoteWindows;
 	using System.Threading.Tasks;
+	using ff14bot.Objects;
 
-	public abstract class CollectableGatheringRotation : GatheringRotation
+    public abstract class CollectableGatheringRotation : GatheringRotation
 	{
 		protected int CurrentRarity
 		{
@@ -104,9 +105,9 @@
 			return true;
 		}
 
-		public override bool ShouldForceGather(ExGatherTag tag)
+		public override bool ShouldForceGather(GatheringPointObject node)
 		{
-			return !tag.IsEphemeral() && !tag.IsUnspoiled();
+			return !node.IsEphemeral() && !node.IsUnspoiled();
 		}
 
 		protected async Task Discerning(ExGatherTag tag)
@@ -268,36 +269,6 @@
 			{
 				await Discerning(tag);
 			}
-		}
-
-		protected override async Task<bool> IncreaseChance(ExGatherTag tag)
-		{
-			var level = Core.Player.ClassLevel;
-			if (Core.Player.CurrentGP >= 100 && tag.GatherItem.Chance < 95)
-			{
-				if (level >= 23 && GatheringManager.SwingsRemaining == 1)
-				{
-					await tag.Cast(Ability.IncreaseGatherChanceOnce15);
-					return true;
-				}
-
-				await tag.Cast(Ability.IncreaseGatherChance15);
-				return true;
-			}
-
-			if (Core.Player.CurrentGP >= 50 && tag.GatherItem.Chance < 100)
-			{
-				if (level >= 23 && GatheringManager.SwingsRemaining == 1)
-				{
-					await tag.Cast(Ability.IncreaseGatherChanceOnce15);
-					return true;
-				}
-
-				await tag.Cast(Ability.IncreaseGatherChance5);
-				return true;
-			}
-
-			return true;
 		}
 
 		protected async Task UtmostDiscerning(ExGatherTag tag)

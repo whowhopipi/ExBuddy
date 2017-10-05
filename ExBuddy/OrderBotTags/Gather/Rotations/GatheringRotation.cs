@@ -8,8 +8,9 @@
 	using ff14bot.Managers;
 	using System;
 	using System.Threading.Tasks;
+	using ff14bot.Objects;
 
-	public abstract class GatheringRotation : IGatheringRotation
+    public abstract class GatheringRotation : IGatheringRotation
 	{
 		protected internal static readonly uint[] WardSkills = { 236U, 293U, 234U, 292U, 217U, 219U };
 
@@ -45,7 +46,7 @@
 				return await tag.Cast(Ability.IncreaseGatherChance50);
 			}
 
-			if (Core.Player.CurrentGP >= 100 && tag.GatherItem.Chance < 86 && level > 4)
+			if (Core.Player.CurrentGP >= 100 && tag.GatherItem.Chance < 95 && level > 4)
 			{
 				if (level >= 23 && GatheringManager.SwingsRemaining == 1)
 				{
@@ -55,7 +56,7 @@
 				return await tag.Cast(Ability.IncreaseGatherChance15);
 			}
 
-			if (Core.Player.CurrentGP >= 50 && tag.GatherItem.Chance < 96 && level > 3)
+			if (Core.Player.CurrentGP >= 50 && tag.GatherItem.Chance < 100 && level > 3)
 			{
 				if (level >= 23 && GatheringManager.SwingsRemaining == 1)
 				{
@@ -160,7 +161,7 @@
 			return -1;
 		}
 
-		public virtual bool ShouldForceGather(ExGatherTag tag)
+		public virtual bool ShouldForceGather(GatheringPointObject node)
 		{
 			return false;
 		}

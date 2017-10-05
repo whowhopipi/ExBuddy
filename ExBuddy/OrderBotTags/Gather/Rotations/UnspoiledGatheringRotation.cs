@@ -15,7 +15,7 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 
 		int IGetOverridePriority.GetOverridePriority(ExGatherTag tag)
 		{
-			if (tag.IsUnspoiled() && tag.CollectableItem == null)
+			if (tag.Node.IsUnspoiled() && tag.CollectableItem == null)
 			{
 				return 8000;
 			}
@@ -38,45 +38,15 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 		public override async Task<bool> Prepare(ExGatherTag tag)
 		{
 			await Wait();
-
-#if RB_CN
-			return tag.GatherItem.TryGatherItem() && await base.Prepare(tag);
-#else
+            
 			if (tag.GatherItem.CanGather)
-			{
-				return tag.GatherItem.TryGatherItem() && await base.Prepare(tag);
-			}
-			else
 			{
 				return await base.Prepare(tag);
 			}
-#endif
-		}
-
-		protected override async Task<bool> IncreaseChance(ExGatherTag tag)
-		{
-			var level = Core.Player.ClassLevel;
-			if (Core.Player.CurrentGP >= 100 && tag.GatherItem.Chance < 95)
+			else
 			{
-				if (level >= 23 && GatheringManager.SwingsRemaining == 1)
-				{
-					return await tag.Cast(Ability.IncreaseGatherChanceOnce15);
-				}
-
-				return await tag.Cast(Ability.IncreaseGatherChance15);
+				return tag.GatherItem.TryGatherItem() && await base.Prepare(tag);
 			}
-
-			if (Core.Player.CurrentGP >= 50 && tag.GatherItem.Chance < 100)
-			{
-				if (level >= 23 && GatheringManager.SwingsRemaining == 1)
-				{
-					return await tag.Cast(Ability.IncreaseGatherChanceOnce15);
-				}
-
-				return await tag.Cast(Ability.IncreaseGatherChance5);
-			}
-
-			return true;
 		}
 	}
 }

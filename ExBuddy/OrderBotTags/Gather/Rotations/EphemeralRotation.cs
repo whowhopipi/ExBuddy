@@ -15,7 +15,7 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 
 		int IGetOverridePriority.GetOverridePriority(ExGatherTag tag)
 		{
-			if (tag.IsEphemeral() && tag.CollectableItem == null)
+			if (tag.Node.IsEphemeral() && tag.CollectableItem == null)
 			{
 				return 9100;
 			}
@@ -86,7 +86,14 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 			{
 				if (Core.Player.CurrentGP >= 300)
 				{
-					await tag.Cast(Ability.IncreaseGatherQuality30);
+					if (Core.Player.ClassLevel >= 63)
+					{
+						await tag.Cast(Ability.IncreaseGatherQuality30100);
+					}
+					else
+					{
+						await tag.Cast(Ability.IncreaseGatherQuality30);
+					}
 					return await base.ExecuteRotation(tag);
 					;
 				}

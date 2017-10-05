@@ -1,23 +1,17 @@
 ﻿namespace ExBuddy.OrderBotTags.Behaviors.Objects
 {
-	public enum Locations
-	{
-		Custom,
+    public enum Locations
+    {
+        Custom,
+
+        LimsaLominsaLowerDecks,
+
+        UldahStepsOfNald,
 
         MorDhona,
 
         Idyllshire,
-#if RB_CN
 
-		UldahStepsOfNald,
-
-		LimsaLominsaLowerDecks
-#else
-        UldahStepsOfNald,
-
-		LimsaLominsaLowerDecks,
-
-		RhalgrsReach
-#endif
-	}
+        RhalgrsReach
+    }
 }

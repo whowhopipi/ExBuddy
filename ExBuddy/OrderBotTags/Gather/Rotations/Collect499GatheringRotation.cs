@@ -4,8 +4,9 @@
 	using ExBuddy.Interfaces;
 	using ff14bot;
 	using System.Threading.Tasks;
+	using Helpers;
 
-	[GatheringRotation("Collect499", 28, 600)]
+    [GatheringRotation("Collect499", 28, 600)]
 	public sealed class Collect499GatheringRotation : CollectableGatheringRotation, IGetOverridePriority
 	{
 		#region IGetOverridePriority Members
@@ -25,7 +26,7 @@
 
 		public override async Task<bool> ExecuteRotation(ExGatherTag tag)
 		{
-			if (tag.IsUnspoiled())
+			if (tag.Node.IsUnspoiled())
 			{
 				await DiscerningMethodical(tag);
 				await Discerning(tag);
@@ -47,7 +48,7 @@
 				{
 					await Impulsive(tag);
 					await Impulsive(tag);
-					await Instinctual(tag);
+                    await Instinctual(tag);
 				}
 			}
 
