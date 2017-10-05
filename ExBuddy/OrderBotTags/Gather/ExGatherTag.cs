@@ -408,6 +408,7 @@
             int now = System.DateTime.Now.Millisecond;
             if (now - 3000 >= lastTime)
             {
+                lastTime = now;
                 return distance <= radius || !WhileFunc() || ExProfileBehavior.Me.IsDead;
             }
             return true;
