@@ -26,20 +26,15 @@
     using Helpers;
     using Interfaces;
     using Localization;
+    using Objects;
     using Strategies;
     using TreeSharp;
-
-#if RB_CN
-    using ActionManager = ff14bot.Managers.Actionmanager;
-#endif
 
     [LoggerName("ExSpearFish")]
     [XmlElement("ExSpearFish")]
     public class ExSpearFish : ExGatherTag
     {
         private static readonly object Lock = new object();
-
-        internal SpellData CordialSpellData;
 
         protected static Regex SpearFishRegex = new Regex(
             @"You spear(?: a| an| [2-3])? (.+) measuring (\d{1,4}\.\d) ilms!",
@@ -55,6 +50,8 @@
 
         private readonly HarpoonTip _gigWindow = new HarpoonTip();
 
+        internal SpellData CordialSpellData;
+
         private Func<bool> freeRangeConditionFunc;
 
         private bool gigSelected;
@@ -66,6 +63,11 @@
         private Composite poiCoroutine;
 
         private DateTime startTime;
+
+        [XmlElement("Collectables")]
+        private new List<Collectable> Collectables { get; set; }
+
+        private uint CollectabilityValue { get; set; }
 
         [DefaultValue(false)]
         [XmlAttribute("Collect")]
@@ -115,6 +117,9 @@
 
             if (Items == null)
                 Items = new NamedItemCollection();
+
+            if (Collect && Collectables == null)
+                Collectables = new List<Collectable> {new Collectable {Name = string.Empty, Value = (int) CollectabilityValue}};
 
             if (string.IsNullOrWhiteSpace(Name))
                 Name = Items.Count > 0 ? Items.First().Name : string.Format(Localization.ExGather_Zone, WorldManager.ZoneId, ExProfileBehavior.Me.Location);
@@ -179,13 +184,7 @@
                 return false;
 
             if (ExProfileBehavior.Me.ClassLevel < 66
-                || ExProfileBehavior.Me.HasAura(
-#if RB_CN
-                    (int)
-#else
-                    (uint)
-#endif
-                    AbilityAura.TruthOfOceans))
+                || ExProfileBehavior.Me.HasAura((uint) AbilityAura.TruthOfOceans))
                 return false;
 
             return
@@ -481,7 +480,7 @@
             }
         }
 
-        private async Task<bool> GatherSequence() { return await MoveToGatherSpot() /*&& await BeforeSpearFish()*/ && await SpearFish() && await AfterSpearFish() && await MoveFromGatherSpot(); }
+        private async Task<bool> GatherSequence() { return await MoveToGatherSpot() && await SpearFish() && await AfterSpearFish() && await MoveFromGatherSpot(); }
 
         private async Task<bool> MoveToGatherSpot()
         {
@@ -500,8 +499,6 @@
             return false;
         }
 
-        private async Task<bool> BeforeSpearFish() { return true; }
-
         private async Task<bool> SpearFish()
         {
             return await InteractWithNode() && await PrepareRotation() && await ExecuteRotation()
@@ -517,11 +514,7 @@
                    && Poi.Current.Unit.IsValid)
             {
                 var ticks = 0;
-                while (MovementManager.IsFlying
-#if !RB_CN
-                       && !MovementManager.IsDiving
-#endif
-                       && ticks++ < 5 && Behaviors.ShouldContinue && Poi.Current.Unit.IsVisible
+                while (MovementManager.IsFlying && !MovementManager.IsDiving && ticks++ < 5 && Behaviors.ShouldContinue && Poi.Current.Unit.IsVisible
                        && Poi.Current.Unit.IsValid)
                 {
                     var ground = ExProfileBehavior.Me.Location.GetFloor(5);
@@ -555,9 +548,7 @@
             if (!CanDoAbility(Ability.Gig))
             {
                 if (!FreeRange)
-                {
                     await MoveFromGatherSpot();
-                }
 
                 OnResetCachedDone();
                 return false;
@@ -623,10 +614,7 @@
                 await Cast(Abilities.Map[Core.Player.CurrentJob][Ability.Gig]);
 
                 while (SelectYesNoItem.IsOpen && Behaviors.ShouldContinue)
-                {
-                    SelectYesNoItem.Yes();
-                    await Coroutine.Wait(2000, () => !SelectYesNoItem.IsOpen);
-                }
+                    await HandleCollectable();
 
                 await Coroutine.Sleep(1000);
 
@@ -645,14 +633,64 @@
             return true;
         }
 
+        private async Task<bool> HandleCollectable()
+        {
+            var required = CollectabilityValue;
+            var itemName = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Collectables.First().Name))
+            {
+                var item = SelectYesNoItem.Item;
+                if (item == null
+                    || !Collectables.Any(c => string.Equals(c.Name, item.EnglishName, StringComparison.InvariantCultureIgnoreCase)))
+                {
+                    var ticks = 0;
+                    while ((item == null
+                            ||
+                            !Collectables.Any(c => string.Equals(c.Name, item.EnglishName, StringComparison.InvariantCultureIgnoreCase)))
+                           && ticks++ < 60 && Behaviors.ShouldContinue)
+                    {
+                        item = SelectYesNoItem.Item;
+                        await Coroutine.Yield();
+                    }
+
+                    if (ticks > 60)
+                        required = (uint) Collectables.Select(c => c.Value).Max();
+                }
+
+                if (item != null)
+                {
+                    itemName = item.EnglishName;
+                    var collectable = Collectables.FirstOrDefault(c => string.Equals(c.Name, item.EnglishName));
+
+                    if (collectable != null)
+                        required = (uint) collectable.Value;
+                }
+            }
+
+            var value = SelectYesNoItem.CollectabilityValue;
+
+            if (value >= required)
+            {
+                Logger.Info(Localization.ExFish_Collecting, itemName, value, required);
+                SelectYesNoItem.Yes();
+            }
+            else
+            {
+                Logger.Info(Localization.ExFish_Declining, itemName, value, required);
+                SelectYesNoItem.No();
+            }
+
+            await Coroutine.Wait(3000, () => !SelectYesNoItem.IsOpen);
+
+            return true;
+        }
+
         private async Task<bool> AfterSpearFish() { return await HandleCordial(); }
 
         private async Task<bool> HandleCordial()
         {
             if (CordialType == CordialType.None)
-            {
                 return false;
-            }
 
             CordialSpellData = CordialSpellData ?? Cordial.GetSpellData();
 
@@ -663,39 +701,29 @@
             }
 
             if (!CanUseCordial(8))
-            {
                 return false;
-            }
 
             var missingGp = ExProfileBehavior.Me.MaxGP - ExProfileBehavior.Me.CurrentGP;
 
             if (missingGp < 300)
-            {
                 return false;
-            }
 
             if (missingGp >= 450 && (CordialType == CordialType.HiCordial || CordialType == CordialType.Auto))
-            {
                 if (await UseCordial(CordialType.HiCordial))
-                {
                     return true;
-                }
-            }
 
             if (missingGp < 400 || CordialType != CordialType.Cordial && CordialType != CordialType.Auto) return await UseCordial(CordialType.WateredCordial);
 
             if (await UseCordial(CordialType.Cordial))
-            {
                 return true;
-            }
 
             return await UseCordial(CordialType.WateredCordial);
         }
 
         internal bool CanUseCordial(ushort withinSeconds = 5)
         {
-            return CordialSpellData.Cooldown.TotalSeconds < withinSeconds 
-                && (CordialType == CordialType.WateredCordial && Cordial.HasWateredCordials()
+            return CordialSpellData.Cooldown.TotalSeconds < withinSeconds
+                   && (CordialType == CordialType.WateredCordial && Cordial.HasWateredCordials()
                        || CordialType == CordialType.Cordial && (Cordial.HasWateredCordials() || Cordial.HasCordials())
                        || (CordialType == CordialType.HiCordial || CordialType == CordialType.Auto) && Cordial.HasAnyCordials());
         }
@@ -703,15 +731,15 @@
         private async Task<bool> UseCordial(CordialType cordialType, int maxTimeoutSeconds = 5)
         {
             if (!(CordialSpellData.Cooldown.TotalSeconds < maxTimeoutSeconds)) return false;
-            var cordial = InventoryManager.FilledSlots.FirstOrDefault(slot => slot.RawItemId == (uint)cordialType);
+            var cordial = InventoryManager.FilledSlots.FirstOrDefault(slot => slot.RawItemId == (uint) cordialType);
 
             if (cordial != null)
             {
-                StatusText = ExBuddy.Localization.Localization.ExFish_UseCordialWhenAvailable;
+                StatusText = Localization.ExFish_UseCordialWhenAvailable;
 
                 Logger.Info(
-                    ExBuddy.Localization.Localization.ExFish_UseCordial,
-                    (int)CordialSpellData.Cooldown.TotalSeconds,
+                    Localization.ExFish_UseCordial,
+                    (int) CordialSpellData.Cooldown.TotalSeconds,
                     ExProfileBehavior.Me.CurrentGP);
 
                 if (!await Coroutine.Wait(
@@ -728,7 +756,7 @@
                 await Coroutine.Sleep(1500);
                 return true;
             }
-            Logger.Warn(ExBuddy.Localization.Localization.ExFish_NoCordial + cordialType);
+            Logger.Warn(Localization.ExFish_NoCordial + cordialType);
 
             return false;
         }
@@ -742,16 +770,13 @@
             return true;
         }
 
-        private async Task<bool> MoveFromGatherSpot()
-        {
-            return GatherSpot == null || await GatherSpot.MoveFromSpot(this);
-        }
+        private async Task<bool> MoveFromGatherSpot() { return GatherSpot == null || await GatherSpot.MoveFromSpot(this); }
 
         #region Ability Checks and Actions
 
-        internal bool CanDoAbility(Ability ability) { return ActionManager.CanCast(Abilities.Map[Core.Player.CurrentJob][ability], ExProfileBehavior.Me); }
+        internal bool CanDoAbility(Ability ability) { return ActionManager.CanCast(Abilities.Map[ClassJobType.Fisher][ability], ExProfileBehavior.Me); }
 
-        internal bool DoAbility(Ability ability) { return ActionManager.DoAction(Abilities.Map[Core.Player.CurrentJob][ability], ExProfileBehavior.Me); }
+        internal bool DoAbility(Ability ability) { return ActionManager.DoAction(Abilities.Map[ClassJobType.Fisher][ability], ExProfileBehavior.Me); }
 
         #endregion Ability Checks and Actions
     }
