@@ -40,6 +40,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
             await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => ContentsFinder.IsOpen);
             ExContentsFinder finder = new ExContentsFinder();
             
+            /*
             if (Category > -1 && Index > 0)
             {
                 Logger.Verbose("设置副本：第{0}类，第{1}个",Category,Index);
@@ -49,7 +50,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
 
                 finder.ChangeSelect((uint)Index);
                 await Coroutine.Sleep(1000);
-            }
+            }*/
 
             finder.Attend();
 

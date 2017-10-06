@@ -105,6 +105,7 @@
     <Compile Include="OrderBotTags\Behaviors\ExRetainer.cs" />
     <Compile Include="OrderBotTags\Behaviors\ExShopExchange.cs" />
     <Compile Include="OrderBotTags\Behaviors\ExSuitChange.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExUseObject.cs" />
     <Compile Include="OrderBotTags\Behaviors\ExWaitWhile.cs" />
     <Compile Include="OrderBotTags\Behaviors\ExWhile.cs" />
     <Compile Include="OrderBotTags\Behaviors\Objects\RecipeItem.cs" />

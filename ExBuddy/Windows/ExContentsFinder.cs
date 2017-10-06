@@ -8,8 +8,7 @@
     // 大国联防军列表
     public sealed class ExContentsFinder : Window<ExContentsFinder>
 	{
-		public ExContentsFinder()
-			: base("ContentsFinder") { }
+		public ExContentsFinder() : base("ContentsFinder") { }
 
         public SendActionResult ChangePage(uint index)
         {
@@ -23,7 +22,7 @@
 
         public SendActionResult Attend()
         {
-            return TrySendAction(2, 1, 5, 1, 1);
+            return TrySendAction(1,1,4);
         }
 
         public static async Task<bool> Open()
