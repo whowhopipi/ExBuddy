@@ -1,0 +1,169 @@
+﻿using ff14bot.Helpers;
+using Newtonsoft.Json;
+
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using ff14bot;
+using ff14bot.Interfaces;
+using ff14bot.Managers;
+using ff14bot.NeoProfiles;
+using System.Linq;
+using System.Configuration;
+using System.ComponentModel;
+using System.IO;
+using Buddy.Coroutines;
+using ExBuddy.Attributes;
+using ExBuddy.Plugins.AtmaHunter.Settings;
+
+namespace ExBuddy.Plugins.AtmaHunter
+{
+    [LoggerName("AtmaHunter")]
+    public class AtmaHunter : ExBotPlugin<AtmaHunter>
+    {
+        private List<string> SupportBots = new List<string>() {
+            "Fate Bot",
+            "ExFateBot"
+        };
+
+        private bool CheckBot {
+            get {
+                return SupportBots.Contains(BotManager.Current.EnglishName);
+            }
+        }
+
+        #region Necessary Stuff
+        private AtmaHunterForm _form;
+        public string Author { get { return "Exmortem"; } }
+        public Version Version { get { return new Version(1, 0); } }
+        public string Name { get { return "魂晶狩猎"; } }
+        public string Description { get { return "Finishes Atma collection for you."; } }
+        public bool WantButton
+        {
+            get { return true; }
+        }
+        public string ButtonText
+        {
+            get { return "AtmaHunter"; }
+        }
+
+        public override string Name => throw new NotImplementedException();
+
+        public void OnButtonPress()
+        {
+            if (_form == null || _form.IsDisposed || _form.Disposing)
+                _form = new AtmaHunterForm();
+
+            _form.ShowDialog();  
+        }
+        public bool Equals(IBotPlugin other)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+        public void OnPulse()
+        {
+            if (SupportBots.Contains(BotManager.Current.Name))
+            {
+                ChangeZone();
+            } else
+            {
+                Log("当前模式({0})不支持，关闭插件", BotManager.Current.Name);
+                var plugin = PluginManager.Plugins.First(p => p.Plugin.Name == Name);
+
+                if (plugin.Enabled)
+                {
+                    plugin.Enabled = false;
+                }
+            }
+        }
+        
+        private bool Finish = false;
+
+        public static AtmaHunterSettings settings = AtmaHunterSettings.instance;
+        
+        public void ChangeZone()
+        {
+            // 判断当前所在地图
+            Atma nextAtma = AtmaMap.Atmas.Find(atma => atma.ZooId == WorldManager.ZoneId);
+
+            if(nextAtma != null)
+            {
+                if(ConditionParser.ItemCount(nextAtma.Id) >= settings.Count)
+                {
+                    Log("当前区域魂晶({0})已经收集到足够数量:{1}",nextAtma.Name,settings.Count);
+                    nextAtma = null;
+                }
+            }
+
+            if(nextAtma == null)
+            {
+                foreach(Atma atma in AtmaMap.Atmas)
+                {
+                    if(ConditionParser.ItemCount(atma.Id) < settings.Count)
+                    {
+                        Log("魂晶({0})数量不足，目标数量{1}，准备传送获取魂晶", atma.Name, settings.Count);
+                        nextAtma = atma;
+                        break;
+                    }
+                }
+            }
+
+            if (nextAtma != null)
+            {
+                if(WorldManager.ZoneId != nextAtma.ZooId)
+                {
+                    Log("下个获取魂晶的区域和当前区域不同，准备传送");
+                    
+                    //TreeRoot.Stop();
+                    Thread.Sleep(2000);
+
+                    WorldManager.TeleportById(nextAtma.AetheryteId);
+
+                    Thread.Sleep(60000);
+                    //TreeRoot.Start();
+                }
+            } else
+            {
+                Log("魂晶已收集完毕，结束");
+                TreeRoot.Stop();
+            }
+
+        }
+        public void OnInitialize()
+        {
+            // do nothing
+        }
+
+        public void OnShutdown()
+        {
+            // do nothing
+        }
+
+        public void OnEnabled()
+        {
+            // do nothing
+        }
+
+        public void OnDisabled()
+        {
+            // do nothing
+        }
+
+    }
+ }
+
+namespace ExBuddy.Plugins.AtmaHunter.Settings
+{
+    public class AtmaHunterSettings : JsonSettings
+    {
+        [JsonIgnore]
+        private static AtmaHunterSettings _instance;
+        public static AtmaHunterSettings instance { get { return _instance ?? (_instance = new AtmaHunterSettings("AtmaHunterSettings")); } }
+        public AtmaHunterSettings(string filename) : base(Path.Combine(CharacterSettingsDirectory, "AtmaHunter.json")) { }
+        
+        [Setting]
+        [DefaultValue(1)]
+        public int Count { set; get; }
+    }
+}
