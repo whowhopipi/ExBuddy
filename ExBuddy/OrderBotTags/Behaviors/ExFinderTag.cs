@@ -31,9 +31,15 @@ namespace ExBuddy.OrderBotTags.Behaviors
         {
             StatusText = "任务搜索器";
             
+            while (!ContentsFinder.IsOpen)
+            {
+                ChatManager.SendChat("/dutyfinder");
+                await Coroutine.Wait(3000, () => ContentsFinder.IsOpen);
+            }
+
             await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => ContentsFinder.IsOpen);
             ExContentsFinder finder = new ExContentsFinder();
-
+            
             if (Category > -1 && Index > 0)
             {
                 Logger.Verbose("设置副本：第{0}类，第{1}个",Category,Index);

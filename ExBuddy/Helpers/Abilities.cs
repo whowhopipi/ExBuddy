@@ -114,20 +114,34 @@
 	}
 
 	internal enum AbilityAura : short
-	{
-		None = -1,
+    {
+        None = -1,
 
-		Stealth = 47,
+        Stealth = 47,
 
-		TruthOfForests = 221,
+        Food = 48,
+
+        TruthOfForests = 221,
 
         TruthOfMountains = 222,
 
         DiscerningEye = 757,
 
-		CollectorsGlove = 805,
+        CollectorsGlove = 805,
 
-        TruthOfOceans = 1173
+        CollectorsMake = 903,
+
+        TruthOfOceans = 1173,
+
+        Patience = 850,
+
+        Snagging = 761,
+
+        Chum = 763,
+
+        FishEyes = 762,
+
+        MakersMark = 878
     }
 
 	internal enum Ability : byte

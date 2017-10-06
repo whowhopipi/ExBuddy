@@ -1,6 +1,9 @@
 ﻿namespace ExBuddy.Windows
 {
+    using Buddy.Coroutines;
     using ExBuddy.Enumerations;
+    using ff14bot.Managers;
+    using System.Threading.Tasks;
 
     // 大国联防军列表
     public sealed class ExContentsFinder : Window<ExContentsFinder>
@@ -23,5 +26,15 @@
             return TrySendAction(2, 1, 5, 1, 1);
         }
 
+        public static async Task<bool> Open()
+        {
+            while (!IsOpen)
+            {
+                ChatManager.SendChat("/dutyfinder");
+                await Coroutine.Wait(3000, () => IsOpen);
+            }
+
+            return true;
+        }
     }
 }

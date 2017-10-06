@@ -106,5 +106,41 @@ namespace ExBuddy.Helpers
 		{
 			return await CastAura(Abilities.Map[Core.Player.CurrentJob][ability], delay, (int)aura);
 		}
-	}
+
+        internal static bool CanCast(uint id)
+        {
+            return ActionManager.CanCast(id, Core.Me);
+        }
+
+        internal static bool CanCast(Ability ability)
+        {
+            return CanCast(Abilities.Map[Core.Player.CurrentJob][ability]);
+        }
+
+        internal static async Task<bool> HasAction(Ability ability)
+        {
+            await Coroutine.Yield();
+            bool result = ActionManager.CurrentActions.ContainsKey(Abilities.Map[Core.Player.CurrentJob][ability]);
+
+            var tickit = 0;
+            while (result == false && tickit < 6)
+            {
+                await Coroutine.Sleep(5000);
+                result = ActionManager.CurrentActions.ContainsKey(Abilities.Map[Core.Player.CurrentJob][ability]);
+            }
+
+            return result;
+        }
+
+        public static bool HasAura(AbilityAura auraId)
+        {
+            return HasAura((uint)auraId);
+        }
+
+        public static bool HasAura(uint auraId)
+        {
+            return Core.Me.HasAura(auraId);
+        }
+
+    }
 }
