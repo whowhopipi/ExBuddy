@@ -149,6 +149,9 @@
     <Compile Include="OrderBotTags\WhoFish\HookAction.cs" />
     <Compile Include="OrderBotTags\WhoFish\WhoFishSpot.cs" />
     <Compile Include="OrderBotTags\WhoFish\WhoFishTag.cs" />
+    <Compile Include="Plugins\AtmaHunter\Atma.cs" />
+    <None Include="Plugins\AtmaHunter\AtmaHunter.cs.bak" />
+    <Compile Include="Plugins\AtmaHunter\AtmaMap.cs" />
     <Compile Include="Plugins\Skywatcher\Objects\Location.cs" />
     <Compile Include="Plugins\Skywatcher\Objects\LocationIndex.cs" />
     <Compile Include="Plugins\Skywatcher\Objects\WeatherRate.cs" />
