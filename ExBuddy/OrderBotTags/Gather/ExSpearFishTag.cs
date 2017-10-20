@@ -162,7 +162,7 @@
 
             if (spearFishSizeMatch.Success)
             {
-                spearResult.Name = spearFishMatch[0].ToString();
+                spearResult.Name = spearFishMatch[1].ToString();
                 float.TryParse(spearFishSizeMatch.Groups[1].Value, out float size);
 #else
             var spearFishMatch = SpearFishRegex.Match(message);
