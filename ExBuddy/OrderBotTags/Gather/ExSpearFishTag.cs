@@ -164,6 +164,10 @@
             {
                 spearResult.Name = spearFishMatch[1].ToString();
                 float.TryParse(spearFishSizeMatch.Groups[1].Value, out float size);
+                spearResult.Size = size;
+                if (spearFishMatch[2].ToString() == "\uE03C")
+                    spearResult.IsHighQuality = true;
+            }            
 #else
             var spearFishMatch = SpearFishRegex.Match(message);
             var spearFishAwayMatch = SpearFishGetAwayRegex.Match(message);
@@ -171,11 +175,12 @@
             {
                 spearResult.Name = spearFishMatch.Groups[1].Value;
                 float.TryParse(spearFishMatch.Groups[2].Value, out float size);
-#endif
                 spearResult.Size = size;
-                if (spearFishMatch[2].ToString() == "\uE03C")
+                if (spearResult.Name[spearResult.Name.Length - 2] == ' ')
                     spearResult.IsHighQuality = true;
-            }
+            }            
+#endif
+
             if (spearFishAwayMatch.Success)
                 spearResult.Name = "none";
 
