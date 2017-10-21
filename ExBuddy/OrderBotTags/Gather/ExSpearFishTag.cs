@@ -46,7 +46,7 @@
 
         protected static Regex SpearFishGetAwayRegex = new Regex(
 #if RB_CN
-            @"鱼逃走了\.\.\.",
+            @"鱼逃走了……",
 #else
             @"The fish gets away\.\.\.",
 #endif
@@ -173,7 +173,7 @@
                 float.TryParse(spearFishMatch.Groups[2].Value, out float size);
 #endif
                 spearResult.Size = size;
-                if (spearResult.Name[spearResult.Name.Length - 2] == ' ')
+                if (spearFishMatch[2].ToString() == "\uE03C")
                     spearResult.IsHighQuality = true;
             }
             if (spearFishAwayMatch.Success)
