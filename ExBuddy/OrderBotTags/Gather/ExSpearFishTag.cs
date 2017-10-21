@@ -38,7 +38,7 @@
 
         protected static Regex SpearFishRegex = new Regex(
 #if RB_CN
-            @"[\u4e00-\u9fa5A-Za-z0-9·]+获得了|[\u4e00-\u9fa5]+",
+            @"[[\u4e00-\u9fa5A-Za-z0-9·]+获得了|[\u4e00-\u9fa5]+|\ue03c",
 #else
             @"You spear(?: a| an| [2-3])? (.+) measuring (\d{1,4}\.\d) ilms!",
 #endif
