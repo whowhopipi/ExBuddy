@@ -4,6 +4,8 @@
 	{
 		GatherOrCollect, // Unspoiled
 
-		TouchAndGo // Epheremal
-	}
+        TouchAndGo, // Epheremal
+
+	    FishAndGo // Swimming Shadows
+    }
 }
