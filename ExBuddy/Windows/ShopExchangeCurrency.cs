@@ -18,7 +18,7 @@
 
 		public SendActionResult PurchaseItem(uint index, uint qty)
 		{
-			return TrySendAction(3, 0, 0, 1, index, 1, qty);
+			return TrySendAction(3, 0, 0, 1, index, 3, qty);
 		}
 
 		public async Task<bool> PurchaseItem(uint index, uint qty, byte attempts, ushort interval = 200)
