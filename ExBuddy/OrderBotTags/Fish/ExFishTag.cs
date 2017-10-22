@@ -19,6 +19,7 @@ namespace ExBuddy.OrderBotTags.Fish
 	using System;
 	using System.Collections.Generic;
 	using System.ComponentModel;
+	using System.Globalization;
 	using System.Linq;
 	using System.Text.RegularExpressions;
 	using System.Threading.Tasks;
@@ -1145,18 +1146,16 @@ namespace ExBuddy.OrderBotTags.Fish
             if (sizematch.Success)
             {
                 fishResult.Name = match[1].ToString();
-                float size;
-                float.TryParse(sizematch.Groups[1].Value, out size);
+                float.TryParse(sizematch.Groups[1].Value, out float size);
 #else
-			var match = FishRegex.Match(message);
+            var match = FishRegex.Match(message);
 
 			if (match.Success)
 			{
 				fishResult.Name = match.Groups[1].Value;
-				float size;
-				float.TryParse(match.Groups[2].Value, out size);
+			    float.TryParse(match.Groups[2].Value, NumberStyles.Number, CultureInfo.InvariantCulture.NumberFormat, out float size);
 #endif
-				fishResult.Size = size;
+                fishResult.Size = size;
 				if (fishResult.Name[fishResult.Name.Length - 2] == ' ')
 				{
 					fishResult.IsHighQuality = true;
