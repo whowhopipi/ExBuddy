@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Globalization;
     using System.Linq;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
@@ -52,6 +53,14 @@
 #endif
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        protected static Regex SwimmingShadowsRegex = new Regex(
+#if RB_CN
+            @"The shadow of an elusive sea creature lurks somewhere nearby!",
+#else
+            @"The shadow of an elusive sea creature lurks somewhere nearby!",
+#endif
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         protected static Regex FishSizeRegex = new Regex(@"(\d{1,4}\.\d)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         protected static SpearResult SpearResult = new SpearResult();
@@ -63,6 +72,8 @@
         private Func<bool> freeRangeConditionFunc;
 
         private bool gigSelected;
+
+        private bool swimmingShadows;
 
         private bool interactedWithNode;
 
@@ -141,24 +152,30 @@
 
         protected void ReceiveMessage(object sender, ChatEventArgs e)
         {
-#if RB_CN            
-            if (e.ChatLogEntry.MessageType == (MessageType) 2115 && e.ChatLogEntry.Contents.Contains("获得了") ||
-                e.ChatLogEntry.MessageType == (MessageType) 67 && e.ChatLogEntry.Contents.Contains("鱼逃走了"))
+#if RB_CN
+            if (e.ChatLogEntry.MessageType == (MessageType)2115 && e.ChatLogEntry.Contents.Contains("获得了") ||
+                e.ChatLogEntry.MessageType == (MessageType)67 && e.ChatLogEntry.Contents.Contains("鱼逃走了"))
                 MatchSpearResult(e.ChatLogEntry.Contents);
+
+            if (e.ChatLogEntry.MessageType == (MessageType)67 && e.ChatLogEntry.Contents.StartsWith("The shadow"))
+                MatchSwimmingShadow(e.ChatLogEntry.Contents);
 #else
-            if (e.ChatLogEntry.MessageType == (MessageType) 2115 && e.ChatLogEntry.Contents.StartsWith("You spear") ||
-                e.ChatLogEntry.MessageType == (MessageType) 67 && e.ChatLogEntry.Contents.StartsWith("The fish"))
+            if (e.ChatLogEntry.MessageType == (MessageType)2115 && e.ChatLogEntry.Contents.StartsWith("You spear") ||
+                e.ChatLogEntry.MessageType == (MessageType)67 && e.ChatLogEntry.Contents.StartsWith("The fish"))
                 MatchSpearResult(e.ChatLogEntry.Contents);
+
+            if (e.ChatLogEntry.MessageType == (MessageType)67 && e.ChatLogEntry.Contents.StartsWith("The shadow"))
+                MatchSwimmingShadow(e.ChatLogEntry.Contents);
 #endif
         }
 
         protected void MatchSpearResult(string message)
         {
             var spearResult = new SpearResult();
+            var spearFishAwayMatch = SpearFishGetAwayRegex.Match(message);
             var spearFishSizeMatch = FishSizeRegex.Match(message);
 #if RB_CN
             var spearFishMatch = SpearFishRegex.Matches(message);
-            var spearFishAwayMatch = SpearFishGetAwayRegex.Match(message);
 
             if (spearFishSizeMatch.Success)
             {
@@ -167,24 +184,28 @@
                 spearResult.Size = size;
                 if (spearFishMatch[2].ToString() == "\uE03C")
                     spearResult.IsHighQuality = true;
-            }            
+            }
 #else
             var spearFishMatch = SpearFishRegex.Match(message);
-            var spearFishAwayMatch = SpearFishGetAwayRegex.Match(message);
             if (spearFishMatch.Success)
             {
                 spearResult.Name = spearFishMatch.Groups[1].Value;
-                float.TryParse(spearFishMatch.Groups[2].Value, out float size);
+                float.TryParse(spearFishMatch.Groups[2].Value, NumberStyles.Number,CultureInfo.InvariantCulture.NumberFormat, out float size);
                 spearResult.Size = size;
                 if (spearResult.Name[spearResult.Name.Length - 2] == ' ')
                     spearResult.IsHighQuality = true;
-            }            
+            }
 #endif
 
             if (spearFishAwayMatch.Success)
                 spearResult.Name = "none";
 
             SpearResult = spearResult;
+        }
+
+        protected void MatchSwimmingShadow(string message)
+        {
+            swimmingShadows = SwimmingShadowsRegex.Match(message).Success;
         }
 
         private static bool HandleDeath()
@@ -200,9 +221,8 @@
                 WhileFunc = ScriptManager.GetCondition(While);
 
             // If statement is true, return false so we can continue the routine
-            if (WhileFunc())
-                return false;
-
+            if (WhileFunc() && !(GatherStrategy == GatherStrategy.FishAndGo && swimmingShadows)) return false;
+            swimmingShadows = false;
             isDone = true;
             return true;
         }
@@ -604,9 +624,7 @@
                 return;
 
             if (Blacklist.Contains(Poi.Current.Unit, BlacklistFlags.Interact)) return;
-            var timeToBlacklist = GatherStrategy == GatherStrategy.TouchAndGo
-                ? TimeSpan.FromSeconds(12)
-                : TimeSpan.FromSeconds(60);
+            var timeToBlacklist = TimeSpan.FromSeconds(60);
             Blacklist.Add(
                 Poi.Current.Unit,
                 BlacklistFlags.Interact,
@@ -634,6 +652,7 @@
             StatusText = "SpearFishing items";
 
             var hits = 0;
+            var veteranTrade = false;
             while (await Coroutine.Wait(4500, () => ActionManager.CanCast(7632, Core.Player) || !Node.IsValid))
             {
                 if (BountifulCatch && Core.Player.CurrentGP >= 200)
@@ -647,14 +666,12 @@
 
                 await Coroutine.Sleep(1000);
 
-                Logger.Info(Localization.ExSpearFish_SpearFishing, SpearResult.FishName, SpearResult.IsHighQuality, SpearResult.Size, WorldManager.EorzaTime);
-                if (hits == 0 && !Items.Any(SpearResult.ShouldKeep) && Core.Player.CurrentGP >= 200 && await Coroutine.Wait(4000, () => ActionManager.CanCast(7906, Core.Player)))
-                {
-                    Logger.Info(Localization.ExSpearFish_UsingVeteranTrade, SpearResult.FishName);
-                    await Cast(Abilities.Map[Core.Player.CurrentJob][Ability.VeteranTrade]);
-                }
-
                 hits++;
+                Logger.Info(Localization.ExSpearFish_SpearFishing, SpearResult.FishName, SpearResult.IsHighQuality, SpearResult.Size, WorldManager.EorzaTime);
+                if (hits > 2 || veteranTrade || Items.Any(SpearResult.ShouldKeep) || Core.Player.CurrentGP < 200 || !await Coroutine.Wait(4000, () => ActionManager.CanCast(7906, Core.Player))) continue;
+                Logger.Info(Localization.ExSpearFish_UsingVeteranTrade, SpearResult.FishName);
+                await Cast(Abilities.Map[Core.Player.CurrentJob][Ability.VeteranTrade]);
+                veteranTrade = true;
             }
 
             StatusText = "SpearFishing items complete";
