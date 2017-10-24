@@ -7,13 +7,13 @@
 
 		RedCrafter61,
 
-		RedGatherer50,
-
-		RedGatherer61,
-
 		YellowCrafter,
 
 		YellowCrafterItems,
+
+		RedGatherer50,
+
+		RedGatherer61,
 
 		YellowGatherer,
 
