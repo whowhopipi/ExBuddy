@@ -364,12 +364,14 @@ namespace ExBuddy.OrderBotTags.Behaviors
 				{
                     if ((Location == Locations.MorDhona || Location == Locations.Idyllshire) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61))
                     {
-                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType
-#if !RB_CN
-                            - 2
-#endif
-                            );
+                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 2);
                     }
+#if RB_CN
+                    else if ((Location == Locations.RhalgrsReach) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61 || purchaseItemInfo.ShopType == ShopType.YellowGatherer || purchaseItemInfo.ShopType == ShopType.YellowGathererItems))
+                    {
+                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 1);
+                    }
+#endif
                     else
                     {
                         SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType);
