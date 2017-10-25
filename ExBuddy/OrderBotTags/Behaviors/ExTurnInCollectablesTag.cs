@@ -366,6 +366,12 @@ namespace ExBuddy.OrderBotTags.Behaviors
                     {
                         SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 2);
                     }
+#if RB_CN
+                    else if ((Location == Locations.RhalgrsReach) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61 || purchaseItemInfo.ShopType == ShopType.YellowGatherer || purchaseItemInfo.ShopType == ShopType.YellowGathererItems))
+                    {
+                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 1);
+                    }
+#endif
                     else
                     {
                         SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType);
