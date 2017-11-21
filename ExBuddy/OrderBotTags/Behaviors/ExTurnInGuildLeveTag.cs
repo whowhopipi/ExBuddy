@@ -9,6 +9,7 @@
 	using ExBuddy.Windows;
 	using ff14bot;
 	using ff14bot.Behavior;
+	using ff14bot.Enums;
 	using ff14bot.Helpers;
 	using ff14bot.Managers;
 	using ff14bot.RemoteWindows;
@@ -192,8 +193,11 @@
 				var itemId = Memory.Request.ItemId1;
 
 				IEnumerable<BagSlot> itemSlots =
-					InventoryManager.FilledInventoryAndArmory.Where(
-						bs => bs.RawItemId == itemId && !Blacklist.Contains((uint)bs.Pointer.ToInt64(), BlacklistFlags.Loot)).ToArray();
+					InventoryManager.FilledInventoryAndArmory
+						.Where(
+							bs => bs.RawItemId == itemId
+							      && bs.BagId != InventoryBagId.EquippedItems
+							      && !Blacklist.Contains((uint)bs.Pointer.ToInt64(), BlacklistFlags.Loot)).ToArray();
 
 				if (HqOnly)
 				{
