@@ -216,7 +216,7 @@ namespace ExBuddy.Helpers
 				var moveResult = MoveResult.GeneratingPath;
 				while (Behaviors.ShouldContinue
 					   && (!stopCallback(distance = Core.Player.Location.Distance3D(destination), radius)
-						   || stopCallback == DontStopInRange) && !(moveResult.IsDoneMoving()))
+						   || stopCallback == DontStopInRange) && !moveResult.IsDoneMoving())
 				{
 					moveResult = Navigator.MoveTo(new MoveToParameters(destination));
 
@@ -277,7 +277,13 @@ namespace ExBuddy.Helpers
 			var sprintDistance = Math.Min(20.0f, CharacterSettings.Instance.MountDistance);
 
 			var moveResult = MoveResult.GeneratingPath;
-			while (Behaviors.ShouldContinue && !(moveResult.IsDoneMoving()))
+
+		    if (!MovementManager.IsFlying && !MovementManager.IsDiving)
+		    {
+		        destination = destination.AddRandomDirection2D(10.0f);
+		    }
+
+            while (Behaviors.ShouldContinue && !moveResult.IsDoneMoving())
 			{
 				moveResult = Navigator.MoveTo(new MoveToParameters(destination));
 				await Coroutine.Yield();
