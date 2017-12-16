@@ -354,7 +354,7 @@
 
 		internal void ResetInternal()
 		{
-			interactedWithNode = false;
+            interactedWithNode = false;
 			GatherSpot = null;
 			Node = null;
 			GatherItem = null;
