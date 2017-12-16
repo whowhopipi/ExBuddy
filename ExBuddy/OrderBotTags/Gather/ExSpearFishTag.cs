@@ -86,24 +86,49 @@
         [XmlElement("Collectables")]
         private new List<Collectable> Collectables { get; set; }
 
-        private uint CollectabilityValue { get; set; }
+        [DefaultValue(0)]
+        [XmlAttribute("GigId")]
+        public int GigId { get; set; }
+
+        [DefaultValue(1)]
+        [XmlAttribute("VeteranTradeDepth")]
+        public int VeteranTradeDepth { get; set; }
+        
+        [DefaultValue(false)]
+        [XmlAttribute("BountifulCatch")]
+        public bool BountifulCatch { get; set; }
+
+        [DefaultValue(0)]
+        [XmlAttribute("BountifulCatchDepth")]
+        public int BountifulCatchDepth { get; set; }
+
+        [DefaultValue(false)]
+        [XmlAttribute("BountifulCatchAfterVeteranTrade")]
+        public bool BountifulCatchAfterVeteranTrade { get; set; }
 
         [DefaultValue(false)]
         [XmlAttribute("Collect")]
         public bool Collect { get; set; }
 
-        [DefaultValue(false)]
-        [XmlAttribute("BountifulCatch")]
-        public bool BountifulCatch { get; set; }
+        private uint CollectabilityValue { get; set; }
 
         [XmlElement("Items")]
         public new NamedItemCollection Items { get; set; }
 
-        [DefaultValue(0)]
-        [XmlAttribute("GigId")]
-        public int GigId { get; set; }
-
         protected override Color Info => Colors.Aquamarine;
+
+        protected override void DoReset()
+        {
+            loopCount = 0;
+            gigSelected = false;
+
+            if (HotSpots != null)
+            {
+                HotSpots.Index = 0;
+            }
+            
+            ResetInternal();
+        }
 
         protected override async Task<bool> Main()
         {
@@ -461,10 +486,7 @@
                 // TODO: Run away...far far away
                 await Coroutine.Yield();
 
-            if (!FreeRange && (HotSpots == null || HotSpots.Count == 0 || Node != null && Node.IsUnspoiled() && interactedWithNode))
-                isDone = true;
-            else
-                ResetInternal();
+            ResetInternal();
 
             return true;
         }
@@ -551,7 +573,7 @@
         private async Task<bool> SpearFish()
         {
             return await InteractWithNode() && await PrepareRotation() && await ExecuteRotation()
-                   && await Coroutine.Wait(2000, () => !Node.CanGather) && await WaitForGatherWindowToClose();
+                   && await Coroutine.Wait(4000, () => !Node.CanGather) && await WaitForGatherWindowToClose();
         }
 
         private async Task<bool> InteractWithNode()
@@ -612,8 +634,7 @@
                 ExProfileBehavior.Me.MaxGP,
                 WorldManager.EorzaTime.ToShortTimeString());
 
-            if (!Node.IsUnspoiled() && !Node.IsConcealed())
-                BlacklistCurrentNode();
+            BlacklistCurrentNode();
 
             return true;
         }
@@ -655,7 +676,7 @@
             var veteranTrade = false;
             while (await Coroutine.Wait(4500, () => ActionManager.CanCast(7632, Core.Player) || !Node.IsValid))
             {
-                if (BountifulCatch && Core.Player.CurrentGP >= 200)
+                if (BountifulCatch && Core.Player.CurrentGP >= 200 && hits >= 1 && hits <= BountifulCatchDepth && (!BountifulCatchAfterVeteranTrade || veteranTrade))
                     await Cast(Abilities.Map[Core.Player.CurrentJob][Ability.BountifulCatch]);
 
                 await Coroutine.Sleep(4500);
@@ -668,7 +689,7 @@
 
                 hits++;
                 Logger.Info(Localization.ExSpearFish_SpearFishing, SpearResult.FishName, SpearResult.IsHighQuality, SpearResult.Size, WorldManager.EorzaTime);
-                if (hits > 2 || veteranTrade || Items.Any(SpearResult.ShouldKeep) || Core.Player.CurrentGP < 200 || !await Coroutine.Wait(4000, () => ActionManager.CanCast(7906, Core.Player))) continue;
+                if (hits > VeteranTradeDepth || veteranTrade || Items.Any(SpearResult.ShouldKeep) || Core.Player.CurrentGP < 200 || !await Coroutine.Wait(4000, () => ActionManager.CanCast(7906, Core.Player))) continue;
                 Logger.Info(Localization.ExSpearFish_UsingVeteranTrade, SpearResult.FishName);
                 await Cast(Abilities.Map[Core.Player.CurrentJob][Ability.VeteranTrade]);
                 veteranTrade = true;
