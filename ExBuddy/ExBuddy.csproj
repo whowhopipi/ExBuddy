@@ -62,6 +62,7 @@
     <Compile Include="Attributes\OffsetAttribute.cs" />
     <Compile Include="Data\MasterpieceSupplyDutyResult.cs" />
     <Compile Include="Data\RequiredItemResult.cs" />
+    <Compile Include="Data\RecipeSqlData.cs" />
     <Compile Include="Data\SqlData.cs" />
     <Compile Include="GameObjects\Npcs\PersonnelOfficer.cs" />
     <Compile Include="GameObjects\Npcs\ShopExchangeItem.cs" />

@@ -19,18 +19,15 @@
 		public static readonly string DataFilePath;
 
 		public static readonly SqlData Instance;
-        public static readonly SqlData RecipeInstance;
 
         private readonly Dictionary<uint, MasterpieceSupplyDutyResult> masterpieceSupplyDutyCache;
 
 		// TODO: look into what localizedDictionary does for us??
 		private readonly Dictionary<uint, RequiredItemResult> requiredItemCache;
-        private readonly Dictionary<int, RecipeItem> recipeItemCache;
 
         static SqlData()
 		{
 			var path = Path.Combine(Environment.CurrentDirectory, "Plugins\\ExBuddy\\Data\\" + DbFileName);
-            var recipePath = Path.Combine(Environment.CurrentDirectory, "Plugins\\ExBuddy\\Data\\recipes.db3");
 
             if (File.Exists(path))
 			{
@@ -41,16 +38,8 @@
 				DataFilePath =
 					Directory.GetFiles(PluginManager.PluginDirectory, "*" + DbFileName, SearchOption.AllDirectories).FirstOrDefault();
             }
-
-            if (!File.Exists(recipePath))
-            {
-                recipePath =
-                    Directory.GetFiles(PluginManager.PluginDirectory, "*" + "recipes.db3", SearchOption.AllDirectories).FirstOrDefault();
-            }
-
-
+            
             Instance = new SqlData(DataFilePath);
-            RecipeInstance = new SqlData(recipePath);
         }
 
 		internal SqlData(string path)
@@ -58,7 +47,6 @@
 		{
 			masterpieceSupplyDutyCache = Table<MasterpieceSupplyDutyResult>().ToDictionary(key => key.Id, val => val);
 			requiredItemCache = Table<RequiredItemResult>().ToDictionary(key => key.Id, val => val);
-            recipeItemCache = Table<RecipeItem>().ToDictionary(key => key.Id, val => val);
         }
 
 		public uint? GetIndexByEngName(string engName)
@@ -133,17 +121,6 @@
 
 			return masterpieceSupplyDuty.Index;
         }
-
-        public RecipeItem GetRecipeByName(string RecipeName, ClassJobType Job)
-        {
-            Item item = DataManager.GetItem(RecipeName);
-
-            if (item == null)
-            {
-                return null;
-            }
-
-            return recipeItemCache.Values.FirstOrDefault(recipe => recipe.ItemName.Equals(item.EnglishName) && recipe.ClassJob == Job);
-        }
+        
     }
 }

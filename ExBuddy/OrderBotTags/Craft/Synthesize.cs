@@ -78,7 +78,7 @@
                 if (!string.IsNullOrWhiteSpace(Name))
                 {
                     Logger.Verbose("开始查找配方{0}/{1}", Name, Me.CurrentJob);
-                    recipe = SqlData.Instance.GetRecipeByName(Name,Me.CurrentJob);
+                    recipe = RecipeSqlData.Instance.GetRecipeByName(Name,Me.CurrentJob);
                     if (recipe != null)
                         RecipeId = (uint)recipe.Id;
                 }
