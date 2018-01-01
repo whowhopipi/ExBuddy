@@ -341,16 +341,24 @@
 						(ushort)SkipWindowDelay);
 		}
 
-		/// <summary>
-		/// called by moveto.
-		/// </summary>
-		/// <param name="distance">Distance to our target</param>
-		/// <param name="radius">Radius we passed into the moveto</param>
-		/// <returns></returns>
-		internal bool MovementStopCallback(float distance, float radius)
+        /// <summary>
+        /// called by moveto.
+        /// </summary>
+        /// <param name="distance">Distance to our target</param>
+        /// <param name="radius">Radius we passed into the moveto</param>
+        /// <returns></returns>
+        int lastOverTime = 0;
+        internal bool MovementStopCallback(float distance, float radius)
 		{
-			return distance <= radius || !WhileFunc() || ExProfileBehavior.Me.IsDead;
-		}
+            int current = DateTime.Now.Millisecond;
+            if (current - lastOverTime >= 3000)
+            {
+                lastOverTime = current;
+                return distance <= radius || !WhileFunc() || ExProfileBehavior.Me.IsDead;
+            }
+            else
+                return true;
+        }
 
 		internal void ResetInternal()
 		{
@@ -741,7 +749,8 @@
 				{
 					if (GatherObjects != null)
 					{
-						nodes = nodes.Where(gpo => GatherObjects.Contains(gpo.EnglishName, StringComparer.InvariantCultureIgnoreCase));
+						nodes = nodes.Where(gpo => GatherObjects.Contains(gpo.EnglishName, StringComparer.InvariantCultureIgnoreCase)
+                            ||GatherObjects.Contains(gpo.Name,StringComparer.InvariantCultureIgnoreCase));
 					}
 
 					foreach (var node in
@@ -1252,10 +1261,14 @@
 				GatherItem = GatherItem ??
 					items.FirstOrDefault(
 						i => string.Equals(item.LocalName, i.ItemData.CurrentLocaleName, StringComparison.InvariantCultureIgnoreCase)
-						&& (!i.ItemData.Unique || i.ItemData.ItemCount() == 0)) ??
+						&& (!i.ItemData.Unique || i.ItemData.ItemCount() == 0) && item.ConditionResult) ??
 					items.FirstOrDefault(
 						i => string.Equals(item.Name, i.ItemData.EngName, StringComparison.InvariantCultureIgnoreCase)
-						&& (!i.ItemData.Unique || i.ItemData.ItemCount() == 0));
+						&& (!i.ItemData.Unique || i.ItemData.ItemCount() == 0) && item.ConditionResult) ??
+                    items.FirstOrDefault(
+                        i => string.Equals(item.Name, i.ItemData.CurrentLocaleName, StringComparison.InvariantCultureIgnoreCase)
+                        && (!i.ItemData.Unique || i.ItemData.ItemCount() == 0) && item.ConditionResult)
+                        ;
 
 				if (GatherItem != null)
 				{
