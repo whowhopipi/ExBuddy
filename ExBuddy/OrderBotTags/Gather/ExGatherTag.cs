@@ -347,10 +347,10 @@
         /// <param name="distance">Distance to our target</param>
         /// <param name="radius">Radius we passed into the moveto</param>
         /// <returns></returns>
-        int lastOverTime = 0;
+        long lastOverTime = 0;
         internal bool MovementStopCallback(float distance, float radius)
 		{
-            int current = DateTime.Now.Millisecond;
+            long current = DateTime.Now.Ticks;
             if (current - lastOverTime >= 3000)
             {
                 lastOverTime = current;
