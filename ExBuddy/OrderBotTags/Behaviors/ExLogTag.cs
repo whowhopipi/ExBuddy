@@ -3,7 +3,8 @@
 namespace ExBuddy.OrderBotTags.Behaviors
 {
 	using ExBuddy.Attributes;
-	using System;
+    using ff14bot.Managers;
+    using System;
 	using System.Threading.Tasks;
 	using System.Windows.Media;
 	using System.Xml.Serialization;
@@ -57,11 +58,19 @@ namespace ExBuddy.OrderBotTags.Behaviors
 			return "ExLogTag LineNumber:" + LineNumber;
 		}
 
-		protected override async Task<bool> Main()
+        protected String CurrentTime
+        {
+            get
+            {
+                return string.Format("当前游戏时间：{0}:{1} ", WorldManager.EorzaTime.Hour, WorldManager.EorzaTime.Minute);
+            }
+        }
+
+        protected override async Task<bool> Main()
 		{
 			if (!string.IsNullOrWhiteSpace(Message))
 			{
-				Logger.Info(Message);
+				Logger.Info(CurrentTime + Message);
 			}
 			else if (!string.IsNullOrWhiteSpace(Body))
 			{
