@@ -55,9 +55,9 @@
 
         protected static Regex SwimmingShadowsRegex = new Regex(
 #if RB_CN
-            @"The shadow of an elusive sea creature lurks somewhere nearby!",
+            @"You sense level \d{1,2} swimming shadows to the",
 #else
-            @"The shadow of an elusive sea creature lurks somewhere nearby!",
+            @"You sense level \d{1,2} swimming shadows to the",
 #endif
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -652,7 +652,8 @@
             StatusText = "SpearFishing items";
 
             var hits = 0;
-            var veteranTrade = false;
+            //var veteranTrade = false;
+            var veteranTrade = true;// TODO 不使用技能
             while (await Coroutine.Wait(4500, () => ActionManager.CanCast(7632, Core.Player) || !Node.IsValid))
             {
                 if (BountifulCatch && Core.Player.CurrentGP >= 200)
