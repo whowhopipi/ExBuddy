@@ -55,7 +55,7 @@
 
         protected static Regex SwimmingShadowsRegex = new Regex(
 #if RB_CN
-            @"The shadow of an elusive sea creature lurks somewhere nearby!",
+            @"在某处出现了鱼影！！",
 #else
             @"The shadow of an elusive sea creature lurks somewhere nearby!",
 #endif
