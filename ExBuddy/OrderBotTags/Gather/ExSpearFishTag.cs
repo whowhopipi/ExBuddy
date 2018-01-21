@@ -182,7 +182,7 @@
                 e.ChatLogEntry.MessageType == (MessageType)67 && e.ChatLogEntry.Contents.Contains("鱼逃走了"))
                 MatchSpearResult(e.ChatLogEntry.Contents);
 
-            if (e.ChatLogEntry.MessageType == (MessageType)67 && e.ChatLogEntry.Contents.StartsWith("The shadow"))
+            if (e.ChatLogEntry.MessageType == (MessageType)67 && e.ChatLogEntry.Contents.StartsWith("鱼影"))
                 MatchSwimmingShadow(e.ChatLogEntry.Contents);
 #else
             if (e.ChatLogEntry.MessageType == (MessageType)2115 && e.ChatLogEntry.Contents.StartsWith("You spear") ||
