@@ -175,15 +175,15 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         CommercialSurvivalManual = 401,
 
-        GiantCraneFly = 402,
+        RedBalloon = 402,
 
-        BruteLeech = 403,
+        MagmaWorm = 403,
 
         FiendWorm = 404,
 
-        MagmaWorm = 405,
+        BruteLeech = 405,
 
-        RedBalloon = 406,
+        GiantCraneFly = 406,
 
         GuerdonIV = 407,
 
