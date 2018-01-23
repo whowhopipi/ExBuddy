@@ -973,34 +973,12 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                 }
             },
             {
-                ShopItem.GiantCraneFly,
+                ShopItem.RedBalloon,
                 new ShopItemInfo
                 {
-                    Index = (int) ShopItem.GiantCraneFly - 400,
+                    Index = (int) ShopItem.RedBalloon - 400,
                     ShopType = ShopType.RedGatherer50,
-                    ItemId = 12712,
-                    Cost = 1,
-                    Yield = 1
-                }
-            },
-            {
-                ShopItem.BruteLeech,
-                new ShopItemInfo
-                {
-                    Index = (int) ShopItem.BruteLeech - 400,
-                    ShopType = ShopType.RedGatherer50,
-                    ItemId = 12711,
-                    Cost = 1,
-                    Yield = 1
-                }
-            },
-            {
-                ShopItem.FiendWorm,
-                new ShopItemInfo
-                {
-                    Index = (int) ShopItem.FiendWorm - 400,
-                    ShopType = ShopType.RedGatherer50,
-                    ItemId = 12710,
+                    ItemId = 12708,
                     Cost = 1,
                     Yield = 1
                 }
@@ -1017,12 +995,34 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                 }
             },
             {
-                ShopItem.RedBalloon,
+                ShopItem.FiendWorm,
                 new ShopItemInfo
                 {
-                    Index = (int) ShopItem.RedBalloon - 400,
+                    Index = (int) ShopItem.FiendWorm - 400,
                     ShopType = ShopType.RedGatherer50,
-                    ItemId = 12708,
+                    ItemId = 12710,
+                    Cost = 1,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.BruteLeech,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.BruteLeech - 400,
+                    ShopType = ShopType.RedGatherer50,
+                    ItemId = 12711,
+                    Cost = 1,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.GiantCraneFly,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.GiantCraneFly - 400,
+                    ShopType = ShopType.RedGatherer50,
+                    ItemId = 12712,
                     Cost = 1,
                     Yield = 1
                 }
