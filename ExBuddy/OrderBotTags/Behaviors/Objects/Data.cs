@@ -912,6 +912,39 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                     Yield = 1
                 }
             },
+            {
+                ShopItem.CrimsonPepper,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.CrimsonPepper - 300,
+                    ShopType = ShopType.YellowCrafterItems,
+                    ItemId = 21301,
+                    Cost = 15,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.SecretRecipeBroth,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.SecretRecipeBroth - 300,
+                    ShopType = ShopType.YellowCrafterItems,
+                    ItemId = 21089,
+                    Cost = 15,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.GyrAbanianAlchemic,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.GyrAbanianAlchemic - 300,
+                    ShopType = ShopType.YellowCrafterItems,
+                    ItemId = 21082,
+                    Cost = 250,
+                    Yield = 1
+                }
+            },
 
             #endregion YellowCrafterItems
 

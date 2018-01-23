@@ -161,6 +161,12 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         TeaBrick = 301,
 
+        CrimsonPepper = 302,
+
+        SecretRecipeBroth = 303,
+
+        GyrAbanianAlchemic = 304,
+
         #endregion YellowCrafterItems
 
         #region RedGatherer50
