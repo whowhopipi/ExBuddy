@@ -295,9 +295,9 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         #region YellowGathererItems
 
-        BlueBobbit = 700,
+        StoneflyLarva = 700,
 
-        StoneflyLarva = 701
+        BlueBobbit = 701,
 
         #endregion YellowGathererItems
 #else

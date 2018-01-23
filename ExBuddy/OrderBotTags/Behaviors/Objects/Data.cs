@@ -1580,18 +1580,7 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
             #endregion RedGatherer61
 
             #region YellowGathererItems
-
-            {
-                ShopItem.BlueBobbit,
-                new ShopItemInfo
-                {
-                    Index = (int) ShopItem.BlueBobbit - 700,
-                    ShopType = ShopType.YellowGathererItems,
-                    ItemId = 20676,
-                    Cost = 5,
-                    Yield = 1
-                }
-            },
+            
             {
                 ShopItem.StoneflyLarva,
                 new ShopItemInfo
@@ -1599,6 +1588,17 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                     Index = (int) ShopItem.StoneflyLarva - 700,
                     ShopType = ShopType.YellowGathererItems,
                     ItemId = 20675,
+                    Cost = 5,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.BlueBobbit,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.BlueBobbit - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20676,
                     Cost = 5,
                     Yield = 1
                 }
@@ -3105,7 +3105,7 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                     Cost = 5,
                     Yield = 1
                 }
-            },
+            }
 
             #endregion YellowGathererItems
 #endif
