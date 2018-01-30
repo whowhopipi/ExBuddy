@@ -45,7 +45,7 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 		    }
 		    else
 		    {
-		        randomApproachLocation = NodeLocation.AddRandomDirection2D(3.0f);
+		        randomApproachLocation = NodeLocation.AddRandomDirection2D();
 		    }
 
 		    var result = await

@@ -7,17 +7,17 @@
 	using System.Threading.Tasks;
 	using Helpers;
 
-    [GatheringRotation("Collect515", 35, 600)]
-	public sealed class Collect515GatheringRotation : CollectableGatheringRotation, IGetOverridePriority
+    [GatheringRotation("Collect516", 35, 600)]
+	public sealed class Collect516GatheringRotation : CollectableGatheringRotation, IGetOverridePriority
 	{
 		#region IGetOverridePriority Members
 
 		int IGetOverridePriority.GetOverridePriority(ExGatherTag tag)
 		{
 			// if we have a collectable && the collectable value is greater than or equal to 515: Priority 515
-			if (tag.CollectableItem != null && tag.CollectableItem.Value >= 515)
+			if (tag.CollectableItem != null && tag.CollectableItem.Value >= 516)
 			{
-				return 515;
+				return 516;
 			}
 			return -1;
 		}
@@ -37,10 +37,20 @@
 			{
 				if (Core.Player.CurrentGP >= 600)
 				{
-					await DiscerningMethodical(tag);
-					await DiscerningMethodical(tag);
-					await DiscerningMethodical(tag);
-					await IncreaseChance(tag);
+					if (GatheringManager.SwingsRemaining > 4)
+					{
+						await DiscerningMethodical(tag);
+						await DiscerningMethodical(tag);
+						await DiscerningMethodical(tag);
+						await IncreaseChance(tag);
+					}
+					else
+					{
+						await Methodical(tag);
+						await Methodical(tag);
+						await Methodical(tag);
+						await Methodical(tag);
+					}
 				}
 				else
 				{
