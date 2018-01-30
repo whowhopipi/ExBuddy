@@ -48,7 +48,7 @@ namespace ExBuddy.Helpers
                     hoursFromNow.Year,
                     hoursFromNow.Month,
                     hoursFromNow.Day,
-                    hoursFromNow.Hour - (hoursFromNow.Hour % 4),
+                    hoursFromNow.Hour - hoursFromNow.Hour % 4,
                     0,
                     0);
 

@@ -912,6 +912,39 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                     Yield = 1
                 }
             },
+            {
+                ShopItem.CrimsonPepper,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.CrimsonPepper - 300,
+                    ShopType = ShopType.YellowCrafterItems,
+                    ItemId = 21301,
+                    Cost = 15,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.SecretRecipeBroth,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.SecretRecipeBroth - 300,
+                    ShopType = ShopType.YellowCrafterItems,
+                    ItemId = 21089,
+                    Cost = 15,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.GyrAbanianAlchemic,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.GyrAbanianAlchemic - 300,
+                    ShopType = ShopType.YellowCrafterItems,
+                    ItemId = 21082,
+                    Cost = 250,
+                    Yield = 1
+                }
+            },
 
             #endregion YellowCrafterItems
 
@@ -940,34 +973,12 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                 }
             },
             {
-                ShopItem.GiantCraneFly,
+                ShopItem.RedBalloon,
                 new ShopItemInfo
                 {
-                    Index = (int) ShopItem.GiantCraneFly - 400,
+                    Index = (int) ShopItem.RedBalloon - 400,
                     ShopType = ShopType.RedGatherer50,
-                    ItemId = 12712,
-                    Cost = 1,
-                    Yield = 1
-                }
-            },
-            {
-                ShopItem.BruteLeech,
-                new ShopItemInfo
-                {
-                    Index = (int) ShopItem.BruteLeech - 400,
-                    ShopType = ShopType.RedGatherer50,
-                    ItemId = 12711,
-                    Cost = 1,
-                    Yield = 1
-                }
-            },
-            {
-                ShopItem.FiendWorm,
-                new ShopItemInfo
-                {
-                    Index = (int) ShopItem.FiendWorm - 400,
-                    ShopType = ShopType.RedGatherer50,
-                    ItemId = 12710,
+                    ItemId = 12708,
                     Cost = 1,
                     Yield = 1
                 }
@@ -984,12 +995,34 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                 }
             },
             {
-                ShopItem.RedBalloon,
+                ShopItem.FiendWorm,
                 new ShopItemInfo
                 {
-                    Index = (int) ShopItem.RedBalloon - 400,
+                    Index = (int) ShopItem.FiendWorm - 400,
                     ShopType = ShopType.RedGatherer50,
-                    ItemId = 12708,
+                    ItemId = 12710,
+                    Cost = 1,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.BruteLeech,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.BruteLeech - 400,
+                    ShopType = ShopType.RedGatherer50,
+                    ItemId = 12711,
+                    Cost = 1,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.GiantCraneFly,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.GiantCraneFly - 400,
+                    ShopType = ShopType.RedGatherer50,
+                    ItemId = 12712,
                     Cost = 1,
                     Yield = 1
                 }
@@ -1547,18 +1580,7 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
             #endregion RedGatherer61
 
             #region YellowGathererItems
-
-            {
-                ShopItem.BlueBobbit,
-                new ShopItemInfo
-                {
-                    Index = (int) ShopItem.BlueBobbit - 700,
-                    ShopType = ShopType.YellowGathererItems,
-                    ItemId = 20676,
-                    Cost = 5,
-                    Yield = 1
-                }
-            },
+            
             {
                 ShopItem.StoneflyLarva,
                 new ShopItemInfo
@@ -1566,6 +1588,17 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                     Index = (int) ShopItem.StoneflyLarva - 700,
                     ShopType = ShopType.YellowGathererItems,
                     ItemId = 20675,
+                    Cost = 5,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.BlueBobbit,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.BlueBobbit - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20676,
                     Cost = 5,
                     Yield = 1
                 }
@@ -2443,34 +2476,12 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                 }
             },
             {
-                ShopItem.GiantCraneFly,
+                ShopItem.RedBalloon,
                 new ShopItemInfo
                 {
-                    Index = (int) ShopItem.GiantCraneFly - 400,
+                    Index = (int) ShopItem.RedBalloon - 400,
                     ShopType = ShopType.RedGatherer50,
-                    ItemId = 12712,
-                    Cost = 1,
-                    Yield = 1
-                }
-            },
-            {
-                ShopItem.BruteLeech,
-                new ShopItemInfo
-                {
-                    Index = (int) ShopItem.BruteLeech - 400,
-                    ShopType = ShopType.RedGatherer50,
-                    ItemId = 12711,
-                    Cost = 1,
-                    Yield = 1
-                }
-            },
-            {
-                ShopItem.FiendWorm,
-                new ShopItemInfo
-                {
-                    Index = (int) ShopItem.FiendWorm - 400,
-                    ShopType = ShopType.RedGatherer50,
-                    ItemId = 12710,
+                    ItemId = 12708,
                     Cost = 1,
                     Yield = 1
                 }
@@ -2487,12 +2498,34 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                 }
             },
             {
-                ShopItem.RedBalloon,
+                ShopItem.FiendWorm,
                 new ShopItemInfo
                 {
-                    Index = (int) ShopItem.RedBalloon - 400,
+                    Index = (int) ShopItem.FiendWorm - 400,
                     ShopType = ShopType.RedGatherer50,
-                    ItemId = 12708,
+                    ItemId = 12710,
+                    Cost = 1,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.BruteLeech,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.BruteLeech - 400,
+                    ShopType = ShopType.RedGatherer50,
+                    ItemId = 12711,
+                    Cost = 1,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.GiantCraneFly,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.GiantCraneFly - 400,
+                    ShopType = ShopType.RedGatherer50,
+                    ItemId = 12712,
                     Cost = 1,
                     Yield = 1
                 }
@@ -3072,7 +3105,7 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                     Cost = 5,
                     Yield = 1
                 }
-            },
+            }
 
             #endregion YellowGathererItems
 #endif

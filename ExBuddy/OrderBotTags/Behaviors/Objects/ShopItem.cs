@@ -161,6 +161,12 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         TeaBrick = 301,
 
+        CrimsonPepper = 302,
+
+        SecretRecipeBroth = 303,
+
+        GyrAbanianAlchemic = 304,
+
         #endregion YellowCrafterItems
 
         #region RedGatherer50
@@ -169,15 +175,15 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         CommercialSurvivalManual = 401,
 
-        GiantCraneFly = 402,
+        RedBalloon = 402,
 
-        BruteLeech = 403,
+        MagmaWorm = 403,
 
         FiendWorm = 404,
 
-        MagmaWorm = 405,
+        BruteLeech = 405,
 
-        RedBalloon = 406,
+        GiantCraneFly = 406,
 
         GuerdonIV = 407,
 
@@ -289,9 +295,9 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         #region YellowGathererItems
 
-        BlueBobbit = 700,
+        StoneflyLarva = 700,
 
-        StoneflyLarva = 701
+        BlueBobbit = 701,
 
         #endregion YellowGathererItems
 #else
@@ -467,15 +473,15 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         CommercialSurvivalManual = 401,
 
-        GiantCraneFly = 402,
+        RedBalloon = 402,
 
-        BruteLeech = 403,
+        MagmaWorm = 403,
 
         FiendWorm = 404,
 
-        MagmaWorm = 405,
+        BruteLeech = 405,
 
-        RedBalloon = 406,
+        GiantCraneFly = 406,
 
         GuerdonIV = 407,
 

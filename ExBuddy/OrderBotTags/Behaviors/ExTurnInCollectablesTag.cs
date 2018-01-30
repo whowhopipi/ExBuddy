@@ -583,7 +583,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
 				InventoryManager.FilledInventoryAndArmory.Where(
 					i => !Blacklist.Contains((uint)i.Pointer.ToInt64(), BlacklistFlags.Loot)).ToArray();
 
-			Dictionary<string, uint> BlackListDictionnary = new Dictionary<string, uint> {
+			var blackListDictionnary = new Dictionary<string, uint> {
 				{ "Fire Moraine", 5214 },
 				{ "Lightning Moraine", 5218 },
 				{ "Radiant Fire Moraine", 5220 },
@@ -613,11 +613,16 @@ namespace ExBuddy.OrderBotTags.Behaviors
 				{ "Schorl", 20009 },
 				{ "Perlite", 20010 },
 				{ "Almandine", 20011 },
-				{ "Doman Yellow", 20012 } };
+				{ "Doman Yellow", 20012 },
+			    { "Starcrack Sand", 20780 },
+			    { "Shishu Koban", 20781 },
+			    { "Cotter Dynasty Relic", 20782 },
+			    { "Peaks Pigment", 20783 },
+			    { "Yellow Kudzu Root", 20784 } };
 
 			if (Collectables == null)
 			{
-				item = slots.FirstOrDefault(i => i.Collectability > 0 && !BlackListDictionnary.ContainsValue(i.RawItemId));
+				item = slots.FirstOrDefault(i => i.Collectability > 0 && !blackListDictionnary.ContainsValue(i.RawItemId));
 			}
 			else
 			{
