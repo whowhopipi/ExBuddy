@@ -61,7 +61,7 @@
                     action = "比尔格的技巧";
                 }
             }
-            return ff14bot.Managers.ActionManager.CurrentActions.Values.Find(ac => string.Equals(ac.Name, action, StringComparison.InvariantCultureIgnoreCase) || string.Equals(ac.LocalizedName, action, StringComparison.InvariantCultureIgnoreCase));
+            return ActionManager.CurrentActions.Values.Find(ac => string.Equals(ac.Name, action, StringComparison.InvariantCultureIgnoreCase) || string.Equals(ac.LocalizedName, action, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public override async Task<bool> Execute()
@@ -85,7 +85,7 @@
 
                     await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => !CraftingManager.AnimationLocked);
 
-                    if (ff14bot.Managers.ActionManager.CanCast(action, null))
+                    if (ActionManager.CanCast(action, null))
                     {
                         Logger.Info("Casting {0} ", spellData.LocalizedName);
                         ff14bot.Managers.ActionManager.DoAction(spellData, Core.Me);

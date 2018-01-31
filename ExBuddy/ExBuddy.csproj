@@ -31,22 +31,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Clio.Localization, Version=1.0.168.0, Culture=neutral, PublicKeyToken=48d7174f8a943034, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\RebornBuddy\Rebornbuddy64\Clio.Localization.dll</HintPath>
+    <Reference Include="Clio.Localization">
+      <HintPath>..\Assembly\Clio.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="GreyMagic, Version=1.0.41.0, Culture=neutral, PublicKeyToken=260525fa2b0e778a, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\RebornBuddy\Rebornbuddy64\GreyMagic.dll</HintPath>
+    <Reference Include="GreyMagic">
+      <HintPath>..\Assembly\GreyMagic.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="Quest Behaviors_698175896">
-      <HintPath>..\..\RebornBuddy\Rebornbuddy64\CompiledAssemblies\Quest Behaviors_698175896.dll</HintPath>
+    <Reference Include="Quest Behaviors_124134850">
+      <HintPath>..\Assembly\Quest Behaviors_124134850.dll</HintPath>
     </Reference>
-    <Reference Include="RebornBuddy, Version=1.0.168.0, Culture=neutral, PublicKeyToken=48d7174f8a943034, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\RebornBuddy\Rebornbuddy64\RebornBuddy.exe</HintPath>
+    <Reference Include="RebornBuddy">
+      <HintPath>..\Assembly\RebornBuddy.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -143,6 +140,7 @@
     <Compile Include="OrderBotTags\Gather\Rotations\WaterElementGatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\WindElementGatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\TimeToGather.cs" />
+    <Compile Include="OrderBotTags\Objects\CraftAction.cs" />
     <Compile Include="OrderBotTags\Objects\RecipeItem.cs" />
     <Compile Include="OrderBotTags\Objects\SpearFish.cs" />
     <Compile Include="OrderBotTags\RemoteWindows\ExInteract.cs" />
@@ -157,6 +155,7 @@
     <Compile Include="OrderBotTags\WhoFish\WhoFishSpot.cs" />
     <Compile Include="OrderBotTags\WhoFish\WhoFishTag.cs" />
     <Compile Include="Plugins\AtmaHunter\Atma.cs" />
+    <Compile Include="OrderBotTags\Craft\Order\Level70FlawlessCraft.cs" />
     <None Include="Plugins\AtmaHunter\AtmaHunter.cs.bak" />
     <Compile Include="Plugins\AtmaHunter\AtmaMap.cs" />
     <Compile Include="Plugins\Skywatcher\Objects\Location.cs" />

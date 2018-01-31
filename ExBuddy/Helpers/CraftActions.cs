@@ -1,52 +1,72 @@
 ﻿namespace ExBuddy.Helpers
 {
-    public enum CraftActions
+    public enum CraftActions : uint
     {
-        // 生产        
-        BasicSynthesis,     //制作
-        BasicTouch,         //加工
-        MastersMend,        //精修
-        SteadyHand,         //稳手
-        InnerQuiet,         //内静
-        Observe,            //观察
-        Rumination,	//松弛
-        StandardTouch,	//中级加工
-        GreatStrides,	//阔步
-        MastersMend2,	//精修2
-        StandardSynthesis,	//中级制作
-        BrandofWind,	//风之印记
-        AdvancedTouch,	//上级加工
-        ByregotsBlessing,	//比尔格的祝福
-        ByregotsBrow,	//比尔格的技巧
-        PreciseTouch,	//集中加工
-        NameOfTheWind,	//风之美名
-        Ingenuity,	//新颖
-        BrandofFire,	//火之印记
-        Ingenuity2,	//新颖2
-        NameOfFire,	//火之美名
-        RapidSynthesis,	//高速制作
-        BrandofIce,	//冰之印记
-        PiecebyPiece,	//渐进
-        NameOfIce,	//冰之美名
-        Manipulation,	//掌握
-        FlawlessSynthesis,	//坚实制作
-        Innovation,		//改革
-        MakersMark,	//坚实的心得
-        WasteNot,	//简约
-        BrandofEarth,	//土之印记
-        WasteNot2,	//简约2
-        NameOfEarth,	//土之美名
-        CarefulSynthesis,	//模范制作
-        BrandofLightning,	//雷之印记
-        CarefulSynthesis2,	//模范制作2
-        NameOfLightning,	//雷之美名
-        TricksoftheTrade,	//秘诀
-        BrandofWater,	//水之印记
-        ComfortZone,	//安逸
-        NameOfWater,	//水之美名
-        HastyTouch,	//仓促
-        SteadyHand2,	//稳手2
-        Reclaim,	//回收
-        MuscleMemory    // 坚信
+        Rumination = 1,
+        Ingenuity = 2,
+        Manipulation = 3,
+        WasteNot = 4,
+        SteadyHandII = 5,
+        IngenuityII = 6,
+        Innovation = 7,
+        WasteNotII = 8,
+        ComfortZone = 9,
+        Reclaim = 10,
+        NameoftheWind = 11,
+        NameofFire = 12,
+        NameofIce = 13,
+        NameofEarth = 14,
+        NameofLightning = 15,
+        NameofWater = 16,
+        BrandofWind = 17,
+        ByregotsBlessing = 18,
+        BrandofFire = 19,
+        RapidSynthesis = 20,
+        BrandofIce = 21,
+        PiecebyPiece = 22,
+        BrandofEarth = 23,
+        CarefulSynthesis = 24,
+        BrandofLightning = 25,
+        CarefulSynthesisII = 26,
+        FlawlessSynthesis = 27,
+        BrandofWater = 28,
+        TricksoftheTrade = 29,
+        HastyTouch = 30,
+        MuscleMemory = 31,
+        FinishingTouches = 32,
+        MakersMark = 33,
+        SteadyHand = 34,
+        InnerQuiet = 35,
+        GreatStrides = 36,
+        CollectableSynthesis = 37,
+        ManipulationII = 38,
+        BasicSynthesis = 39,
+        BasicTouch = 40,
+        MastersMend = 41,
+        StandardTouch = 42,
+        MastersMendII = 43,
+        StandardSynthesis = 44,
+        AdvancedTouch = 45,
+        Observe = 46,
+        ByregotsBrow = 47,
+        PreciseTouch = 48,
+        InnovativeTouch = 49,
+        ByregotsMiracle = 50,
+        NymeiasWheel = 51,
+        TrainedHand = 52,
+        Satisfaction = 53,
+        Heartofthe = 54,
+        WhistleWhileYouWork = 55,
+        HastyTouchII = 56,
+        CarefulSynthesisIII = 57,
+        RapidSynthesisII = 58,
+        PatientTouch = 59,
+        PrudentTouch = 60,
+        FocusedSynthesis = 61,
+        FocusedTouch = 62,
+        InitialPreparations = 63,
+        SpecialtyReinforce = 64,
+        SpecialtyRefurbish = 65,
+        SpecialtyReflect = 66
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace ExBuddy.OrderBotTags.Craft
 {
     using Buddy.Coroutines;
+    using ExBuddy.Data;
     using ExBuddy.Helpers;
     using ExBuddy.Logging;
     using ff14bot;
@@ -31,7 +32,7 @@
             return CraftingManager.IsCrafting && CraftingManager.ProgressRequired != CraftingManager.Progress;
         }
         
-        internal async Task<bool> checkSkill(Ability action,string errmsg)
+        internal async Task<bool> checkSkill(CraftActions action,string errmsg)
         {
             bool result = false;
 
@@ -64,31 +65,38 @@
             return CraftingManager.Condition == CraftingCondition.Good || CraftingManager.Condition == CraftingCondition.Excellent;
         }
 
-        internal async Task<bool> Cast(Ability id)
+        internal async Task<bool> Cast(CraftActions action)
         {
             bool result = false;
-            uint Action = Abilities.Map[Core.Me.CurrentJob][id];
 
-            SpellData spellData = DataManager.SpellCache[Action];
+            uint actionId = RecipeSqlData.Instance.GetCraftActionId(action,Core.Me.CurrentJob);
+
+            SpellData spellData = DataManager.SpellCache[actionId];
 
             await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => !CraftingManager.AnimationLocked);
             
-            if (ff14bot.Managers.ActionManager.CanCast(Action, null))
+            if (ActionManager.CanCast(actionId, null))
             {
-                Logger.Info("Casting {0} ({1})", spellData.LocalizedName, id);
-                ff14bot.Managers.ActionManager.DoAction(spellData, Core.Me);
-                await Coroutine.Wait(10000, () => CraftingManager.AnimationLocked);
+                Logger.Info("Casting {0} ({1})", spellData.LocalizedName, actionId);
+
+                uint retryTime = 1;
+
+                while(!result && retryTime <= 5)
+                {
+                    result = ActionManager.DoAction(spellData, Core.Me);
+
+                    await Coroutine.Sleep(250);
+                }
+                await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => CraftingManager.AnimationLocked);
                 await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => !CraftingManager.AnimationLocked || SelectYesNoItem.IsOpen);
                 await Coroutine.Sleep(250);
-
-                result = true;
             }
             return result;
         }
 
-        internal bool HasAction(Ability id)
+        internal bool HasAction(CraftActions id)
         {
-            return ff14bot.Managers.ActionManager.CurrentActions.ContainsKey(Abilities.Map[Core.Player.CurrentJob][id]);
+            return ActionManager.CurrentActions.ContainsKey((uint)id);
         }
 
         public virtual bool CanExecute(RecipeItem recipe)
