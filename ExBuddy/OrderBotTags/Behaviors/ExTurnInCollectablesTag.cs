@@ -359,6 +359,36 @@ namespace ExBuddy.OrderBotTags.Behaviors
                 }
 
 
+#if RB_CN
+				while (SelectIconString.IsOpen && ticks++ < 5 && Behaviors.ShouldContinue)
+				{
+                    if ((Location == Locations.MorDhona || Location == Locations.Idyllshire) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61))
+                    {
+                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 2);
+                    }
+                    else
+                    {
+                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType);
+                    }
+
+					await shopExchangeCurrency.Refresh(5000);
+				}
+#else
+			    while (SelectIconString.IsOpen && ticks++ < 5 && Behaviors.ShouldContinue)
+			    {
+			        if ((Location == Locations.MorDhona || Location == Locations.Idyllshire) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61))
+			        {
+			            SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 3);
+			        }
+			        else
+			        {
+			            SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType);
+			        }
+
+			        await shopExchangeCurrency.Refresh(5000);
+			    }
+#endif
+
                 ticks = 0;
 				while (SelectIconString.IsOpen && ticks++ < 5 && Behaviors.ShouldContinue)
 				{
@@ -390,11 +420,11 @@ namespace ExBuddy.OrderBotTags.Behaviors
 				int scripsLeft;
 				while (purchaseItemData.ItemCount() < purchaseItem.MaxCount && (scripsLeft = Memory.Scrips.GetRemainingScripsByShopType(purchaseItemInfo.ShopType)) >= purchaseItemInfo.Cost && Behaviors.ShouldContinue)
 				{
-					int QtyLeftToBuy = purchaseItem.MaxCount - (int)purchaseItemData.ItemCount();
-					int QtyBuyable = scripsLeft / purchaseItemInfo.Cost;
-					int QtyToBuy = Math.Min(99, Math.Min(QtyLeftToBuy, QtyBuyable));
+					var qtyLeftToBuy = purchaseItem.MaxCount - (int)purchaseItemData.ItemCount();
+					var qtyBuyable = scripsLeft / purchaseItemInfo.Cost;
+					var qtyToBuy = Math.Min(99, Math.Min(qtyLeftToBuy, qtyBuyable));
 
-					if (!await shopExchangeCurrency.PurchaseItem(purchaseItemInfo.Index, (uint)QtyToBuy, 20))
+					if (!await shopExchangeCurrency.PurchaseItem(purchaseItemInfo.Index, (uint)qtyToBuy, 20))
 					{
 						Logger.Error(Localization.Localization.ExTurnInCollectable_PurchaseTimeout, purchaseItemData.EnglishName);
 						await shopExchangeCurrency.CloseInstance();
@@ -411,11 +441,11 @@ namespace ExBuddy.OrderBotTags.Behaviors
 					Logger.Info(
 						Localization.Localization.ExTurnInCollectable_Purchased,
 						purchaseItemData.EnglishName,
-						purchaseItemInfo.Cost * QtyToBuy,
+						purchaseItemInfo.Cost * qtyToBuy,
 						purchaseItemInfo.ShopType,
 						WorldManager.EorzaTime,
 						scripsLeft,
-						QtyToBuy);
+						qtyToBuy);
 
 					await Coroutine.Yield();
 				}
