@@ -131,11 +131,39 @@
             return Core.Me.HasAura((uint)auraId);
         }
 
+        internal uint AuraValue(AbilityAura auraId)
+        {
+            return Core.Me.GetAuraById((uint)auraId).Value;
+        }
+
         internal bool CanCast(Ability id)
         {
             return Actions.CanCast(id);
         }
 
+        internal bool HasComfortZoneAura
+        {
+            get
+            {
+                return HasAura(AbilityAura.ComfortZone);
+            }
+        }
 
+        internal uint ComfortZoneNums
+        {
+            get
+            {
+                return AuraValue(AbilityAura.ComfortZone);
+            }
+        }
+
+        internal uint MakersMarkNums
+        {
+            get
+            {
+                return AuraValue(AbilityAura.MakersMark);
+            }
+        }
+        
     }
 }

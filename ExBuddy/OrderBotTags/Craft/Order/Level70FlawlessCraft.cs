@@ -58,17 +58,64 @@
             }
         }
 
-        private bool NeedTricksoft
+		private int LeftProcess
+        {
+			get
+            {
+                return CraftingManager.ProgressRequired - CraftingManager.Progress;
+            }
+        }
+		
+        private bool NeedTricksoftheTrade
         {
             get
             {
-                return Core.Me.CurrentCP < Core.Me.MaxCP && IsGoodCondition();
+				if(!IsGoodCondition())
+                {
+                    return false;
+                }
+
+                // 根据安逸剩余buff次数，每回合回复8cp，计算当前CP在回合数后能否回满
+                int balanceCp = Core.Me.MaxCP - Core.Me.CurrentCP;
+                int comfortZoneTime = 2;    // 安逸剩余次数
+                return balanceCp > comfortZoneTime * 8;
             }
+        }
+
+		private bool NeedComfortZone
+        {
+            get
+            {
+                bool flag = LeftProcess < MakersMarkNums * 50 + oneProgress;
+				// 安逸完回14CP
+                return !(MustFlawlessSynthesis || HasComfortZoneAura);
+            }
+        }
+
+		private bool MustFlawlessSynthesis
+        {
+            get
+            {
+				return LeftProcess > MakersMarkNums * 50 + oneProgress; 
+            }
+        }
+
+        private async Task<bool> doFlawlessSynthesis()
+        {
+            if (NeedComfortZone)
+            {
+                await Cast(CraftActions.ComfortZone);
+            } else if(NeedTricksoftheTrade)
+            {
+                await Cast(CraftActions.TricksoftheTrade);
+            }
+
+            return true;
         }
 
         private async Task<bool> CheckAction(CraftActions ability)
         {
-            if (NeedTricksoft && hightCount < processCount)
+            if (NeedTricksoftheTrade && hightCount < processCount)
             {
                 int leftCp = Core.Me.MaxCP - Core.Me.CurrentCP;
                 await Cast(CraftActions.TricksoftheTrade);//秘诀
@@ -76,7 +123,7 @@
                     hightCount++;
             }
             await Cast(ability);
-            if (NeedTricksoft && hightCount < processCount)
+            if (NeedTricksoftheTrade && hightCount < processCount)
             {
                 int leftCp = Core.Me.MaxCP - Core.Me.CurrentCP;
                 await Cast(CraftActions.TricksoftheTrade);//秘诀
@@ -90,7 +137,7 @@
         private async Task<bool> CheckMakersMarkAction(CraftActions ability)
         {
             // 获得坚实的心得的次数
-            uint left = Core.Me.GetAuraById(878).Value;
+            uint left = Core.Me.GetAuraById((uint)AbilityAura.MakersMark).Value;
 
             if (IsGoodCondition() && left > needSuccessFlaw + 1)
             {
@@ -111,7 +158,7 @@
         {
             int oldProgress = CraftingManager.Progress;
 
-            if (NeedTricksoft && IsGoodCondition() && (needSuccessFlaw == successFlaw || (left - index - 1 > needSuccessFlaw - successFlaw)))
+            if (NeedTricksoftheTrade && IsGoodCondition() && (needSuccessFlaw == successFlaw || (left - index - 1 > needSuccessFlaw - successFlaw)))
             {
                 await Cast(CraftActions.TricksoftheTrade);   //秘诀
 
@@ -161,7 +208,9 @@
 
             return true;
         }
-        
+
+        private int oneProgress;
+
         private int needSuccessFlaw = 7;
 
         private int processCount = 0;
@@ -181,11 +230,23 @@
             }
             return true;
         }
-        
+
+		private bool NeedHasComfortZone
+        {
+            get
+            {
+                //MakersMarkNums * 50;
+                return true;
+            }
+        }
+
+
+
+
         public override async Task<bool> DoExecute()
         {
-            int oneProgress = int.Parse(param);
-
+            oneProgress = int.Parse(param);
+			
             await Cast(CraftActions.MakersMark); //坚实的心得
             
             await CheckMakersMarkAction(CraftActions.ComfortZone);     //安逸

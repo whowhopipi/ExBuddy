@@ -141,7 +141,9 @@
 
         FishEyes = 762,
 
-        MakersMark = 878
+        MakersMark = 878,    //坚实的心得
+
+        ComfortZone = 12  // 安逸
     }
 
 	internal enum Ability : byte
