@@ -1,7 +1,7 @@
 ﻿namespace ExBuddy.OrderBotTags.Behaviors.Objects
 {
-	public enum ShopType
-	{
+    public enum ShopType
+    {
 #if RB_CN
 		RedCrafter50,
 
@@ -21,19 +21,25 @@
 #else
         RedCrafter50,
 
-		RedCrafter61,
+        RedCrafter61,
 
-		YellowCrafter,
+        RedCrafterMasterRecipes,
 
-		YellowCrafterItems,
+        YellowCrafter,
 
-		RedGatherer50,
+        YellowCrafterAugmentation,
 
-		RedGatherer61,
+        YellowCrafterItems,
 
-		YellowGatherer,
+        RedGatherer50,
 
-		YellowGathererItems
+        RedGatherer61,
+
+        YellowGatherer,
+
+        YellowGathererAugmentation,
+
+        YellowGathererItems
 #endif
-	}
+    }
 }
