@@ -9,6 +9,7 @@
     {
         private static readonly List<BaseCraftOrder> CraftOrderList = new List<BaseCraftOrder>()
         {
+            new Level70FlawlessCraft()
         };
 
         public static BaseCraftOrder GetOrder(RecipeItem recipe)

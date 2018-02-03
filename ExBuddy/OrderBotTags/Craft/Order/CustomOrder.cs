@@ -51,7 +51,7 @@
 
         private SpellData getAction(string action)
         {
-            if (IsGoodCondition())
+            if (IsGoodCondition)
             {
                 if(string.Equals(action,"加工") && Core.Me.ClassLevel >= 53)
                 {
