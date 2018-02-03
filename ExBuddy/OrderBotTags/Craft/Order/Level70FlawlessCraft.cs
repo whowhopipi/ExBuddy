@@ -138,12 +138,7 @@
 
         private async Task<bool> DoControl()
         {
-            if(CurrentCP <= endCp)
-            {
-                return false;
-            }
-
-            if(!HasManipulationII && ManipulationIITimes < 3)
+            if(!HasManipulationII && ManipulationIITimes < 2)
             {
                 await Cast(CraftActions.ManipulationII);
                 ManipulationIITimes++;
