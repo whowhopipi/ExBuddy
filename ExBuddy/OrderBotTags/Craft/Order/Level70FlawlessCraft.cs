@@ -70,7 +70,7 @@
         {
             get
             {
-                return !(MustFlawlessSynthesis || HasComfortZoneAura);
+                return !(Core.Me.MaxCP < CurrentCP + 5 || MustFlawlessSynthesis || HasComfortZoneAura);
             }
         }
 
