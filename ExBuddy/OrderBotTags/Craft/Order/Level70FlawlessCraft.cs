@@ -41,8 +41,11 @@
                 && await checkSkill(CraftActions.SteadyHandII,"缺少技能：稳手2")
                 && await checkSkill(CraftActions.PiecebyPiece, "缺少技能：渐进")
                 && await checkSkill(CraftActions.FlawlessSynthesis, "缺少技能：坚实制作")
-                && await checkSkill(CraftActions.TricksoftheTrade,"缺少技能：秘诀")
-                && await checkSkill(CraftActions.MastersMendII,"缺少技能：精修2")
+                && await checkSkill(CraftActions.TricksoftheTrade, "缺少技能：秘诀")
+                && await checkSkill(CraftActions.ManipulationII, "缺少技能：掌握II")
+                && await checkSkill(CraftActions.Observe, "缺少技能：观察")
+                && await checkSkill(CraftActions.FocusedTouch, "缺少技能：注视加工")
+                && await checkSkill(CraftActions.PrudentTouch, "缺少技能：简约加工")
                 && await checkSkill(CraftActions.ByregotsBlessing,"缺少技能：比尔格的祝福")
                 && await checkSkill(CraftActions.GreatStrides,"缺少技能：阔步")
                 && await checkSkill(CraftActions.CarefulSynthesisII, "缺少技能：模范制作II");

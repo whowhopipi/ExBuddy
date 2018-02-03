@@ -101,7 +101,8 @@
 
         internal bool HasAction(CraftActions id)
         {
-            return ActionManager.CurrentActions.ContainsKey((uint)id);
+            uint actionId = RecipeSqlData.Instance.GetCraftActionId(id, Core.Me.CurrentJob);
+            return ActionManager.CurrentActions.ContainsKey(actionId);
         }
 
         public virtual bool CanExecute(RecipeItem recipe)
@@ -142,12 +143,7 @@
             if (aura == null) return 0;
             else return aura.Value; 
         }
-
-        internal bool CanCast(Ability id)
-        {
-            return Actions.CanCast(id);
-        }
-
+        
         internal bool HasComfortZoneAura
         {
             get
