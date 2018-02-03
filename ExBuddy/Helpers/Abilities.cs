@@ -143,7 +143,12 @@
 
         MakersMark = 878,    //坚实的心得
 
-        ComfortZone = 12  // 安逸
+        ComfortZone = 261,  // 安逸
+
+        ManipulationII = 1164,   //掌握II
+
+        InnerQuiet = 251   // 内静
+
     }
 
 	internal enum Ability : byte

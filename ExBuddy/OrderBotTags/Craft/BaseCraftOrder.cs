@@ -26,7 +26,9 @@
         public RecipeItem recipe { get; set; }
 
         public string param { get; set; }
-        
+
+        internal int FlawlessSynthesisProcess = 40; // 一次坚实推40进度
+
         protected bool IsCrafting()
         {
             return CraftingManager.IsCrafting && CraftingManager.ProgressRequired != CraftingManager.Progress;
@@ -59,10 +61,13 @@
 
             return true;
         }
-        
-        protected bool IsGoodCondition()
+
+        internal bool IsGoodCondition
         {
-            return CraftingManager.Condition == CraftingCondition.Good || CraftingManager.Condition == CraftingCondition.Excellent;
+            get
+            {
+                return CraftingManager.Condition == CraftingCondition.Good || CraftingManager.Condition == CraftingCondition.Excellent;
+            }
         }
 
         internal async Task<bool> Cast(CraftActions action)
@@ -133,7 +138,9 @@
 
         internal uint AuraValue(AbilityAura auraId)
         {
-            return Core.Me.GetAuraById((uint)auraId).Value;
+            Aura aura = Core.Me.GetAuraById((uint)auraId);
+            if (aura == null) return 0;
+            else return aura.Value; 
         }
 
         internal bool CanCast(Ability id)
@@ -146,6 +153,22 @@
             get
             {
                 return HasAura(AbilityAura.ComfortZone);
+            }
+        }
+
+        internal bool HasMakersMark
+        {
+            get
+            {
+                return HasAura(AbilityAura.MakersMark);
+            }
+        }
+
+        internal bool HasManipulationII
+        {
+            get
+            {
+                return HasAura(AbilityAura.ManipulationII);
             }
         }
 
@@ -164,6 +187,22 @@
                 return AuraValue(AbilityAura.MakersMark);
             }
         }
-        
+
+        internal int LeftProcess
+        {
+            get
+            {
+                return CraftingManager.ProgressRequired - CraftingManager.Progress;
+            }
+        }
+
+        internal int CurrentCP
+        {
+            get
+            {
+                return Core.Me.CurrentCP;
+            }
+        }
+
     }
 }
