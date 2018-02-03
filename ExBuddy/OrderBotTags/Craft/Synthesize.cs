@@ -201,7 +201,7 @@
                     var item = validItems.FirstOrDefault();
                     await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => item.CanUse(null));
                     item.UseItem();
-                    await Coroutine.Sleep(2000);
+                    await Coroutine.Sleep(5000);
                     await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => ExBuddy.Helpers.Actions.HasAura(AbilityAura.Food));
                 }
             }
@@ -226,7 +226,7 @@
 
                     if (validItems.Length == 0)
                     {
-                        Logger.Warn("没有食物{0}({1})", FoodId, (HqFood ? "HQ" : "NQ"));
+                        Logger.Warn("没有药水{0}({1})", MedicineId, (HqFood ? "HQ" : "NQ"));
                         await CloseWindow();
                         return false;
                     }
@@ -234,7 +234,7 @@
                     var item = validItems.FirstOrDefault();
                     await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => item.CanUse(null));
                     item.UseItem();
-                    await Coroutine.Sleep(2000);
+                    await Coroutine.Sleep(5000);
                     await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => ExBuddy.Helpers.Actions.HasAura(AbilityAura.Food));
                 }
             }
