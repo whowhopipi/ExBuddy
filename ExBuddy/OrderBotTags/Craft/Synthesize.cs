@@ -6,9 +6,11 @@
     using Clio.XmlEngine;
     using Data;
     using ExBuddy.Helpers;
+    using ff14bot;
     using ff14bot.Behavior;
     using ff14bot.Managers;
     using ff14bot.NeoProfiles;
+    using ff14bot.Objects;
     using ff14bot.RemoteWindows;
     using Objects;
     using System;
@@ -52,6 +54,10 @@
         [DefaultValue(0)]
         [XmlAttribute("FoodId")]
         public int FoodId { get; set; }
+
+        [DefaultValue(0)]
+        [XmlAttribute("MedicineId")]
+        public int MedicineId { get; set; }
 
         [DefaultValue(true)]
         [XmlAttribute("HqFood")]
@@ -129,6 +135,16 @@
             return true; 
         }
 
+        private bool NeedCheck(AbilityAura aura)
+        {
+            // 如果没有，则补充
+            if (!ExBuddy.Helpers.Actions.HasAura(aura)) return true;
+
+            // 如果有，判断剩余时间，少于2分钟，补充
+            Aura a = Core.Me.GetAuraById((uint)aura);
+            return a.TimeLeft < 2*60;
+        }
+
         protected override async Task<bool> Main()
         {
             Logger.Verbose("第{0}次执行",num ++);
@@ -156,12 +172,12 @@
             {
                 Logger.Verbose("检查循环次数通过：{0}/{1}", count, Loop);
             }
-
+            
             // 检查食物
-            if(FoodId != 0)
+            if (FoodId != 0)
             {
                 // 检查是否需要吃食物
-                if (!ExBuddy.Helpers.Actions.HasAura(AbilityAura.Food))
+                if (NeedCheck(AbilityAura.Food))
                 {
                     if (CraftingLog.IsOpen)
                     {
@@ -189,7 +205,40 @@
                     await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => ExBuddy.Helpers.Actions.HasAura(AbilityAura.Food));
                 }
             }
-            
+
+            // 检查药水
+            if (MedicineId != 0)
+            {
+                // 检查是否需要吃药水
+                if (NeedCheck(AbilityAura.Medicated))
+                {
+                    if (CraftingLog.IsOpen)
+                    {
+                        Log("Closing crafting window");
+                        CraftingLog.Close();
+                    }
+
+                    await Coroutine.Wait(10000, () => !CraftingLog.IsOpen);
+                    await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => !CraftingManager.AnimationLocked);
+
+                    // 判断是否有药水
+                    var validItems = InventoryManager.FilledSlots.Where(r => r.RawItemId == MedicineId && r.IsHighQuality == HqFood).ToArray();
+
+                    if (validItems.Length == 0)
+                    {
+                        Logger.Warn("没有食物{0}({1})", FoodId, (HqFood ? "HQ" : "NQ"));
+                        await CloseWindow();
+                        return false;
+                    }
+
+                    var item = validItems.FirstOrDefault();
+                    await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => item.CanUse(null));
+                    item.UseItem();
+                    await Coroutine.Sleep(2000);
+                    await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => ExBuddy.Helpers.Actions.HasAura(AbilityAura.Food));
+                }
+            }
+
             // 检查配方ID
             if (RecipeId == 0)
             {

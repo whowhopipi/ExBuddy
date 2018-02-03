@@ -121,6 +121,8 @@
 
         Food = 48,
 
+        Medicated = 49, //药水
+
         TruthOfForests = 221,
 
         TruthOfMountains = 222,
