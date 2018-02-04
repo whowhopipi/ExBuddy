@@ -173,6 +173,12 @@
             {
                 await Cast(CraftActions.Observe);
                 await Cast(CraftActions.FocusedTouch);
+                currentControl++;
+            }
+
+            if(currentControl <= MaxControl && CurrentCP - endCp + 5 < 7 + 18)
+            {
+                return false;
             }
 
             return true;
@@ -201,7 +207,7 @@
             await Cast(CraftActions.SteadyHandII);
             await Cast(CraftActions.PrudentTouch);
 
-            for(long i= CarefulSynthesisIITimes; i<= 2;i++)
+            for(long i= currentControl - MaxControl; i<= 2;i++)
             {
                 await DoEndControl();
             }
@@ -232,14 +238,17 @@
         private int CarefulSynthesisIIProcess = 0;
         private long CarefulSynthesisIITimes = 1;
         private int ManipulationIITimes = 0;
+        private int currentControl = 0;
 
         private const int endCp = 102;
+        private const int MaxControl = 6;
 
         public override async Task<bool> OnStart()
         {
             CarefulSynthesisIIProcess = 0;
             CarefulSynthesisIITimes = 1;
             ManipulationIITimes = 0;
+            currentControl = 0;
             return true;
         }
         
