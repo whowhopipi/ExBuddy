@@ -51,6 +51,22 @@
                 && await checkSkill(CraftActions.CarefulSynthesisII, "缺少技能：模范制作II");
         }
         
+        private long TheoryCarefulSynthesisIITimes   // 理论上需要模范制作II的次数
+        {
+            get
+            {
+                if (LeftProcess - CarefulSynthesisIIProcess <= 0) return 1;
+                long theoryLeftProcess = LeftProcess - (MakersMarkNums - 2) * FlawlessSynthesisProcess; // 保留2次坚实，做备用
+
+                long tempTimes = theoryLeftProcess / CarefulSynthesisIIProcess;
+                tempTimes += theoryLeftProcess % CarefulSynthesisIIProcess == 0 ? 0 : 1;
+
+                Logger.Info("坚实的心得次数:{0}，模范制作II加工数:{1}，理论上还需要{2}次模范制作II",MakersMarkNums,CarefulSynthesisIIProcess,tempTimes);
+
+                return tempTimes;
+            }
+        }
+
         private bool NeedTricksoftheTrade   // 秘诀
         {
             get
@@ -80,7 +96,7 @@
             {
                 // 预留2次坚实次数保底
                 if (HasMakersMark)
-                    return (LeftProcess - CarefulSynthesisIIProcess * CarefulSynthesisIITimes) > (MakersMarkNums - 2) * FlawlessSynthesisProcess;
+                    return (LeftProcess - CarefulSynthesisIIProcess * TheoryCarefulSynthesisIITimes) > (MakersMarkNums - 2) * FlawlessSynthesisProcess;
                 else
                     return false;
             }
@@ -110,9 +126,10 @@
             return true;
         }
 
-        private async Task<bool> DoComfortZoneAction(CraftActions action)
+        private async Task<bool> DoComfortZoneAction(CraftActions action,bool flag)
         {
-            if (ComfortZoneNums <= 1) await DoAction(CraftActions.ComfortZone);
+            if (flag && ComfortZoneNums <= 1) await DoAction(CraftActions.ComfortZone);
+            else if(!HasComfortZoneAura) await DoAction(CraftActions.ComfortZone);
             await DoAction(action);
             return true;
         }
@@ -184,7 +201,7 @@
             await Cast(CraftActions.SteadyHandII);
             await Cast(CraftActions.PrudentTouch);
 
-            for(int i= CarefulSynthesisIITimes; i<= 2;i++)
+            for(long i= CarefulSynthesisIITimes; i<= 2;i++)
             {
                 await DoEndControl();
             }
@@ -213,7 +230,7 @@
         }
 
         private int CarefulSynthesisIIProcess = 0;
-        private int CarefulSynthesisIITimes = 1;
+        private long CarefulSynthesisIITimes = 1;
         private int ManipulationIITimes = 0;
 
         private const int endCp = 102;
@@ -254,22 +271,25 @@
 
             // 获得坚实的心得剩余次数
             uint left = MakersMarkNums;
+            
+            for (int i = 0;i< left;i++)
+            {
+                await DoFlawlessSynthesis();
+            }
 
             // 判断需要多少次模范制作II
             CarefulSynthesisIITimes = LeftProcess / CarefulSynthesisIIProcess;
             CarefulSynthesisIITimes += LeftProcess % CarefulSynthesisIIProcess == 0 ? 0 : 1;
 
-            Logger.Info("最低还需要推{0}次模范制作II", CarefulSynthesisIITimes);
+            Logger.Info("还剩余{0}进度，还需要推{1}次模范制作II", LeftProcess, CarefulSynthesisIITimes);
 
-            for (int i = 0;i< left;i++)
+            for(long i= 1;i<CarefulSynthesisIITimes;i++)
             {
-                await DoFlawlessSynthesis();
+                await DoComfortZoneAction(CraftActions.CarefulSynthesisII,false);
             }
-            
-            await DoComfortZoneAction(CraftActions.MuscleMemory);
 
             // 加工循环
-            while(await DoControl())
+            while (await DoControl())
             {
             }
 
