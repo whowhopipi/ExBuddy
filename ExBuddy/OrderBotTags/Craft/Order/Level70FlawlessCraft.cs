@@ -218,25 +218,13 @@
             } else
             {
                 await Cast(CraftActions.GreatStrides);
-                if(CarefulSynthesisIITimes == 1)
-                {
-                    await Cast(CraftActions.ByregotsBlessing);
-                }
-                else if(IsGoodCondition)
-                {
-                    await Cast(CraftActions.ByregotsBlessing);
-                } else
-                {
-                    await Cast(CraftActions.CarefulSynthesisII);
-                    await Cast(CraftActions.ByregotsBlessing);
-                }
+                await Cast(CraftActions.ByregotsBlessing);
             }
 
             return true;
         }
 
         private int CarefulSynthesisIIProcess = 0;
-        private long CarefulSynthesisIITimes = 1;
         private int ManipulationIITimes = 0;
         private int currentControl = 0;
 
@@ -246,7 +234,6 @@
         public override async Task<bool> OnStart()
         {
             CarefulSynthesisIIProcess = 0;
-            CarefulSynthesisIITimes = 1;
             ManipulationIITimes = 0;
             currentControl = 0;
             return true;
@@ -287,7 +274,7 @@
             }
 
             // 判断需要多少次模范制作II
-            CarefulSynthesisIITimes = LeftProcess / CarefulSynthesisIIProcess;
+            long CarefulSynthesisIITimes = LeftProcess / CarefulSynthesisIIProcess;
             CarefulSynthesisIITimes += LeftProcess % CarefulSynthesisIIProcess == 0 ? 0 : 1;
 
             Logger.Info("还剩余{0}进度，还需要推{1}次模范制作II", LeftProcess, CarefulSynthesisIITimes);
