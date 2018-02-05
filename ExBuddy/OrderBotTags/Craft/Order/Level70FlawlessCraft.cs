@@ -7,6 +7,7 @@
     using Behaviors.Objects;
     using ff14bot;
     using ff14bot.Objects;
+    using System.Collections.Generic;
 
     public class Level70FlawlessCraft : BaseCraftOrder
     {
@@ -30,27 +31,27 @@
         {
             return recipe.Level == 70;
         }
-        
-        public override async Task<bool> CheckSkills()
+
+        public override List<CraftActions> NeedSkills()
         {
-            Logger.Info("需要技能：坚实的心得、安逸、内静、稳手、稳手2、渐进、坚实制作、简约2、集中加工、仓促、加工、秘诀、精修2、比尔格的祝福、阔步、模范制作2");
-            return await checkSkill(CraftActions.MakersMark, "缺少技能：坚实的心得")
-                && await checkSkill(CraftActions.ComfortZone,"缺少技能：安逸")
-                && await checkSkill(CraftActions.InnerQuiet,"缺少技能：内静")
-                && await checkSkill(CraftActions.SteadyHand, "缺少技能：稳手")
-                && await checkSkill(CraftActions.SteadyHandII,"缺少技能：稳手2")
-                && await checkSkill(CraftActions.PiecebyPiece, "缺少技能：渐进")
-                && await checkSkill(CraftActions.FlawlessSynthesis, "缺少技能：坚实制作")
-                && await checkSkill(CraftActions.TricksoftheTrade, "缺少技能：秘诀")
-                && await checkSkill(CraftActions.ManipulationII, "缺少技能：掌握II")
-                && await checkSkill(CraftActions.Observe, "缺少技能：观察")
-                && await checkSkill(CraftActions.FocusedTouch, "缺少技能：注视加工")
-                && await checkSkill(CraftActions.PrudentTouch, "缺少技能：简约加工")
-                && await checkSkill(CraftActions.ByregotsBlessing,"缺少技能：比尔格的祝福")
-                && await checkSkill(CraftActions.GreatStrides,"缺少技能：阔步")
-                && await checkSkill(CraftActions.CarefulSynthesisII, "缺少技能：模范制作II");
+            List<CraftActions> needActions = new List<CraftActions>();
+            needActions.Add(CraftActions.MakersMark);
+            needActions.Add(CraftActions.InnerQuiet);
+            needActions.Add(CraftActions.SteadyHand);
+            needActions.Add(CraftActions.SteadyHandII);
+            needActions.Add(CraftActions.PiecebyPiece);
+            needActions.Add(CraftActions.FlawlessSynthesis);
+            needActions.Add(CraftActions.TricksoftheTrade);
+            needActions.Add(CraftActions.ManipulationII);
+            needActions.Add(CraftActions.Observe);
+            needActions.Add(CraftActions.FocusedTouch);
+            needActions.Add(CraftActions.PrudentTouch);
+            needActions.Add(CraftActions.ByregotsBlessing);
+            needActions.Add(CraftActions.GreatStrides);
+            needActions.Add(CraftActions.CarefulSynthesisII);
+            return needActions;
         }
-        
+
         private long TheoryCarefulSynthesisIITimes   // 理论上需要模范制作II的次数
         {
             get

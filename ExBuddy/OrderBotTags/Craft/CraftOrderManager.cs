@@ -4,12 +4,14 @@
     using Objects;
     using System;
     using System.Collections.Generic;
+    using ExBuddy.Helpers;
 
     public class CraftOrderManager
     {
         private static readonly List<BaseCraftOrder> CraftOrderList = new List<BaseCraftOrder>()
         {
-            new Level70FlawlessCraft()
+            new Level70FlawlessCraft(),
+            new Level703Star35DurabilityNonSpecialistCraft()
         };
 
         public static BaseCraftOrder GetOrder(RecipeItem recipe)
@@ -24,7 +26,7 @@
             return null;
         }
 
-        internal static BaseCraftOrder NewCustomOrder(List<string> Actions,int MiniCp)
+        internal static BaseCraftOrder NewCustomOrder(List<CraftActions> Actions,int MiniCp)
         {
             CustomOrder order = new CustomOrder() {
                 miniCp = MiniCp,

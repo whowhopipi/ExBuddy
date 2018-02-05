@@ -33,42 +33,35 @@ namespace ExBuddy.Plugins.AtmaHunter
         }
 
         #region Necessary Stuff
-        private AtmaHunterForm _form;
-        public string Author { get { return "Exmortem"; } }
-        public Version Version { get { return new Version(1, 0); } }
-        public string Name { get { return "魂晶狩猎"; } }
-        public string Description { get { return "Finishes Atma collection for you."; } }
-        public bool WantButton
+        public override string Author { get { return "Exmortem"; } }
+        public override Version Version { get { return new Version(1, 0); } }
+        public override string Name { get { return "魂晶狩猎"; } }
+        public override string Description { get { return "Finishes Atma collection for you."; } }
+        public override bool WantButton
         {
             get { return true; }
         }
-        public string ButtonText
+        public override string ButtonText
         {
             get { return "AtmaHunter"; }
         }
-
-        public override string Name => throw new NotImplementedException();
-
-        public void OnButtonPress()
+		
+        public override void OnButtonPress()
         {
-            if (_form == null || _form.IsDisposed || _form.Disposing)
-                _form = new AtmaHunterForm();
-
-            _form.ShowDialog();  
         }
         public bool Equals(IBotPlugin other)
         {
             throw new NotImplementedException();
         }
         #endregion
-        public void OnPulse()
+        public override void OnPulse()
         {
             if (SupportBots.Contains(BotManager.Current.Name))
             {
                 ChangeZone();
             } else
             {
-                Log("当前模式({0})不支持，关闭插件", BotManager.Current.Name);
+                Logger.Info("当前模式({0})不支持，关闭插件", BotManager.Current.Name);
                 var plugin = PluginManager.Plugins.First(p => p.Plugin.Name == Name);
 
                 if (plugin.Enabled)
@@ -91,7 +84,7 @@ namespace ExBuddy.Plugins.AtmaHunter
             {
                 if(ConditionParser.ItemCount(nextAtma.Id) >= settings.Count)
                 {
-                    Log("当前区域魂晶({0})已经收集到足够数量:{1}",nextAtma.Name,settings.Count);
+                    Logger.Info("当前区域魂晶({0})已经收集到足够数量:{1}",nextAtma.Name,settings.Count);
                     nextAtma = null;
                 }
             }
@@ -102,7 +95,7 @@ namespace ExBuddy.Plugins.AtmaHunter
                 {
                     if(ConditionParser.ItemCount(atma.Id) < settings.Count)
                     {
-                        Log("魂晶({0})数量不足，目标数量{1}，准备传送获取魂晶", atma.Name, settings.Count);
+                        Logger.Info("魂晶({0})数量不足，目标数量{1}，准备传送获取魂晶", atma.Name, settings.Count);
                         nextAtma = atma;
                         break;
                     }
@@ -113,8 +106,10 @@ namespace ExBuddy.Plugins.AtmaHunter
             {
                 if(WorldManager.ZoneId != nextAtma.ZooId)
                 {
-                    Log("下个获取魂晶的区域和当前区域不同，准备传送");
+                    Logger.Info("下个获取魂晶的区域和当前区域不同，准备传送");
                     
+					await 
+
                     //TreeRoot.Stop();
                     Thread.Sleep(2000);
 
@@ -125,27 +120,27 @@ namespace ExBuddy.Plugins.AtmaHunter
                 }
             } else
             {
-                Log("魂晶已收集完毕，结束");
+                Logger.Info("魂晶已收集完毕，结束");
                 TreeRoot.Stop();
             }
 
         }
-        public void OnInitialize()
+        public override void OnInitialize()
         {
             // do nothing
         }
 
-        public void OnShutdown()
+        public override void OnShutdown()
         {
             // do nothing
         }
 
-        public void OnEnabled()
+        public override void OnEnabled()
         {
             // do nothing
         }
 
-        public void OnDisabled()
+        public override void OnDisabled()
         {
             // do nothing
         }

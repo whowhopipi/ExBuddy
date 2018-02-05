@@ -9,6 +9,7 @@
     using System.Threading;
     using ff14bot;
     using ff14bot.RemoteWindows;
+    using ExBuddy.Helpers;
 
     public class CustomOrder : BaseCraftOrder
     {
@@ -20,7 +21,7 @@
             }
         }
 
-        internal List<string> Actions { set; get; }
+        internal List<CraftActions> Actions { set; get; }
 
         public int miniCp { get; set; }
 
@@ -31,22 +32,18 @@
                 return miniCp;
             }
         }
-        
-        public override async Task<bool> CheckSkills()
-        {
-            bool result = true;
-            foreach(string action in Actions)
-            {
-                result = getAction(action) != null;
 
-                if (!result)
+        public override List<CraftActions> NeedSkills()
+        {
+            List<CraftActions> needActions = new List<CraftActions>();
+
+            foreach (var action in Actions) { 
+                if (!needActions.Contains(action))
                 {
-                    Logger.Warn("缺少技能{0}", action);
-                    break;
+                    needActions.Add(action);
                 }
             }
-
-            return result;
+            return needActions;
         }
 
         private SpellData getAction(string action)
@@ -69,35 +66,12 @@
             // 执行技能
             for (int i = 0; i < Actions.Count; i++)
             {
-                string action = Actions[i];
+                CraftActions action = Actions[i];
 
                 if (IsCrafting())
                 {
-
-                    SpellData spellData = getAction(action);
-
-                    if(spellData == null)
-                    {
-                        Logger.Warn("缺少技能{0}", action);
-                        break;
-                    }
-
-
-                    await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => !CraftingManager.AnimationLocked);
-
-                    if (ActionManager.CanCast(action, null))
-                    {
-                        Logger.Info("Casting {0} ", spellData.LocalizedName);
-                        ff14bot.Managers.ActionManager.DoAction(spellData, Core.Me);
-                        await Coroutine.Wait(10000, () => CraftingManager.AnimationLocked);
-                        await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => !CraftingManager.AnimationLocked || SelectYesNoItem.IsOpen);
-                        await Coroutine.Sleep(250);
-                    }
-                    else
-                    {
-                        Logger.Error("不能执行技能:{0}", action);
-                        return false;
-                    }
+                    bool flag = await Cast(action);
+                    if (!flag) return false;
                 }
             }
             return true;

@@ -38,7 +38,7 @@
         public int[] HQMats { get; set; }
 
         [XmlElement("Actions")]
-        internal List<string> Actions { set; get; }
+        internal List<CraftActions> Actions { set; get; }
 
         [DefaultValue("True")]
         [XmlAttribute("Condition")]
@@ -76,7 +76,7 @@
         {
             if(Actions == null)
             {
-                Actions = new List<string>();
+                Actions = new List<CraftActions>();
             }
 
             if (RecipeId == 0)

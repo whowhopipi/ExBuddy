@@ -11,6 +11,7 @@
     using ff14bot.RemoteWindows;
     using Interfaces;
     using Objects;
+    using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
     public abstract class BaseCraftOrder : ICraftOrder
@@ -34,8 +35,10 @@
             return CraftingManager.IsCrafting && CraftingManager.ProgressRequired != CraftingManager.Progress;
         }
         
-        internal async Task<bool> checkSkill(CraftActions action,string errmsg)
+        internal async Task<bool> checkSkill(CraftActions action)
         {
+            CraftAction craftAction = RecipeSqlData.Instance.GetCraftActionById(action);
+
             bool result = false;
 
             int ticket = 0;
@@ -55,7 +58,8 @@
 
             if (!result)
             {
-                Logger.Error("{0}", errmsg);
+
+                Logger.Error("缺少技能：{0}", craftAction.Code);
                 return false;
             }
 
@@ -66,12 +70,30 @@
         {
             get
             {
-                return CraftingManager.Condition == CraftingCondition.Good || CraftingManager.Condition == CraftingCondition.Excellent;
+                return ConditionGood || ConditionExcellent;
+            }
+        }
+
+        internal bool ConditionGood
+        {
+            get
+            {
+                return CraftingManager.Condition == CraftingCondition.Good;
+            }
+        }
+
+        internal bool ConditionExcellent
+        {
+            get
+            {
+                return CraftingManager.Condition == CraftingCondition.Excellent;
             }
         }
 
         internal async Task<bool> Cast(CraftActions action)
         {
+            if (!IsCrafting()) return false;
+
             bool result = false;
 
             uint actionId = RecipeSqlData.Instance.GetCraftActionId(action,Core.Me.CurrentJob);
@@ -118,7 +140,27 @@
 
         public virtual async Task<bool> DoExecute() { return true; }
 
-        public abstract Task<bool> CheckSkills();
+        public abstract List<CraftActions> NeedSkills();
+
+        public async Task<bool> CheckSkills()
+        {
+            List<CraftActions> skills = NeedSkills();
+
+            if (skills == null) return true;
+
+            bool flag = true;
+            string NeedSkillStr = "";
+            foreach(var skill in skills) {
+                CraftAction action = RecipeSqlData.Instance.GetCraftActionById(skill);
+                NeedSkillStr += "," + action.Code;
+
+                flag = flag && await checkSkill(skill);
+            }
+
+            Logger.Info("需要以下技能：{0}", NeedSkillStr.Substring(1));
+
+            return flag;
+        }
 
         public virtual async Task<bool> OnStart() { return true; }
 
