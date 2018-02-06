@@ -56,13 +56,13 @@
         {
             get
             {
-                if (LeftProcess - CarefulSynthesisIIProcess <= 0) return 1;
+                if (LeftProcess - FocusedSynthesisProcess <= 0) return 1;
                 long theoryLeftProcess = LeftProcess - (MakersMarkNums - 2) * FlawlessSynthesisProcess; // 保留2次坚实，做备用
 
-                long tempTimes = theoryLeftProcess / CarefulSynthesisIIProcess;
-                tempTimes += theoryLeftProcess % CarefulSynthesisIIProcess == 0 ? 0 : 1;
+                long tempTimes = theoryLeftProcess / FocusedSynthesisProcess;
+                tempTimes += theoryLeftProcess % FocusedSynthesisProcess == 0 ? 0 : 1;
 
-                Logger.Info("坚实的心得次数:{0}，模范制作II加工数:{1}，理论上还需要{2}次模范制作II",MakersMarkNums,CarefulSynthesisIIProcess,tempTimes);
+                Logger.Info("坚实的心得次数:{0}，新颖II下注视制作数:{1}，理论上还需要{2}次注视制作", MakersMarkNums, FocusedSynthesisProcess, tempTimes);
 
                 return tempTimes;
             }
@@ -97,7 +97,7 @@
             {
                 // 预留2次坚实次数保底
                 if (HasMakersMark)
-                    return (LeftProcess - CarefulSynthesisIIProcess * TheoryCarefulSynthesisIITimes) > (MakersMarkNums - 2) * FlawlessSynthesisProcess;
+                    return (LeftProcess - FocusedSynthesisProcess * TheoryCarefulSynthesisIITimes) > (MakersMarkNums - 2) * FlawlessSynthesisProcess;
                 else
                     return false;
             }
@@ -127,10 +127,9 @@
             return true;
         }
 
-        private async Task<bool> DoComfortZoneAction(CraftActions action,bool flag)
+        private async Task<bool> DoComfortZoneAction(CraftActions action)
         {
-            if (flag && ComfortZoneNums <= 1) await DoAction(CraftActions.ComfortZone);
-            else if(!HasComfortZoneAura) await DoAction(CraftActions.ComfortZone);
+            if(!HasComfortZoneAura) await DoAction(CraftActions.ComfortZone);
             await DoAction(action);
             return true;
         }
@@ -153,38 +152,7 @@
             await Cast(action);
             return flag;
         }
-
-        private async Task<bool> DoControl()
-        {
-            if(!HasManipulationII && ManipulationIITimes < 2)
-            {
-                await Cast(CraftActions.ManipulationII);
-                ManipulationIITimes++;
-            } else if(NeedComfortZone)
-            {
-                await Cast(CraftActions.ComfortZone);
-            } else if(NeedTricksoftheTrade)
-            {
-                await Cast(CraftActions.TricksoftheTrade);
-            } else if(CurrentCP <= endCp || CurrentCP - 25 < endCp)
-            {
-                return false;
-            }
-            else
-            {
-                await Cast(CraftActions.Observe);
-                await Cast(CraftActions.FocusedTouch);
-                currentControl++;
-            }
-
-            if(currentControl <= MaxControl && CurrentCP - endCp + 5 < 7 + 18)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
+        
         private async Task<bool> DoEndControl()
         {
             if (Core.Me.CurrentCP - 32 - 24 >= 21)
@@ -208,64 +176,48 @@
             await Cast(CraftActions.SteadyHandII);
             await Cast(CraftActions.PrudentTouch);
 
-            for(long i= currentControl - MaxControl; i<= 2;i++)
-            {
-                await DoEndControl();
-            }
-
             if (CraftingManager.Condition == CraftingCondition.Excellent)
             {
                 await Cast(CraftActions.ByregotsBlessing);
-            } else
+            }
+            else
             {
                 await Cast(CraftActions.GreatStrides);
                 await Cast(CraftActions.ByregotsBlessing);
             }
 
+
             return true;
         }
 
-        private int CarefulSynthesisIIProcess = 0;
-        private int ManipulationIITimes = 0;
-        private int currentControl = 0;
+        private int FocusedSynthesisProcess = 0;
+        private int FocusedSynthesisTimes = 1;
+
+        private const int FocusedSynthesisCp = 12;
 
         private const int endCp = 102;
         private const int MaxControl = 6;
 
         public override async Task<bool> OnStart()
         {
-            CarefulSynthesisIIProcess = 0;
-            ManipulationIITimes = 0;
-            currentControl = 0;
+            FocusedSynthesisProcess = 0;
+            FocusedSynthesisTimes = 0;
             return true;
         }
         
         public override async Task<bool> DoExecute()
         {
-            CarefulSynthesisIIProcess = int.Parse(param);
+            FocusedSynthesisProcess = int.Parse(param);
 			
             await Cast(CraftActions.MakersMark); //坚实的心得
             
             await DoAction(CraftActions.ComfortZone);     //安逸
             await DoAction(CraftActions.InnerQuiet);      //内静
             
-            bool flag = true;
             await DoAction(CraftActions.SteadyHand); //稳手
-            flag = flag && await DoAction(CraftActions.PiecebyPiece);//渐进
-            flag = flag && await DoAction(CraftActions.PiecebyPiece);//渐进
-
-            // 判断是否该用渐进
-            if(LeftProcess / 3 > CarefulSynthesisIIProcess)
-            {
-                if (flag)
-                {   // 如果前两次都触发了秘诀，那么最后一次就不管秘诀了
-                    await DoAction(CraftActions.PiecebyPiece);//渐进
-                } else
-                {
-                    await Cast(CraftActions.PiecebyPiece);
-                }
-            }
-
+            await DoAction(CraftActions.PiecebyPiece);//渐进
+            await DoAction(CraftActions.PiecebyPiece);//渐进
+            
             // 获得坚实的心得剩余次数
             uint left = MakersMarkNums;
             
@@ -274,28 +226,96 @@
                 await DoFlawlessSynthesis();
             }
 
-            // 判断需要多少次模范制作II
-            long CarefulSynthesisIITimes = LeftProcess / CarefulSynthesisIIProcess;
-            CarefulSynthesisIITimes += LeftProcess % CarefulSynthesisIIProcess == 0 ? 0 : 1;
+            // 判断需要多少次注视制作
+            long FocusedSynthesisTimes = LeftProcess / FocusedSynthesisProcess;
+            FocusedSynthesisTimes += LeftProcess % FocusedSynthesisProcess == 0 ? 0 : 1;
 
-            Logger.Info("还剩余{0}进度，还需要推{1}次模范制作II", LeftProcess, CarefulSynthesisIITimes);
-
-            for(long i= 1;i<CarefulSynthesisIITimes;i++)
-            {
-                await DoComfortZoneAction(CraftActions.CarefulSynthesisII,false);
-            }
+            Logger.Info("还剩余{0}进度，还需要推{1}次注视制作", LeftProcess, FocusedSynthesisTimes);
 
             // 加工循环
-            while (await DoControl())
+            await DoComfortZoneAction(CraftActions.ManipulationII);    // 掌握II
+            await DoComfortZoneAction(CraftActions.SteadyHandII);  //稳手II
+
+            for(int i = 0; i < 5; i++)
             {
+                await Cast(CraftActions.PrudentTouch);  // 简约加工
             }
 
-            // 收尾
-            await DoEnd();
-            
-            while (IsCrafting())
+            await DoComfortZoneAction(CraftActions.SteadyHandII);  // 稳手II
+
+            // 必须保留的CP数，注视制作，比尔格的祝福，新颖II，阔步，改革，稳手
+            long endCp = 12 * FocusedSynthesisTimes + 24 + 32 + 18 + 22;
+
+            // 如果剩余CP能够用新颖/新颖II（保留一次注视加工的CP数）
+            long leftCp = CurrentCP + ComfortZoneNums * 8 - endCp - 21*4 - 25;
+
+            if(leftCp >= 32)
             {
-                await Cast(CraftActions.CarefulSynthesisII);  //模范制作2
+                await Cast(CraftActions.IngenuityII);
+            } else if(leftCp >= 24)
+            {
+                await Cast(CraftActions.Ingenuity);
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                await Cast(CraftActions.PrudentTouch);  // 简约加工
+            }
+
+            // 
+
+            // 如果剩余CP能推两次简约加工并且把稳手换成稳手II
+            leftCp = CurrentCP + ComfortZoneNums * 8 - endCp - 3 - 21 * 2;
+
+            if (leftCp >= 0)
+            {
+                // 如果剩余CP数够两次简约加工
+                await Cast(CraftActions.PrudentTouch);
+
+                // 如果注视加工数为1，可以多推一次注视加工
+                if(FocusedSynthesisTimes == 1 && leftCp >= 25)
+                {
+                    await Cast(CraftActions.Observe);
+                    await Cast(CraftActions.FocusedTouch);
+                }
+                
+                await Cast(CraftActions.SteadyHandII);
+                await Cast(CraftActions.Innovation);
+                await Cast(CraftActions.PrudentTouch);
+            }
+            else
+            {
+                // 如果剩余CP数只够一次注视加工
+                if (leftCp - 25 >= 0)
+                {
+                    await Cast(CraftActions.Observe);
+                    await Cast(CraftActions.FocusedTouch);
+                }
+
+                await Cast(CraftActions.Observe);
+                await Cast(CraftActions.FocusedTouch);
+
+                await Cast(CraftActions.SteadyHand);
+                await Cast(CraftActions.Innovation);
+            }
+
+            await Cast(CraftActions.GreatStrides);
+
+            if (ConditionExcellent)
+            {
+                await Cast(CraftActions.ByregotsBlessing);
+                await Cast(CraftActions.IngenuityII);
+            }
+            else
+            {
+                await Cast(CraftActions.IngenuityII);
+                await Cast(CraftActions.ByregotsBlessing);
+            }
+
+            for (long i = 0; i <= FocusedSynthesisTimes; i++)
+            {
+                await Cast(CraftActions.Observe);
+                await Cast(CraftActions.FocusedSynthesis);
             }
 
             return true;
