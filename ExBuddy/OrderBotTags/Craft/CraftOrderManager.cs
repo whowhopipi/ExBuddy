@@ -11,7 +11,8 @@
         private static readonly List<BaseCraftOrder> CraftOrderList = new List<BaseCraftOrder>()
         {
             new Level70FlawlessCraft(),
-            new Level703Star35DurabilityNonSpecialistCraft()
+            new Level703Star35DurabilityNonSpecialistCraft(),
+            new Level703Star70DurabilityNonSpecialistCraft()
         };
 
         public static BaseCraftOrder GetOrder(RecipeItem recipe)

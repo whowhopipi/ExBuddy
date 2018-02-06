@@ -43,6 +43,7 @@
             needActions.Add(CraftActions.BasicTouch);
             needActions.Add(CraftActions.GreatStrides);
             needActions.Add(CraftActions.Innovation);
+            needActions.Add(CraftActions.IngenuityII);
             needActions.Add(CraftActions.ByregotsBlessing);
             needActions.Add(CraftActions.CarefulSynthesisII);
             return needActions;
