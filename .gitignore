@@ -188,3 +188,6 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 /ExBuddy/*.DotSettings
+/ExBuddy.sln
+/ExBuddy.sln.DotSettings
+/ExBuddy/ExBuddy.csproj
