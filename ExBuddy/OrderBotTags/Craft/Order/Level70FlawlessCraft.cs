@@ -60,7 +60,9 @@
             get
             {
                 if (LeftProcess - FocusedSynthesisProcess <= 0) return 1;
-                long theoryLeftProcess = LeftProcess - (MakersMarkNums - 2) * FlawlessSynthesisProcess; // 保留2次坚实，做备用
+                uint tempFlawlessSynthesisTimes = MakersMarkNums > 2 ? MakersMarkNums - 2 : MakersMarkNums;// 保留2次坚实，做备用
+
+                long theoryLeftProcess = LeftProcess - tempFlawlessSynthesisTimes * FlawlessSynthesisProcess; 
 
                 long tempTimes = theoryLeftProcess / FocusedSynthesisProcess;
                 tempTimes += theoryLeftProcess % FocusedSynthesisProcess == 0 ? 0 : 1;
