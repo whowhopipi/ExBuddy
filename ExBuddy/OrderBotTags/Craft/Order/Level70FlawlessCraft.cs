@@ -39,6 +39,9 @@
             needActions.Add(CraftActions.InnerQuiet);
             needActions.Add(CraftActions.SteadyHand);
             needActions.Add(CraftActions.SteadyHandII);
+            needActions.Add(CraftActions.Ingenuity);
+            needActions.Add(CraftActions.IngenuityII);
+            needActions.Add(CraftActions.Innovation);
             needActions.Add(CraftActions.PiecebyPiece);
             needActions.Add(CraftActions.FlawlessSynthesis);
             needActions.Add(CraftActions.TricksoftheTrade);
@@ -262,8 +265,8 @@
                 }
                 
                 await Cast(CraftActions.SteadyHandII);
-                await Cast(CraftActions.Innovation);
                 await Cast(CraftActions.PrudentTouch);
+                await Cast(CraftActions.Innovation);
             }
             else
             {
