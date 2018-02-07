@@ -201,7 +201,7 @@
                     var item = validItems.FirstOrDefault();
                     await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => item.CanUse(null));
                     item.UseItem();
-                    await Coroutine.Sleep(10000);
+                    await Coroutine.Sleep(5000);
                     await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => ExBuddy.Helpers.Actions.HasAura(AbilityAura.Food));
                 }
             }
@@ -234,7 +234,7 @@
                     var item = validItems.FirstOrDefault();
                     await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => item.CanUse(null));
                     item.UseItem();
-                    await Coroutine.Sleep(10000);
+                    await Coroutine.Sleep(5000);
                     await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => ExBuddy.Helpers.Actions.HasAura(AbilityAura.Medicated));
                 }
             }
