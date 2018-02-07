@@ -149,7 +149,11 @@
 
         ManipulationII = 1164,   //掌握II
 
-        InnerQuiet = 251   // 内静
+        InnerQuiet = 251,   // 内静
+
+        Ingenuity = 255,    //新颖
+
+        IngenuityII = 256   //新颖II
 
     }
 

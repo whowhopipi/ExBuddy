@@ -210,6 +210,22 @@
             }
         }
 
+        internal bool HasIngenuity
+        {
+            get
+            {
+                return HasAura(AbilityAura.Ingenuity);
+            }
+        }
+
+        internal bool HasIngenuityII
+        {
+            get
+            {
+                return HasAura(AbilityAura.IngenuityII);
+            }
+        }
+
         internal uint ComfortZoneNums
         {
             get

@@ -68,6 +68,17 @@
             }
         }
 
+        private long TheoryFlawlessSynthesisTimes   // 理论上还可以推的坚实制作数
+        {
+            get
+            {
+                long TheoryTimes = LeftProcess / FlawlessSynthesisProcess;
+                TheoryTimes -= LeftProcess % FlawlessSynthesisProcess == 0 ? 0 : 1;
+                if (TheoryTimes > MakersMarkNums) return MakersMarkNums;
+                else return TheoryTimes;
+            }
+        }
+
         private bool NeedTricksoftheTrade   // 秘诀
         {
             get
@@ -87,7 +98,20 @@
         {
             get
             {
-                return !(Core.Me.MaxCP < CurrentCP + 5 || MustFlawlessSynthesis || HasComfortZoneAura);
+                if(HasMakersMark)
+                {
+                    // 有坚实心得BUFF的时候
+                    if (MustFlawlessSynthesis) return false;
+                    if (HasComfortZoneAura) return false;
+                    if (TheoryFlawlessSynthesisTimes <= 9) return true;
+                    return false;
+                } else if(HasComfortZoneAura)
+                {
+                    return false;
+                } else
+                {
+                    return Core.Me.MaxCP > CurrentCP + 5;
+                }
             }
         }
 
@@ -153,51 +177,11 @@
             return flag;
         }
         
-        private async Task<bool> DoEndControl()
-        {
-            if (Core.Me.CurrentCP - 32 - 24 >= 21)
-            {
-                await Cast(CraftActions.PrudentTouch);
-            }
-            else if (Core.Me.CurrentCP - 32 - 24 >= 18)
-            {
-                await Cast(CraftActions.BasicTouch);
-            }
-            else if (Core.Me.CurrentCP - 32 - 24 >= 5)
-            {
-                await Cast(CraftActions.HastyTouchII);
-            }
-
-            return true;
-        }
-
-        private async Task<bool> DoEnd()
-        {
-            await Cast(CraftActions.SteadyHandII);
-            await Cast(CraftActions.PrudentTouch);
-
-            if (CraftingManager.Condition == CraftingCondition.Excellent)
-            {
-                await Cast(CraftActions.ByregotsBlessing);
-            }
-            else
-            {
-                await Cast(CraftActions.GreatStrides);
-                await Cast(CraftActions.ByregotsBlessing);
-            }
-
-
-            return true;
-        }
-
         private int FocusedSynthesisProcess = 0;
         private int FocusedSynthesisTimes = 1;
 
         private const int FocusedSynthesisCp = 12;
-
-        private const int endCp = 102;
-        private const int MaxControl = 6;
-
+        
         public override async Task<bool> OnStart()
         {
             FocusedSynthesisProcess = 0;
@@ -241,29 +225,30 @@
                 await Cast(CraftActions.PrudentTouch);  // 简约加工
             }
 
-            await DoComfortZoneAction(CraftActions.SteadyHandII);  // 稳手II
-
             // 必须保留的CP数，注视制作，比尔格的祝福，新颖II，阔步，改革，稳手
-            long endCp = 12 * FocusedSynthesisTimes + 24 + 32 + 18 + 22;
+            long endCp = 12 * FocusedSynthesisTimes + 24 + 32 + 32 + 18 + 22;
 
             // 如果剩余CP能够用新颖/新颖II（保留一次注视加工的CP数）
             long leftCp = CurrentCP + ComfortZoneNums * 8 - endCp - 21*4 - 25;
 
             if(leftCp >= 32)
             {
-                await Cast(CraftActions.IngenuityII);
+                await DoComfortZoneAction(CraftActions.IngenuityII);
             } else if(leftCp >= 24)
             {
-                await Cast(CraftActions.Ingenuity);
+                await DoComfortZoneAction(CraftActions.Ingenuity);
             }
+
+            if (HasIngenuity || HasIngenuityII)
+                await Cast(CraftActions.SteadyHandII);  // 稳手II
+            else
+                await DoComfortZoneAction(CraftActions.SteadyHandII);   // 如果没有新颖BUFF，可以用秘诀和安逸
 
             for (int i = 0; i < 4; i++)
             {
                 await Cast(CraftActions.PrudentTouch);  // 简约加工
             }
-
-            // 
-
+            
             // 如果剩余CP能推两次简约加工并且把稳手换成稳手II
             leftCp = CurrentCP + ComfortZoneNums * 8 - endCp - 3 - 21 * 2;
 
