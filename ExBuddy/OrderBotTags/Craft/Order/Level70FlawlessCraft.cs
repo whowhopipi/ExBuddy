@@ -104,14 +104,11 @@
                     if (MustFlawlessSynthesis) return false;
                     if (HasComfortZoneAura) return false;
                     if (TheoryFlawlessSynthesisTimes <= 9) return true;
-                    return false;
                 } else if(HasComfortZoneAura)
                 {
                     return false;
-                } else
-                {
-                    return Core.Me.MaxCP > CurrentCP + 5;
                 }
+                return Core.Me.MaxCP > CurrentCP + 5;
             }
         }
 
