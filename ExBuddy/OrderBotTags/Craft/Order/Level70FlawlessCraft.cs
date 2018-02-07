@@ -251,16 +251,20 @@
                 await Cast(CraftActions.PrudentTouch);  // 简约加工
             }
             
-            // 如果剩余CP能推两次简约加工并且把稳手换成稳手II
-            leftCp = CurrentCP + ComfortZoneNums * 8 - endCp - 3 - 21 * 2;
+            
+            leftCp = CurrentCP + ComfortZoneNums * 8 - endCp;
 
-            if (leftCp >= 0)
-            {
+            // 如果剩余CP能推两次简约加工并且把稳手换成稳手II
+            if (leftCp - 3 - 21 * 2 >= 0)
+            {   
                 // 如果剩余CP数够两次简约加工
                 await Cast(CraftActions.PrudentTouch);
 
-                // 如果注视加工数为1，可以多推一次注视加工
-                if(FocusedSynthesisTimes == 1 && leftCp >= 25)
+                // 判断是否可以多推一次注视加工，最多两次
+                long touchTimes = (leftCp -3 - 21 * 2 ) / 25;
+                touchTimes = touchTimes > 2 ? 2 : touchTimes;
+
+                for(int i=0;i<touchTimes;i++)
                 {
                     await Cast(CraftActions.Observe);
                     await Cast(CraftActions.FocusedTouch);
@@ -273,7 +277,7 @@
             else
             {
                 // 如果剩余CP数只够一次注视加工
-                if (leftCp - 25 >= 0)
+                if (leftCp - 25 >= 25)
                 {
                     await Cast(CraftActions.Observe);
                     await Cast(CraftActions.FocusedTouch);
