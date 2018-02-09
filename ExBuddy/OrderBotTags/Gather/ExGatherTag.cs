@@ -132,6 +132,7 @@
 		[XmlAttribute("DisableRotationOverride")]
 		public bool DisableRotationOverride { get; set; }
 
+        [DefaultValue(true)]
 		[XmlAttribute("DiscoverUnknowns")]
 		public bool DiscoverUnknowns { get; set; }
 
