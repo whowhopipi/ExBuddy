@@ -30,9 +30,12 @@
 
         internal int FlawlessSynthesisProcess = 40; // 一次坚实推40进度
 
-        protected bool IsCrafting()
+        protected bool IsCrafting
         {
-            return CraftingManager.IsCrafting && CraftingManager.ProgressRequired != CraftingManager.Progress;
+            get
+            {
+                return CraftingManager.IsCrafting && CraftingManager.ProgressRequired != CraftingManager.Progress;
+            }
         }
         
         internal async Task<bool> checkSkill(CraftActions action)
@@ -92,7 +95,7 @@
 
         internal async Task<bool> Cast(CraftActions action)
         {
-            if (!IsCrafting()) return false;
+            if (!IsCrafting) return false;
 
             bool result = false;
 

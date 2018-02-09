@@ -309,6 +309,11 @@
                 await Cast(CraftActions.FocusedSynthesis);
             }
 
+            while(IsCrafting)
+            {
+                await Cast(CraftActions.CarefulSynthesisII);
+            }
+
             return true;
         }
         
