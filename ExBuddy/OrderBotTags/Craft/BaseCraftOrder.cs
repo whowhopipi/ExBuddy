@@ -121,6 +121,7 @@
                 await Coroutine.Wait(Timeout.InfiniteTimeSpan, () => !CraftingManager.AnimationLocked || SelectYesNoItem.IsOpen);
                 await Coroutine.Sleep(250);
             }
+            Logger.Info("当前状态：CP[{0}]，耐久[{1}]，品质[{2}]，HQ率[{3}%]",CurrentCP,CraftingManager.Durability,CraftingManager.Quality,CraftingManager.HQPercent);
             return result;
         }
 
@@ -135,13 +136,17 @@
             return true;
         }
 
-        public virtual Task<bool> Execute()
+        public virtual async Task<bool> Execute()
         {
-            OnStart();
-            return DoExecute();
+            await OnStart();
+            return await DoExecute();
         }
 
-        public virtual async Task<bool> DoExecute() { return true; }
+        public virtual async Task<bool> DoExecute()
+        {
+            await Coroutine.Sleep(200);
+            return true;
+        }
 
         public abstract List<CraftActions> NeedSkills();
 
@@ -165,7 +170,10 @@
             return flag;
         }
 
-        public virtual async Task<bool> OnStart() { return true; }
+        public virtual async Task<bool> OnStart() {
+            await Coroutine.Sleep(200);
+            return true;
+        }
 
         public bool CheckCp()
         {

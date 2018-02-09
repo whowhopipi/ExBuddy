@@ -470,7 +470,8 @@
         // 处理以小钓大
         private async Task<bool> HandleMoock()
         {
-//            Logger.Verbose("以小钓大");
+            await Coroutine.Sleep(200);
+            //            Logger.Verbose("以小钓大");
 
             if (result == null)
             {

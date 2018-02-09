@@ -68,7 +68,7 @@
             {
                 CraftActions action = Actions[i];
 
-                if (IsCrafting())
+                if (IsCrafting)
                 {
                     bool flag = await Cast(action);
                     if (!flag) return false;

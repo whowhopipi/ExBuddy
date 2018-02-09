@@ -85,7 +85,8 @@ namespace ExBuddy.OrderBotTags.Behaviors
 
         private async Task<bool> NeedRepair()
         {
-            foreach(var bagslot in InventoryManager.FilledArmorySlots)
+            await Coroutine.Sleep(200);
+            foreach (var bagslot in InventoryManager.FilledArmorySlots)
             {
                 //if(bagslot)
             }

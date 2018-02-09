@@ -34,6 +34,8 @@ namespace ExBuddy.OrderBotTags.Behaviors
                 ToDoList.LevelSync();
             }
 
+            await Coroutine.Sleep(200);
+
             isDone = true;
 
             return true;

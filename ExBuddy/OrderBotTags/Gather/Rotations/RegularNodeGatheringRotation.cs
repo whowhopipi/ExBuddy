@@ -4,9 +4,10 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 	using ExBuddy.Interfaces;
 	using System.Threading.Tasks;
 	using Helpers;
+    using Buddy.Coroutines;
 
     //Name, RequiredTime, RequiredGpBreakpoints
-	[GatheringRotation("RegularNode")]
+    [GatheringRotation("RegularNode")]
 	public sealed class RegularNodeGatheringRotation : GatheringRotation, IGetOverridePriority
 	{
 		#region IGetOverridePriority Members
@@ -24,8 +25,9 @@ namespace ExBuddy.OrderBotTags.Gather.Rotations
 		#endregion IGetOverridePriority Members
 
 		public override async Task<bool> ExecuteRotation(ExGatherTag tag)
-		{
-			return true;
+        {
+            await Coroutine.Sleep(200);
+            return true;
 		}
 	}
 }

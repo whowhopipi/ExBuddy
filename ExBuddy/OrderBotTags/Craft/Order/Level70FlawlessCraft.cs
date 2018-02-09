@@ -8,6 +8,7 @@
     using ff14bot;
     using ff14bot.Objects;
     using System.Collections.Generic;
+    using Buddy.Coroutines;
 
     public class Level70FlawlessCraft : BaseCraftOrder
     {
@@ -180,14 +181,13 @@
         }
         
         private int FocusedSynthesisProcess = 0;
-        private int FocusedSynthesisTimes = 1;
 
         private const int FocusedSynthesisCp = 12;
         
         public override async Task<bool> OnStart()
         {
+            await Coroutine.Sleep(200);
             FocusedSynthesisProcess = 0;
-            FocusedSynthesisTimes = 0;
             return true;
         }
         

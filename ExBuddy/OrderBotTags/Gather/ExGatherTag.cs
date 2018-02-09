@@ -202,10 +202,7 @@
 
 		[XmlAttribute("SpawnTimeout")]
 		public int SpawnTimeout { get; set; }
-
-		[XmlAttribute("SpellDelay")]
-		public int SpellDelay { get; set; }
-
+        
 		[XmlAttribute("SwingsRemaining")]
 		public byte SwingsRemaining { get; set; }
 

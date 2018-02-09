@@ -1,6 +1,7 @@
 ﻿namespace ExBuddy.OrderBotTags.Behaviors
 {
-	using Clio.XmlEngine;
+    using Buddy.Coroutines;
+    using Clio.XmlEngine;
 	using ExBuddy.Attributes;
 	using ExBuddy.Helpers;
 	using ExBuddy.Interfaces;
@@ -102,11 +103,13 @@
 
         protected virtual async Task<bool> DoMainSuccess()
         {
+            await Coroutine.Sleep(200);
             return true;
         }
 
         protected virtual async Task<bool> DoMainFailed()
         {
+            await Coroutine.Sleep(200);
             return true;
         }
         #endregion

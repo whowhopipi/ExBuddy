@@ -1,6 +1,7 @@
 ﻿namespace ExBuddy.OrderBotTags.Craft.Order
 {
     using Behaviors.Objects;
+    using Buddy.Coroutines;
     using Helpers;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -51,6 +52,7 @@
 
         public override async Task<bool> OnStart()
         {
+            await Coroutine.Sleep(200);
             return true;
         }
         
