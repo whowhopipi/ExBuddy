@@ -295,6 +295,16 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         #region YellowGathererItems
 
+        WoolTopGatherer = 702,
+
+        FlannelGatherer = 703,
+
+        NewWorldMacrameGatherer = 704,
+
+        PellitoryGatherer = 705,
+
+        ChocoboRaincoat = 706,
+
         StoneflyLarva = 700,
 
         BlueBobbit = 701,

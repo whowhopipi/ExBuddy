@@ -1582,6 +1582,61 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
             #region YellowGathererItems
             
             {
+                ShopItem.WoolTopGatherer,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.WoolTopGatherer - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 16906,
+                    Cost = 500,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.FlannelGatherer,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.FlannelGatherer - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 17574,
+                    Cost = 500,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.NewWorldMacrameGatherer,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.NewWorldMacrameGatherer - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 16907,
+                    Cost = 500,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.PellitoryGatherer,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.PellitoryGatherer - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 15945,
+                    Cost = 500,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.ChocoboRaincoat,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.ChocoboRaincoat - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 21925,
+                    Cost = 1650,
+                    Yield = 1
+                }
+            },
+            {
                 ShopItem.StoneflyLarva,
                 new ShopItemInfo
                 {
@@ -3349,23 +3404,23 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                 }
             },
             {
-                ShopItem.StoneflyLarva,
-                new ShopItemInfo
-                {
-                    Index = (int) ShopItem.StoneflyLarva - 700,
-                    ShopType = ShopType.YellowGathererItems,
-                    ItemId = 20675,
-                    Cost = 3,
-                    Yield = 1
-                }
-            },
-            {
                 ShopItem.BlueBobbit,
                 new ShopItemInfo
                 {
                     Index = (int) ShopItem.BlueBobbit - 700,
                     ShopType = ShopType.YellowGathererItems,
                     ItemId = 20676,
+                    Cost = 3,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.StoneflyLarva,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.StoneflyLarva - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20675,
                     Cost = 3,
                     Yield = 1
                 }
