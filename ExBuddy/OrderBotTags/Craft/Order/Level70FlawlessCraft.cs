@@ -40,7 +40,7 @@
             needActions.Add(CraftActions.InnerQuiet);
             needActions.Add(CraftActions.SteadyHand);
             needActions.Add(CraftActions.SteadyHandII);
-            needActions.Add(CraftActions.Ingenuity);
+            //needActions.Add(CraftActions.Ingenuity);
             needActions.Add(CraftActions.IngenuityII);
             needActions.Add(CraftActions.Innovation);
             needActions.Add(CraftActions.PiecebyPiece);
@@ -94,6 +94,10 @@
                     return false;
                 }
                 
+                if(HasMakersMark)
+                {
+                    // 如果是在坚实循环中
+                }
                 // 根据安逸剩余buff次数，每回合回复8cp，计算当前CP在回合数后能否回满
                 int balanceCp = Core.Me.MaxCP - Core.Me.CurrentCP;
                 return balanceCp > ComfortZoneNums * 8;
@@ -236,8 +240,9 @@
             if(leftCp >= 32)
             {
                 await DoComfortZoneAction(CraftActions.IngenuityII);
-            } else if(leftCp >= 24)
+            } else if(leftCp >= 24 && HasAction(CraftActions.Ingenuity))
             {
+                // 如果有新颖
                 await DoComfortZoneAction(CraftActions.Ingenuity);
             }
 
