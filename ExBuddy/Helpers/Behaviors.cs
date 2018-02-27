@@ -6,7 +6,6 @@ namespace ExBuddy.Helpers
 	using Clio.Utilities;
 	using ExBuddy.Interfaces;
 	using ExBuddy.Logging;
-	using ExBuddy.Navigation;
 	using ff14bot;
 	using ff14bot.Behavior;
 	using ff14bot.Enums;
@@ -45,14 +44,7 @@ namespace ExBuddy.Helpers
 			{
 				if (MovementManager.IsFlying)
 				{
-					if (Navigator.PlayerMover is FlightEnabledSlideMover)
-					{
-						Navigator.Stop();
-					}
-					else
-					{
-						MovementManager.StartDescending();
-					}
+					MovementManager.StartDescending();
 				}
 				else
 				{
@@ -127,45 +119,43 @@ namespace ExBuddy.Helpers
 
 		public static async Task<bool> Mount(Vector3? destination = null, uint mountId = 0)
 		{
-			if (await ShouldMount(destination))
-			{
-				uint flightSpecificMountId = 0;
-				if (mountId == 0)
-				{
-					var playerMover = Navigator.PlayerMover as IFlightEnabledPlayerMover;
-					if (playerMover != null)
-					{
-						flightSpecificMountId = (uint)playerMover.FlightMovementArgs.MountId;
-					}
-				}
+		    if (!await ShouldMount(destination)) return true;
+		    uint flightSpecificMountId = 0;
+		    if (mountId == 0)
+		    {
+		        var playerMover = Navigator.PlayerMover as IFlightEnabledPlayerMover;
+		        if (playerMover != null)
+		        {
+		            flightSpecificMountId = (uint)playerMover.FlightMovementArgs.MountId;
+		        }
+		    }
 
-				var ticks = 0;
-				while (!Core.Player.IsMounted && ticks++ < 10 && Behaviors.ShouldContinue)
-				{
-					if (WorldManager.CanFly && flightSpecificMountId > 0)
-					{
-						if (!await CommonTasks.MountUp(flightSpecificMountId))
-						{
-							await CommonTasks.MountUp();
-						}
+		    var ticks = 0;
+		    while (!Core.Player.IsMounted && ticks++ < 10 && Behaviors.ShouldContinue)
+		    {
+		        if (WorldManager.CanFly && flightSpecificMountId > 0)
+		        {
+		            if (!await CommonTasks.MountUp(flightSpecificMountId))
+		            {
+		                await CommonTasks.MountUp();
+		            }
 
-						await Coroutine.Yield();
-						if (Core.Player.IsMounted)
-						{
-							break;
-						}
-					}
+		            await Coroutine.Yield();
+		            if (Core.Player.IsMounted)
+		            {
+		                break;
+		            }
+		        }
 
-					if (mountId == 0 || !await CommonTasks.MountUp(mountId))
-					{
-						await CommonTasks.MountUp();
-					}
+		        if (mountId == 0 || !await CommonTasks.MountUp(mountId))
+		        {
+		            await CommonTasks.MountUp();
+		        }
 
-					await Coroutine.Yield();
-				}
-			}
+		        await Coroutine.Yield();
+		    }
 
-			return true;
+		    return true;
 		}
 
 		public static async Task<bool> MoveTo(
@@ -218,17 +208,16 @@ namespace ExBuddy.Helpers
 					   && (!stopCallback(distance = Core.Player.Location.Distance3D(destination), radius)
 						   || stopCallback == DontStopInRange) && !moveResult.IsDoneMoving())
 				{
-					moveResult = Navigator.MoveTo(new MoveToParameters(destination));
+				    moveResult = Flightor.MoveTo(new FlyToParameters(destination));
+				    //moveResult = Navigator.MoveTo(new MoveToParameters(destination));
 
-					await Coroutine.Yield();
+                    await Coroutine.Yield();
 
 					if (distance > sprintDistance)
 					{
 						await Sprint();
 					}
 				}
-
-				Navigator.Stop();
 			}
 			else
 			{
@@ -249,27 +238,27 @@ namespace ExBuddy.Helpers
 			return true;
 		}
 
-		public static async Task<bool> MoveToPointWithin(
+		public static async Task<bool> MoveToOnGround(
 			this HotSpot hotspot,
 			uint mountId = 0,
 			bool dismountAtDestination = false)
 		{
-			return await MoveToPointWithin(hotspot.XYZ, hotspot.Radius, mountId, hotspot.Name, dismountAtDestination);
+			return await MoveToOnGround(hotspot.XYZ, hotspot.Radius, mountId, hotspot.Name, dismountAtDestination);
 		}
 
-		public static async Task<bool> MoveToPointWithin(
+		public static async Task<bool> MoveToOnGround(
 			this Vector3 destination,
-			float radius,
+			float radius = 2.0f,
 			uint mountId = 0,
 			string name = null,
 			bool dismountAtDestination = false)
 		{
 			await Mount(destination, CharacterSettings.Instance.MountId);
-			await MoveToPointWithinNoMount(destination, radius, name);
+			await MoveToOnGroundNoMount(destination, radius, name);
 			return !dismountAtDestination || await Dismount();
 		}
 
-		public static async Task<bool> MoveToPointWithinNoMount(
+		public static async Task<bool> MoveToOnGroundNoMount(
             this Vector3 destination, 
             float radius, 
             string name = null)
@@ -280,13 +269,14 @@ namespace ExBuddy.Helpers
 
 		    if (!MovementManager.IsFlying && !MovementManager.IsDiving)
 		    {
-		        destination = destination.AddRandomDirection2D(10.0f);
+		        destination = destination.AddRandomDirection2D(radius);
 		    }
 
             while (Behaviors.ShouldContinue && !moveResult.IsDoneMoving())
-			{
-				moveResult = Navigator.MoveTo(new MoveToParameters(destination));
-				await Coroutine.Yield();
+            {
+                //moveResult = Flightor.MoveTo(new FlyToParameters(destination));
+			    moveResult = Navigator.MoveTo(new MoveToParameters(destination));
+                await Coroutine.Yield();
 
 				var distance = Core.Player.Location.Distance3D(destination);
 				if (distance > sprintDistance)
@@ -294,8 +284,6 @@ namespace ExBuddy.Helpers
 					await Sprint();
 				}
 			}
-
-			Navigator.Stop();
 
 			return true;
 		}

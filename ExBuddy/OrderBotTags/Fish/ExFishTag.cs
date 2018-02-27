@@ -24,6 +24,8 @@ namespace ExBuddy.OrderBotTags.Fish
 	using System.Text.RegularExpressions;
 	using System.Threading.Tasks;
 	using System.Windows.Media;
+	using ff14bot.Navigation;
+	using ff14bot.Pathing;
 	using TreeSharp;
 	using Action = TreeSharp.Action;
 
@@ -1010,10 +1012,21 @@ namespace ExBuddy.OrderBotTags.Fish
 		{
 			get
 			{
-				return new Decorator(
-					ret => Vector3.Distance(ExProfileBehavior.Me.Location, FishSpots.CurrentOrDefault.Location) > 1,
-					CommonBehaviors.MoveAndStop(ret => FishSpots.CurrentOrDefault.Location, 1, true));
-			}
+			    return new Decorator(
+			        ret => Vector3.Distance(ExProfileBehavior.Me.Location, FishSpots.CurrentOrDefault.Location) > 1,
+			        new Sequence(
+			            new Action(r =>
+			                {
+			                    if (!MovementManager.IsFlying && !MovementManager.IsDiving)
+			                    {
+                                    Navigator.MoveTo(new MoveToParameters(FishSpots.CurrentOrDefault.Location));
+			                    }
+			                    else
+			                    {
+			                        Flightor.MoveTo(new FlyToParameters(FishSpots.CurrentOrDefault.Location));
+			                    }
+			                })));
+            }
 		}
 
 		protected Composite IsDoneAction

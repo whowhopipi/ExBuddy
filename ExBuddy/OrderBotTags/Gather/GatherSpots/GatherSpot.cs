@@ -8,6 +8,7 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 	using ExBuddy.Interfaces;
 	using System.ComponentModel;
     using System.Threading.Tasks;
+    using ff14bot.Behavior;
     using ff14bot.Managers;
 
     [XmlElement("GatherSpot")]
@@ -41,7 +42,7 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 		    Vector3 randomApproachLocation;
 		    if (MovementManager.IsFlying || MovementManager.IsDiving)
             {
-		        randomApproachLocation = NodeLocation.AddRandomDirection(3.0f, SphereType.TopHalf);
+		        randomApproachLocation = NodeLocation.AddRandomDirection(sphereType:SphereType.TopHalf);
 		    }
 		    else
 		    {
@@ -57,7 +58,11 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 
             if (!result) return false;
 
-		    result =
+		    var landed = MovementManager.IsDiving || await CommonTasks.Land();
+		    if (landed)
+		        ActionManager.Dismount();
+
+            result =
 				await
 					NodeLocation.MoveTo(
 						UseMesh,

@@ -7,8 +7,10 @@
 	using ff14bot;
 	using System.ComponentModel;
 	using System.Threading.Tasks;
+	using ff14bot.Behavior;
+	using ff14bot.Managers;
 
-	[XmlElement("StealthApproachGatherSpot")]
+    [XmlElement("StealthApproachGatherSpot")]
 	public class StealthApproachGatherSpot : GatherSpot
 	{
 		[DefaultValue(true)]
@@ -58,15 +60,18 @@
 						stopCallback: tag.MovementStopCallback,
 						dismountAtDestination: true);
 
-			if (result)
-			{
-				await Coroutine.Yield();
-				await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
+		    if (!result) return false;
 
-				result = await NodeLocation.MoveToNoMount(UseMesh, tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
-			}
+		    var landed = MovementManager.IsDiving || await CommonTasks.Land();
+		    if (landed)
+		        ActionManager.Dismount();
 
-			return result;
+            await Coroutine.Yield();
+		    await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
+
+		    result = await NodeLocation.MoveToNoMount(UseMesh, tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
+
+		    return result;
 		}
 
 		public override string ToString()

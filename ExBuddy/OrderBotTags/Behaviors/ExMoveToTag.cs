@@ -99,10 +99,14 @@
 					await destination.MoveTo(UseMesh);
 					break;
 
-				case MoveToType.RandomPointWithin:
-					await destination.MoveToPointWithin();
-					break;
-			}
+			    case MoveToType.RandomPointWithin:
+			        await destination.MoveTo(UseMesh);
+			        break;
+
+			    case MoveToType.OnGround:
+			        await destination.MoveToOnGround();
+			        break;
+            }
 
 			return isDone = true;
 		}

@@ -90,7 +90,6 @@
     <Compile Include="Logging\IGpRegeneratorLogger.cs" />
     <Compile Include="Logging\IStatusLogger.cs" />
     <Compile Include="Logging\ProfileBehaviorLogger.cs" />
-    <Compile Include="Navigation\FlightEnabledNavigator.cs" />
     <Compile Include="Offsets\SecondaryOffsets.cs" />
     <Compile Include="OrderBotTags\Gather\ExSpearFishTag.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect500GatheringRotation.cs" />
@@ -158,8 +157,6 @@
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Interfaces\IGetOverridePriority.cs" />
     <Compile Include="Interfaces\IFlightEnabledPlayerMover.cs" />
-    <Compile Include="Navigation\FlightMovementArgs.cs" />
-    <Compile Include="Navigation\FlightNavigationArgs.cs" />
     <Compile Include="Interfaces\IFlightMovementArgs.cs" />
     <Compile Include="Interfaces\IFlightNavigationArgs.cs" />
     <Compile Include="Interfaces\IFlightVars.cs" />
@@ -195,7 +192,6 @@
     <Compile Include="OrderBotTags\Gather\Rotations\GetTwoHQGatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\EphemeralRotation.cs" />
     <Compile Include="OrderBotTags\Objects\Collectable.cs" />
-    <Compile Include="Navigation\Collisions.cs" />
     <Compile Include="Helpers\Condition.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="NoAetheryteRunToZoneReturnStrategy.cs" />
@@ -206,11 +202,7 @@
     <Compile Include="Helpers\ObjectCache{T}.cs" />
     <Compile Include="Helpers\ReflectionHelper.cs" />
     <Compile Include="DefaultReturnStrategy.cs" />
-    <Compile Include="Navigation\FlightEnabledSlideMover.cs" />
-    <Compile Include="Navigation\FlightPath.cs" />
-    <Compile Include="Navigation\FlightPoint.cs" />
     <Compile Include="OrderBotTags\Behaviors\ExProfileBehavior.cs" />
-    <Compile Include="OrderBotTags\Behaviors\ExFlyToTag.cs" />
     <Compile Include="OrderBotTags\Behaviors\ExTurnInCollectablesTag.cs" />
     <Compile Include="OrderBotTags\Fish\Bait.cs" />
     <Compile Include="OrderBotTags\Fish\ExFishTag.cs" />
@@ -277,7 +269,6 @@
     <Compile Include="OrderBotTags\Gather\Rotations\YieldAndQualityGatheringRotation.cs" />
     <Compile Include="OrderBotTags\Objects\CollectableBase.cs" />
     <Compile Include="OrderBotTags\Objects\CollectableTurnIn.cs" />
-    <Compile Include="Plugins\EnableFlight\EnableFlight.cs" />
     <Compile Include="Plugins\Skywatcher\FF14AnglerWeatherProvider.cs" />
     <Compile Include="Plugins\Skywatcher\HttpClientExtensions.cs" />
     <Compile Include="Interfaces\IWeatherProvider.cs" />
