@@ -4,7 +4,6 @@ namespace ExBuddy.Helpers
 {
     using ff14bot.Managers;
     using ff14bot.Objects;
-    using OrderBotTags.Gather;
 
     public static class NodeHelper
     {

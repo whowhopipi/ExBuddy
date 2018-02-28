@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ff14bot.Enums;
 using ff14bot.Managers;
 using ff14bot.NeoProfiles;
