@@ -6,11 +6,15 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 	[XmlElement("ShopPurchase")]
 	public class ShopPurchase
 	{
-		[DefaultValue(198)]
-		[XmlAttribute("MaxCount")]
-		public int MaxCount { get; set; }
+	    [DefaultValue(false)]
+	    [XmlAttribute("IgnoreItem")]
+	    public bool IgnoreItem { get; set; }
 
-		[DefaultValue(ShopItem.HiCordial)]
+	    [DefaultValue(198)]
+	    [XmlAttribute("MaxCount")]
+	    public int MaxCount { get; set; }
+
+        [DefaultValue(ShopItem.HiCordial)]
 		[XmlAttribute("ShopItem")]
 		public ShopItem ShopItem { get; set; }
 

@@ -226,7 +226,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
 
 		private void LogInventoryForPurchaseInfos()
 		{
-			foreach (var purchaseItem in ShopPurchases)
+			foreach (var purchaseItem in ShopPurchases.Where(s => !s.IgnoreItem))
 			{
 				var purchaseItemInfo = Data.ShopItemMap[purchaseItem.ShopItem];
 				var purchaseItemData = purchaseItemInfo.ItemData;
@@ -723,7 +723,12 @@ namespace ExBuddy.OrderBotTags.Behaviors
 
 		private bool ShouldPurchaseItem(ShopPurchase shopPurchase)
 		{
-			var info = Data.ShopItemMap[shopPurchase.ShopItem];
+		    if (shopPurchase.IgnoreItem)
+		    {
+		        return false;
+		    }
+
+            var info = Data.ShopItemMap[shopPurchase.ShopItem];
 
 			var itemData = info.ItemData;
 
