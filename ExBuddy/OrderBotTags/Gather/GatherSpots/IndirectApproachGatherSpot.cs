@@ -26,7 +26,7 @@
 			var result = true;
 			if (ReturnToApproachLocation)
 			{
-				result &= await ApproachLocation.MoveToNoMount(UseMesh, tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
+				result &= await ApproachLocation.MoveToOnGroundNoMount(tag.Radius, tag.Node.EnglishName);
 			}
 
 			return result;
@@ -56,7 +56,7 @@
 		        ActionManager.Dismount();
 
 		    await Coroutine.Yield();
-		    result = await NodeLocation.MoveToNoMount(UseMesh, tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
+		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName);
 
 		    return result;
 		}

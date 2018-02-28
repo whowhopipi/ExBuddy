@@ -35,7 +35,7 @@
 			var result = true;
 			if (ReturnToApproachLocation)
 			{
-				result &= await approachLocation.MoveToNoMount(UseMesh, tag.MovementStopCallback);
+				result &= await approachLocation.MoveToOnGround();
 			}
 
 			if (UnstealthAfter && Core.Player.HasAura((int)AbilityAura.Stealth))
@@ -74,20 +74,11 @@
 		    if (Stealth)
 		    {
 		        await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
-		        result = await NodeLocation.MoveToNoMount(UseMesh, tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
-		    }
-		    else
-		    {
-		        result =
-		            await
-		                NodeLocation.MoveTo(
-		                    UseMesh,
-		                    radius: tag.Distance,
-		                    name: tag.Node.EnglishName,
-		                    stopCallback: tag.MovementStopCallback);
 		    }
 
-		    return result;
+		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName);
+
+            return result;
 		}
 	}
 }

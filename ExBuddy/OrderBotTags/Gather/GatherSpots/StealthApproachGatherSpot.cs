@@ -18,8 +18,9 @@
 		[XmlAttribute("ReturnToApproachLocation")]
 		public bool ReturnToStealthLocation { get; set; }
 
-		[XmlAttribute("StealthLocation")]
-		public Vector3 StealthLocation { get; set; }
+	    [XmlAttribute("StealthLocation")]
+	    [XmlAttribute("ApproachLocation")]
+        public Vector3 StealthLocation { get; set; }
 
 		[XmlAttribute("UnstealthAfter")]
 		public bool UnstealthAfter { get; set; }
@@ -69,7 +70,7 @@
             await Coroutine.Yield();
 		    await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
 
-		    result = await NodeLocation.MoveToNoMount(UseMesh, tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
+		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName);
 
 		    return result;
 		}

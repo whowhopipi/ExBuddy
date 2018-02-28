@@ -38,18 +38,24 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 		public virtual async Task<bool> MoveToSpot(ExGatherTag tag)
 		{
 		    tag.StatusText = "Moving to " + this;
-            
-		    if (MovementManager.IsDiving)
+
+		    var randomApproachLocation = NodeLocation;
+		    var isFlying = true;
+
+            if (MovementManager.IsDiving)
 		    {
-		        NodeLocation = NodeLocation.AddRandomDirection(1.0f, SphereType.TopHalf);
+		        randomApproachLocation = NodeLocation.AddRandomDirection(2f, SphereType.TopHalf);
+		        isFlying = false;
+
 		    }
 		    else if(!MovementManager.IsFlying)
 		    {
-		        NodeLocation = NodeLocation.AddRandomDirection2D();
-		    }
+		        randomApproachLocation = NodeLocation.AddRandomDirection2D();
+		        isFlying = false;
+            }
 
 		    var result = await
-		        NodeLocation.MoveTo(
+		        randomApproachLocation.MoveTo(
 		            UseMesh,
 		            radius: tag.Distance,
 		            name: tag.Node.EnglishName,
@@ -61,13 +67,7 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 		    if (landed)
 		        ActionManager.Dismount();
 
-            result =
-				await
-					NodeLocation.MoveTo(
-						UseMesh,
-						radius: tag.Distance,
-						name: tag.Node.EnglishName,
-						stopCallback: tag.MovementStopCallback);
+            result = isFlying || await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName);
 
 		    return result;
 		}
