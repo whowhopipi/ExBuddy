@@ -6,6 +6,7 @@
 	using ExBuddy.Helpers;
 	using System.ComponentModel;
 	using System.Threading.Tasks;
+	using ff14bot;
 	using ff14bot.Behavior;
 	using ff14bot.Managers;
 	using ff14bot.Navigation;
@@ -27,7 +28,7 @@
 			var result = true;
 			if (ReturnToApproachLocation)
 			{
-				result &= await ApproachLocation.MoveToOnGroundNoMount(tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
+				result &= await ApproachLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
 			}
 
 			return result;
@@ -46,20 +47,20 @@
 				await
 					ApproachLocation.MoveTo(
 						UseMesh,
-						radius: tag.Radius,
+						radius: tag.Distance,
 						name: "Approach Location",
 						stopCallback: tag.MovementStopCallback);
 
 		    if (!result) return false;
 
 		    var landed = MovementManager.IsDiving || await CommonTasks.Land();
-		    if (landed)
+		    if (landed && Core.Player.IsMounted)
 		        ActionManager.Dismount();
 
             Navigator.Stop();
             await Coroutine.Yield();
 
-		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
+		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
 
 		    return result;
 		}

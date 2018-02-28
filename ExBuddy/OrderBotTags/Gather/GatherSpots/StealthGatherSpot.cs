@@ -7,6 +7,7 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 	using System.Threading.Tasks;
 	using ff14bot.Behavior;
 	using ff14bot.Managers;
+	using ff14bot.Navigation;
 
     [XmlElement("StealthGatherSpot")]
 	public class StealthGatherSpot : GatherSpot
@@ -42,9 +43,10 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 			if (result)
 			{
 			    var landed = MovementManager.IsDiving || await CommonTasks.Land();
-			    if (landed)
+			    if (landed && Core.Player.IsMounted)
 			        ActionManager.Dismount();
 
+			    Navigator.Stop();
                 await Coroutine.Yield();
 				await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
 			}

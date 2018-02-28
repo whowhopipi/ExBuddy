@@ -15,7 +15,6 @@ namespace ExBuddy.Helpers
 	using System;
 	using System.Linq;
 	using System.Threading.Tasks;
-	using ff14bot.Helpers;
 	using ff14bot.Pathing;
 
     public static class Behaviors
@@ -265,7 +264,9 @@ namespace ExBuddy.Helpers
             string name = null,
 		    Func<float, float, bool> stopCallback = null)
 		{
-			var sprintDistance = Math.Min(20.0f, CharacterSettings.Instance.MountDistance);
+		    stopCallback = stopCallback ?? ((d, r) => d <= r);
+
+            var sprintDistance = Math.Min(20.0f, CharacterSettings.Instance.MountDistance);
 		    float distance;
             var moveResult = MoveResult.GeneratingPath;
 		    while (Behaviors.ShouldContinue

@@ -66,7 +66,7 @@
 		    if (!result) return false;
 
 		    var landed = MovementManager.IsDiving || await CommonTasks.Land();
-		    if (landed)
+		    if (landed && Core.Player.IsMounted)
 		        ActionManager.Dismount();
 
             Navigator.Stop();
@@ -77,7 +77,7 @@
 		        await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
 		    }
 
-		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
+		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
 
             return result;
 		}

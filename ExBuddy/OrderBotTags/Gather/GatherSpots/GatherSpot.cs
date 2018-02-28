@@ -9,6 +9,7 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 	using System.ComponentModel;
     using System.Threading.Tasks;
     using Buddy.Coroutines;
+    using ff14bot;
     using ff14bot.Behavior;
     using ff14bot.Managers;
     using ff14bot.Navigation;
@@ -42,21 +43,13 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 		    tag.StatusText = "Moving to " + this;
 
 		    var randomApproachLocation = NodeLocation;
-		    var isFlying = true;
-
+            
             if (MovementManager.IsDiving)
 		    {
 		        randomApproachLocation = NodeLocation.AddRandomDirection(2f, SphereType.TopHalf);
-		        isFlying = false;
-
 		    }
-		    else if(!MovementManager.IsFlying)
-		    {
-		        randomApproachLocation = NodeLocation.AddRandomDirection2D();
-		        isFlying = false;
-            }
 
-		    var result = await
+            var result = await
 		        randomApproachLocation.MoveTo(
 		            UseMesh,
 		            radius: tag.Distance,
@@ -66,13 +59,13 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
             if (!result) return false;
 
 		    var landed = MovementManager.IsDiving || await CommonTasks.Land();
-		    if (landed)
+		    if (landed && Core.Player.IsMounted)
 		        ActionManager.Dismount();
 
 		    Navigator.Stop();
 		    await Coroutine.Yield();
 
-            result = isFlying || await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
+            result = !MovementManager.IsDiving || await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
 
 		    return result;
 		}
