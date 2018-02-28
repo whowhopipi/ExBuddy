@@ -38,19 +38,18 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 		public virtual async Task<bool> MoveToSpot(ExGatherTag tag)
 		{
 		    tag.StatusText = "Moving to " + this;
-
-		    Vector3 randomApproachLocation;
-		    if (MovementManager.IsFlying || MovementManager.IsDiving)
-            {
-		        randomApproachLocation = NodeLocation.AddRandomDirection(sphereType:SphereType.TopHalf);
-		    }
-		    else
+            
+		    if (MovementManager.IsDiving)
 		    {
-		        randomApproachLocation = NodeLocation.AddRandomDirection2D();
+		        NodeLocation = NodeLocation.AddRandomDirection(1.0f, SphereType.TopHalf);
+		    }
+		    else if(!MovementManager.IsFlying)
+		    {
+		        NodeLocation = NodeLocation.AddRandomDirection2D();
 		    }
 
 		    var result = await
-		        randomApproachLocation.MoveTo(
+		        NodeLocation.MoveTo(
 		            UseMesh,
 		            radius: tag.Distance,
 		            name: tag.Node.EnglishName,
