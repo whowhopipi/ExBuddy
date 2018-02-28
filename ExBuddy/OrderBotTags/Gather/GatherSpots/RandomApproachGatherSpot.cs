@@ -69,6 +69,7 @@
 		    if (landed)
 		        ActionManager.Dismount();
 
+            Navigator.Stop();
             await Coroutine.Yield();
 
 		    if (Stealth)
@@ -76,7 +77,7 @@
 		        await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
 		    }
 
-		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName);
+		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
 
             return result;
 		}

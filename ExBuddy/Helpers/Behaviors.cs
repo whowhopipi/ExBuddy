@@ -15,7 +15,8 @@ namespace ExBuddy.Helpers
 	using System;
 	using System.Linq;
 	using System.Threading.Tasks;
-    using ff14bot.Pathing;
+	using ff14bot.Helpers;
+	using ff14bot.Pathing;
 
     public static class Behaviors
 	{
@@ -201,14 +202,14 @@ namespace ExBuddy.Helpers
 
 			var sprintDistance = Math.Min(20.0f, CharacterSettings.Instance.MountDistance);
 			float distance;
-			if (useMesh)
+            if (useMesh)
 			{
 				var moveResult = MoveResult.GeneratingPath;
 				while (Behaviors.ShouldContinue
 					   && (!stopCallback(distance = Core.Player.Location.Distance3D(destination), radius)
 						   || stopCallback == DontStopInRange) && !moveResult.IsDoneMoving())
 				{
-				    moveResult = Flightor.MoveTo(new FlyToParameters(destination));
+                    moveResult = Flightor.MoveTo(new FlyToParameters(destination));
 				    //moveResult = Navigator.MoveTo(new MoveToParameters(destination));
 
                     await Coroutine.Yield();
@@ -261,24 +262,21 @@ namespace ExBuddy.Helpers
 		public static async Task<bool> MoveToOnGroundNoMount(
             this Vector3 destination, 
             float radius, 
-            string name = null)
+            string name = null,
+		    Func<float, float, bool> stopCallback = null)
 		{
 			var sprintDistance = Math.Min(20.0f, CharacterSettings.Instance.MountDistance);
-
-			var moveResult = MoveResult.GeneratingPath;
-
-		    if (!MovementManager.IsFlying && !MovementManager.IsDiving)
-		    {
-		        destination = destination.AddRandomDirection2D(radius);
-		    }
-
-            while (Behaviors.ShouldContinue && !moveResult.IsDoneMoving())
+		    float distance;
+            var moveResult = MoveResult.GeneratingPath;
+		    while (Behaviors.ShouldContinue
+		           && (!stopCallback(distance = Core.Player.Location.Distance3D(destination), radius)
+		               || stopCallback == DontStopInRange) && !moveResult.IsDoneMoving())
             {
                 //moveResult = Flightor.MoveTo(new FlyToParameters(destination));
 			    moveResult = Navigator.MoveTo(new MoveToParameters(destination));
-                await Coroutine.Yield();
 
-				var distance = Core.Player.Location.Distance3D(destination);
+                await Coroutine.Yield();
+                
 				if (distance > sprintDistance)
 				{
 					await Sprint();

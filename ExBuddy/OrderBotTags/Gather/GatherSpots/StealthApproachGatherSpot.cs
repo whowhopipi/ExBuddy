@@ -9,6 +9,7 @@
 	using System.Threading.Tasks;
 	using ff14bot.Behavior;
 	using ff14bot.Managers;
+	using ff14bot.Navigation;
 
     [XmlElement("StealthApproachGatherSpot")]
 	public class StealthApproachGatherSpot : GatherSpot
@@ -32,7 +33,7 @@
 			var result = true;
 			if (ReturnToStealthLocation)
 			{
-				result &= await StealthLocation.MoveToNoMount(UseMesh, tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
+				result &= await StealthLocation.MoveToOnGroundNoMount(tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
 			}
 
 			if (UnstealthAfter && Core.Player.HasAura((int)AbilityAura.Stealth))
@@ -67,12 +68,14 @@
 		    if (landed)
 		        ActionManager.Dismount();
 
+            Navigator.Stop();
             await Coroutine.Yield();
+
 		    await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
 
-		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName);
+		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
 
-		    return result;
+            return result;
 		}
 
 		public override string ToString()

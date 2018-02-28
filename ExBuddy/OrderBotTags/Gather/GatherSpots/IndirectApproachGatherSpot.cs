@@ -8,6 +8,7 @@
 	using System.Threading.Tasks;
 	using ff14bot.Behavior;
 	using ff14bot.Managers;
+	using ff14bot.Navigation;
 
     [XmlElement("IndirectApproachGatherSpot")]
 	public class IndirectApproachGatherSpot : GatherSpot
@@ -26,7 +27,7 @@
 			var result = true;
 			if (ReturnToApproachLocation)
 			{
-				result &= await ApproachLocation.MoveToOnGroundNoMount(tag.Radius, tag.Node.EnglishName);
+				result &= await ApproachLocation.MoveToOnGroundNoMount(tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
 			}
 
 			return result;
@@ -55,8 +56,10 @@
 		    if (landed)
 		        ActionManager.Dismount();
 
-		    await Coroutine.Yield();
-		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName);
+            Navigator.Stop();
+            await Coroutine.Yield();
+
+		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
 
 		    return result;
 		}

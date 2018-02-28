@@ -8,8 +8,10 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 	using ExBuddy.Interfaces;
 	using System.ComponentModel;
     using System.Threading.Tasks;
+    using Buddy.Coroutines;
     using ff14bot.Behavior;
     using ff14bot.Managers;
+    using ff14bot.Navigation;
 
     [XmlElement("GatherSpot")]
 	public class GatherSpot : IGatherSpot
@@ -67,7 +69,10 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
 		    if (landed)
 		        ActionManager.Dismount();
 
-            result = isFlying || await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName);
+		    Navigator.Stop();
+		    await Coroutine.Yield();
+
+            result = isFlying || await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
 
 		    return result;
 		}
