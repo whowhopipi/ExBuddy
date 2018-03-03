@@ -93,7 +93,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
         protected bool BehaviorDone(string extraMessage = null)
         {
             if (isDone) return isDone = true;
-            Log("{0} behavior complete.  {1}", GetType().Name, extraMessage ?? string.Empty);
+            Log("{0} behavior complete. {1}", GetType().Name, extraMessage ?? string.Empty);
             return isDone = true;
         }
 
