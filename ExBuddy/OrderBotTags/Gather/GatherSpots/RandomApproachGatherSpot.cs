@@ -66,8 +66,8 @@
 		    if (!result) return false;
 
 		    var landed = MovementManager.IsDiving || await CommonTasks.Land();
-		    if (landed && Core.Player.IsMounted)
-		        ActionManager.Dismount();
+		    if (landed && Core.Player.IsMounted && !MovementManager.IsDiving)
+                ActionManager.Dismount();
 
             Navigator.Stop();
             await Coroutine.Yield();

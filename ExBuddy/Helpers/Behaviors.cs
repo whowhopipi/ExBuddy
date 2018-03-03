@@ -274,7 +274,7 @@ namespace ExBuddy.Helpers
 		               || stopCallback == DontStopInRange) && !moveResult.IsDoneMoving())
             {
                 //moveResult = Flightor.MoveTo(new FlyToParameters(destination));
-			    moveResult = Navigator.MoveTo(new MoveToParameters(destination));
+			    moveResult = MovementManager.IsDiving ? Flightor.MoveTo(new FlyToParameters(destination)) : Navigator.MoveTo(new MoveToParameters(destination));
 
                 await Coroutine.Yield();
                 

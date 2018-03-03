@@ -46,7 +46,7 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
             
             if (MovementManager.IsDiving)
 		    {
-		        randomApproachLocation = NodeLocation.AddRandomDirection(2f, SphereType.TopHalf);
+		        randomApproachLocation = NodeLocation.AddRandomDirection(3f, SphereType.TopHalf);
 		    }
 
             var result = await
@@ -59,8 +59,8 @@ namespace ExBuddy.OrderBotTags.Gather.GatherSpots
             if (!result) return false;
 
 		    var landed = MovementManager.IsDiving || await CommonTasks.Land();
-		    if (landed && Core.Player.IsMounted)
-		        ActionManager.Dismount();
+		    if (landed && Core.Player.IsMounted && !MovementManager.IsDiving)
+                ActionManager.Dismount();
 
 		    Navigator.Stop();
 		    await Coroutine.Yield();
