@@ -90,6 +90,13 @@
     <Compile Include="Logging\IGpRegeneratorLogger.cs" />
     <Compile Include="Logging\IStatusLogger.cs" />
     <Compile Include="Logging\ProfileBehaviorLogger.cs" />
+    <Compile Include="Navigation\Collisions.cs" />
+    <Compile Include="Navigation\FlightEnabledNavigator.cs" />
+    <Compile Include="Navigation\FlightEnabledSlideMover.cs" />
+    <Compile Include="Navigation\FlightMovementArgs.cs" />
+    <Compile Include="Navigation\FlightNavigationArgs.cs" />
+    <Compile Include="Navigation\FlightPath.cs" />
+    <Compile Include="Navigation\FlightPoint.cs" />
     <Compile Include="Offsets\SecondaryOffsets.cs" />
     <Compile Include="OrderBotTags\Behaviors\Entrax\Equip.cs" />
     <Compile Include="OrderBotTags\Behaviors\Entrax\FlyTo.cs" />
@@ -102,6 +109,7 @@
     <Compile Include="OrderBotTags\Behaviors\Entrax\StopBot.cs" />
     <Compile Include="OrderBotTags\Behaviors\Entrax\TeleportTo.cs" />
     <Compile Include="OrderBotTags\Behaviors\Entrax\UseAuraItem.cs" />
+    <Compile Include="OrderBotTags\Behaviors\ExFlyToTag.cs" />
     <Compile Include="OrderBotTags\Gather\ExSpearFishTag.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect500GatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect516GatheringRotation.cs" />
@@ -128,6 +136,7 @@
     <Compile Include="OrderBotTags\Gather\Rotations\WindElementGatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\TimeToGather.cs" />
     <Compile Include="OrderBotTags\Objects\SpearFish.cs" />
+    <Compile Include="Plugins\EnableFlight\EnableFlight.cs" />
     <Compile Include="Plugins\Skywatcher\Objects\Location.cs" />
     <Compile Include="Plugins\Skywatcher\Objects\LocationIndex.cs" />
     <Compile Include="Plugins\Skywatcher\Objects\WeatherRate.cs" />

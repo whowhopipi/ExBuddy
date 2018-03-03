@@ -16,6 +16,7 @@ namespace ExBuddy.Helpers
 	using System.Linq;
 	using System.Threading.Tasks;
 	using ff14bot.Pathing;
+	using Navigation;
 
     public static class Behaviors
 	{
@@ -44,8 +45,15 @@ namespace ExBuddy.Helpers
 			{
 				if (MovementManager.IsFlying)
 				{
-					MovementManager.StartDescending();
-				}
+				    if (Navigator.PlayerMover is FlightEnabledSlideMover)
+				    {
+				        Navigator.Stop();
+				    }
+				    else
+				    {
+				        MovementManager.StartDescending();
+				    }
+                }
 				else
 				{
 					ActionManager.Dismount();
