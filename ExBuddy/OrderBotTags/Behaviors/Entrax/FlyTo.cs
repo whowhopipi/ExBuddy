@@ -51,7 +51,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
         private Vector3? FinalDestination { get; set; }
         private HotSpot RoughDestination { get; set; }
 
-        public void Log(string text) { Logger.Mew("[EtxFlyTo] " + text); }
+        public new void Log(string text, params object[] args) { Logger.Mew("[EtxFlyTo] " + string.Format(text, args)); }
 
         protected override void OnDone() { Navigator.PlayerMover.MoveStop(); }
 
@@ -61,17 +61,23 @@ namespace ExBuddy.OrderBotTags.Behaviors
 
             if (AtLocation(Core.Player.Location, immediateDestination))
             {
-                if (!Land) return isDone = true;
-                Log("Landing at destination {0}", RoughDestination.Name);
-                var landed = await CommonTasks.Land();
-                if (landed)
+                var completionMessage = $"Arrived at destination {RoughDestination.Name}";
+                if (Land)
                 {
-                    if (Dismount)
-                        ActionManager.Dismount();
-                    return isDone = true;
+                    Log("Landing at destination {0}", RoughDestination.Name);
+                    var landed = await CommonTasks.Land();
+                    if (landed)
+                    {
+                        if (Dismount)
+                            ActionManager.Dismount();
+                        BehaviorDone(completionMessage);
+                        return true;
+                    }
+                    Log("Failed to land at {0}", immediateDestination);
+                    return false;
                 }
-                Log("Failed to land at {0}", immediateDestination);
-                return isDone = true;
+                BehaviorDone(completionMessage);
+                return false;
             }
 
             var parameters = new FlyToParameters(immediateDestination) {CheckIndoors = !IgnoreIndoors};
@@ -81,6 +87,13 @@ namespace ExBuddy.OrderBotTags.Behaviors
             await CommonTasks.MountUp();
 
             Flightor.MoveTo(parameters);
+            return true;
+        }
+
+        protected bool BehaviorDone(string extraMessage = null)
+        {
+            if (isDone) return isDone = true;
+            Log("{0} behavior complete.  {1}", GetType().Name, extraMessage ?? string.Empty);
             return isDone = true;
         }
 

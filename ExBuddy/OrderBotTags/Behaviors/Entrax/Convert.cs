@@ -28,7 +28,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
         [XmlAttribute("NqOnly")]
         public bool NqOnly { get; set; }
 
-        public void Log(string text) { Logger.Mew("[EtxConvert] " + text); }
+        public new void Log(string text, params object[] args) { Logger.Mew("[EtxConvert] " + string.Format(text, args)); }
 
         protected override async Task<bool> Main()
         {
@@ -59,7 +59,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
             return
                 await
                     ConvertAllItems(
-                        slots.Where(i => i.RawItemId == itemId && (!nqOnly || i.TrueItemId == itemId) && Math.Abs(i.SpiritBond - 100) < 1),
+                        slots.Where(i => i.RawItemId == itemId && (!nqOnly || i.TrueItemId == itemId) && Math.Abs(i.SpiritBond - 100.0) < 0.01),
                         maxWait);
         }
 

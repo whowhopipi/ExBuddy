@@ -12,7 +12,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
     [XmlElement("EtxRetainer")]
     public class EtxRetainer : ExProfileBehavior
     {
-        public void Log(string text) { Logger.Mew("[EtxRetainer] " + text); }
+        public new void Log(string text, params object[] args) { Logger.Mew("[EtxRetainer] " + string.Format(text, args)); }
 
         protected override async Task<bool> Main()
         {

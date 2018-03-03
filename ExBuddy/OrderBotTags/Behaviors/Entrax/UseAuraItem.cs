@@ -34,7 +34,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
         [XmlAttribute("NqOnly")]
         public bool NqOnly { get; set; }
 
-        public void Log(string text) { Logger.Mew("[EtxUseAuraItem] " + text); }
+        public new void Log(string text, params object[] args) { Logger.Mew("[EtxUseAuraItem] " + string.Format(text, args)); }
 
         protected override void OnStart()
         {
