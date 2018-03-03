@@ -72,20 +72,31 @@
 
 				return string.Format("[{0}] ", Name);
 			}
-		}
+	    }
 
-		public void Error(string message)
-		{
-			Logging.Write(logColors.Error, Prefix + message);
-		}
+	    public void Mew(string message)
+	    {
+	        Logging.Write(logColors.Mew, Prefix + message);
+	    }
 
-		[StringFormatMethod("format")]
-		public void Error(string format, params object[] args)
-		{
-			Logging.Write(logColors.Error, Prefix + string.Format(CultureInfo.InvariantCulture, format, args));
-		}
+	    [StringFormatMethod("format")]
+	    public void Mew(string format, params object[] args)
+	    {
+	        Logging.Write(logColors.Mew, Prefix + string.Format(CultureInfo.InvariantCulture, format, args));
+	    }
 
-		public void Info(string message)
+	    public void Error(string message)
+	    {
+	        Logging.Write(logColors.Error, Prefix + message);
+	    }
+
+	    [StringFormatMethod("format")]
+	    public void Error(string format, params object[] args)
+	    {
+	        Logging.Write(logColors.Error, Prefix + string.Format(CultureInfo.InvariantCulture, format, args));
+	    }
+
+        public void Info(string message)
 		{
 			Logging.Write(logColors.Info, Prefix + message);
 		}

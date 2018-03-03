@@ -62,14 +62,19 @@
 		protected virtual Color Info
 		{
 			get { return Logger.Colors.Info; }
-		}
+	    }
 
-		protected virtual Color Warn
-		{
-			get { return Logger.Colors.Warn; }
-		}
+	    protected virtual Color Warn
+	    {
+	        get { return Logger.Colors.Warn; }
+	    }
 
-		public override string ToString()
+	    protected virtual Color Mew
+	    {
+	        get { return Logger.Colors.Mew; }
+	    }
+
+        public override string ToString()
 		{
 			return this.DynamicToString("StatusText", "Behavior");
 		}
@@ -77,13 +82,13 @@
 		protected override Composite CreateBehavior()
 		{
 			return new ExCoroutineAction(ctx => Main(), this);
-		}
+	    }
 
-		protected virtual void DoReset()
-		{
-		}
+	    protected virtual void DoReset()
+	    {
+	    }
 
-		protected abstract Task<bool> Main();
+        protected abstract Task<bool> Main();
 
 		protected override sealed void OnResetCachedDone()
 		{
@@ -101,13 +106,18 @@
 		Color ILogColors.Info
 		{
 			get { return Info; }
-		}
+	    }
 
-		Color ILogColors.Warn
-		{
-			get { return Warn; }
-		}
+	    Color ILogColors.Warn
+	    {
+	        get { return Warn; }
+	    }
 
-		#endregion ILogColors Members
-	}
+	    Color ILogColors.Mew
+	    {
+	        get { return Mew; }
+	    }
+
+        #endregion ILogColors Members
+    }
 }

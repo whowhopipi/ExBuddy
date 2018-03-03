@@ -91,6 +91,17 @@
     <Compile Include="Logging\IStatusLogger.cs" />
     <Compile Include="Logging\ProfileBehaviorLogger.cs" />
     <Compile Include="Offsets\SecondaryOffsets.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\Equip.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\FlyTo.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\Chocobo.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\Convert.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\Desynth.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\Gardenner.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\Retainer.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\SellItem.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\StopBot.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\TeleportTo.cs" />
+    <Compile Include="OrderBotTags\Behaviors\Entrax\UseAuraItem.cs" />
     <Compile Include="OrderBotTags\Gather\ExSpearFishTag.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect500GatheringRotation.cs" />
     <Compile Include="OrderBotTags\Gather\Rotations\Collect516GatheringRotation.cs" />
