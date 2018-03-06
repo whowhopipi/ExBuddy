@@ -1,6 +1,7 @@
 ﻿namespace ExBuddy.OrderBotTags.Behaviors
 {
-	using Clio.XmlEngine;
+    using Buddy.Coroutines;
+    using Clio.XmlEngine;
 	using ExBuddy.Attributes;
 	using ExBuddy.Helpers;
 	using ExBuddy.Interfaces;
@@ -42,7 +43,10 @@
 		[XmlAttribute("Name")]
 		public string Name { get; set; }
 
-		public override sealed string StatusText
+        [XmlAttribute("SpellDelay")]
+        public int SpellDelay { get; set; }
+
+        public override sealed string StatusText
 		{
 			get { return string.Concat(GetType().Name, ": ", statusText); }
 
@@ -79,17 +83,46 @@
 			return this.DynamicToString("StatusText", "Behavior");
 		}
 
-		protected override Composite CreateBehavior()
-		{
-			return new ExCoroutineAction(ctx => Main(), this);
-	    }
-
-	    protected virtual void DoReset()
-	    {
-	    }
+        #region Main logic
+        protected override Composite CreateBehavior()
+        {
+            return new ExCoroutineAction(ctx => TheMain(), this);
+        }
 
         protected abstract Task<bool> Main();
 
+        protected async Task<bool> TheMain()
+        {
+            bool flag = await Main();
+
+            if (flag)
+            {
+                await DoMainSuccess();
+            }
+            else
+            {
+                await DoMainFailed();
+            }
+            return flag;
+        }
+
+        protected virtual async Task<bool> DoMainSuccess()
+        {
+            await Coroutine.Sleep(200);
+            return true;
+        }
+
+        protected virtual async Task<bool> DoMainFailed()
+        {
+            await Coroutine.Sleep(200);
+            return true;
+        }
+        #endregion
+
+        protected virtual void DoReset()
+		{
+		}
+        
 		protected override sealed void OnResetCachedDone()
 		{
 			DoReset();
