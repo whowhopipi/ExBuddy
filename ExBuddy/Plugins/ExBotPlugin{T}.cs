@@ -56,16 +56,21 @@
 		protected static LocalPlayer Me
 		{
 			get { return GameObjectManager.LocalPlayer; }
-		}
+	    }
 
-		protected virtual Color Warn
-		{
-			get { return Logger.Colors.Warn; }
-		}
+	    protected virtual Color Warn
+	    {
+	        get { return Logger.Colors.Warn; }
+	    }
 
-		#region ILogColors Members
+	    protected virtual Color Mew
+	    {
+	        get { return Logger.Colors.Mew; }
+	    }
 
-		Color ILogColors.Error
+        #region ILogColors Members
+
+        Color ILogColors.Error
 		{
 			get { return Error; }
 		}
@@ -73,13 +78,18 @@
 		Color ILogColors.Info
 		{
 			get { return Info; }
-		}
+	    }
 
-		Color ILogColors.Warn
-		{
-			get { return Warn; }
-		}
+	    Color ILogColors.Warn
+	    {
+	        get { return Warn; }
+	    }
 
-		#endregion ILogColors Members
-	}
+	    Color ILogColors.Mew
+        {
+	        get { return Mew; }
+	    }
+
+        #endregion ILogColors Members
+    }
 }

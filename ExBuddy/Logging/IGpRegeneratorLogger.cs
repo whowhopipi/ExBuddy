@@ -1,7 +1,5 @@
 ﻿namespace ExBuddy.Logging
 {
-    using System;
-
     internal interface IGpRegeneratorLogger
     {
         /// <summary>

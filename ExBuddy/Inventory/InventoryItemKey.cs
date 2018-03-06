@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ExBuddy.Inventory
+﻿namespace ExBuddy.Inventory
 {
-    using Clio.Utilities;
-
     public class InventoryItemKey
     {
         public readonly uint Id;

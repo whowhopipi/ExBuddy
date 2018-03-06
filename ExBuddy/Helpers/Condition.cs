@@ -99,7 +99,7 @@
 
 		public static bool IsSpiritBondDone(int id, bool nqOnly = false)
 		{
-		    return InventoryManager.EquippedItems.Any(slot => slot.RawItemId == id && Math.Abs(slot.SpiritBond - 100f) < 1 && (!nqOnly || slot.TrueItemId == id));
+		    return InventoryManager.EquippedItems.Any(slot => slot.RawItemId == id && Math.Abs(slot.SpiritBond - 100.0) < 0.01 && (!nqOnly || slot.TrueItemId == id));
 		}
 
 		public static bool IsFateActive(int id)

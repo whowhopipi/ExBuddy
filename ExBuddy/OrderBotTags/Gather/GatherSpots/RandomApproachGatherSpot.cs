@@ -8,8 +8,10 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Threading.Tasks;
+	using ff14bot.Behavior;
+	using ff14bot.Managers;
 
-	[XmlElement("RandomApproachGatherSpot")]
+    [XmlElement("RandomApproachGatherSpot")]
 	public class RandomApproachGatherSpot : GatherSpot
 	{
 		private HotSpot approachLocation;
@@ -33,7 +35,7 @@
 			var result = true;
 			if (ReturnToApproachLocation)
 			{
-				result &= await approachLocation.MoveToNoMount(UseMesh, tag.MovementStopCallback);
+				result &= await approachLocation.MoveToOnGround();
 			}
 
 			if (UnstealthAfter && Core.Player.HasAura((int)AbilityAura.Stealth))
@@ -59,30 +61,25 @@
 			if (approachLocation == null)
 				approachLocation = HotSpots.Shuffle().First();
 
-			var result = await approachLocation.MoveToPointWithin(dismountAtDestination: Stealth);
+			var result = await approachLocation.MoveTo(dismountAtDestination: Stealth);
 
-			if (result)
-			{
-				await Coroutine.Yield();
+		    if (!result) return false;
 
-				if (Stealth)
-				{
-					await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
-					result = await NodeLocation.MoveToNoMount(UseMesh, tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
-				}
-				else
-				{
-					result =
-						await
-							NodeLocation.MoveTo(
-								UseMesh,
-								radius: tag.Distance,
-								name: tag.Node.EnglishName,
-								stopCallback: tag.MovementStopCallback);
-				}
-			}
+		    var landed = MovementManager.IsDiving || await CommonTasks.Land();
+		    if (landed && Core.Player.IsMounted && !MovementManager.IsDiving)
+                ActionManager.Dismount();
 
-			return result;
+            Navigator.Stop();
+            await Coroutine.Yield();
+
+		    if (Stealth)
+		    {
+		        await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
+		    }
+
+		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
+
+            return result;
 		}
 	}
 }

@@ -2,7 +2,6 @@
 {
 	using Attributes;
 	using ff14bot;
-	using ff14bot.Managers;
 	using Interfaces;
 	using System.Threading.Tasks;
 	using Helpers;

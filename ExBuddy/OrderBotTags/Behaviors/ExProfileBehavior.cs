@@ -66,14 +66,19 @@
 		protected virtual Color Info
 		{
 			get { return Logger.Colors.Info; }
-		}
+	    }
 
-		protected virtual Color Warn
-		{
-			get { return Logger.Colors.Warn; }
-		}
+	    protected virtual Color Warn
+	    {
+	        get { return Logger.Colors.Warn; }
+	    }
 
-		public override string ToString()
+	    protected virtual Color Mew
+	    {
+	        get { return Logger.Colors.Mew; }
+	    }
+
+        public override string ToString()
 		{
 			return this.DynamicToString("StatusText", "Behavior");
 		}
@@ -134,13 +139,18 @@
 		Color ILogColors.Info
 		{
 			get { return Info; }
-		}
+	    }
 
-		Color ILogColors.Warn
-		{
-			get { return Warn; }
-		}
+	    Color ILogColors.Warn
+	    {
+	        get { return Warn; }
+	    }
 
-		#endregion ILogColors Members
-	}
+	    Color ILogColors.Mew
+	    {
+	        get { return Mew; }
+	    }
+
+        #endregion ILogColors Members
+    }
 }

@@ -226,7 +226,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
 
 		private void LogInventoryForPurchaseInfos()
 		{
-			foreach (var purchaseItem in ShopPurchases)
+			foreach (var purchaseItem in ShopPurchases.Where(s => !s.IgnoreItem))
 			{
 				var purchaseItemInfo = Data.ShopItemMap[purchaseItem.ShopItem];
 				var purchaseItemData = purchaseItemInfo.ItemData;
@@ -614,41 +614,57 @@ namespace ExBuddy.OrderBotTags.Behaviors
 					i => !Blacklist.Contains((uint)i.Pointer.ToInt64(), BlacklistFlags.Loot)).ToArray();
 
 			var blackListDictionnary = new Dictionary<string, uint> {
-				{ "Fire Moraine", 5214 },
-				{ "Lightning Moraine", 5218 },
-				{ "Radiant Fire Moraine", 5220 },
-				{ "Radiant Lightning Moraine", 5224 },
-				{ "Bright Fire Rock", 12966 },
-				{ "Bright Lightning Rock", 12967 },
-				{ "Granular Clay", 12968 },
-				{ "Peat Moss", 12969 },
-				{ "Black Soil", 12970 },
-				{ "Highland Oregano", 12971 },
-				{ "Furymint", 12972 },
-				{ "Clary Sage", 12973 },
-				{ "Lover's Laurel", 15948 },
-				{ "Radiant Astral Moraine", 15949 },
-				{ "Dated Radz-at-Han Coin", 17557 },
-				{ "Ice Stalagmite", 17558 },
-				{ "Duskfall Moss", 17559 },
-				{ "Glass Eye", 17560 },
-				{ "Rainbow Pigment", 17561 },
-				{ "Thavnairian Leaf", 17562 },
-				{ "Ghost Faerie", 17563 },
-				{ "Red Sky Coral", 17564 },
-				{ "Lovers' Clam", 17565 },
-				{ "River Shrimp", 17566 },
-				{ "Windtea Leaves", 19916 },
-				{ "Torreya Branch", 19937 },
-				{ "Schorl", 20009 },
-				{ "Perlite", 20010 },
-				{ "Almandine", 20011 },
-				{ "Doman Yellow", 20012 },
-			    { "Starcrack Sand", 20780 },
+			    { "Fire Moraine", 5214 },
+			    { "Lightning Moraine", 5218 },
+			    { "Radiant Fire Moraine", 5220 },
+			    { "Radiant Lightning Moraine", 5224 },
+			    { "Bright Fire Rock", 12966 },
+			    { "Bright Lightning Rock", 12967 },
+			    { "Granular Clay", 12968 },
+			    { "Peat Moss", 12969 },
+			    { "Black Soil", 12970 },
+			    { "Highland Oregano", 12971 },
+			    { "Furymint", 12972 },
+			    { "Clary Sage", 12973 },
+			    { "Lover's Laurel", 15948 },
+			    { "Radiant Astral Moraine", 15949 },
+			    { "Near Eastern Antique", 17549 },
+			    { "Coerthan Souvenir", 17550 },
+			    { "Maelstrom Materiel ", 17551 },
+			    { "Heartfelt Gift", 17552 },
+			    { "Orphanage Donation", 17553 },
+			    { "Dated Radz-at-Han Coin", 17557 },
+			    { "Ice Stalagmite", 17558 },
+			    { "Duskfall Moss", 17559 },
+			    { "Glass Eye", 17560 },
+			    { "Rainbow Pigment", 17561 },
+			    { "Thavnairian Leaf", 17562 },
+			    { "Ghost Faerie", 17563 },
+			    { "Red Sky Coral", 17564 },
+			    { "Lovers' Clam", 17565 },
+			    { "River Shrimp", 17566 },
+			    { "Windtea Leaves", 19916 },
+			    { "Torreya Branch", 19937 },
+			    { "Schorl", 20009 },
+			    { "Perlite", 20010 },
+			    { "Almandine", 20011 },
+			    { "Doman Yellow", 20012 },
+			    { "Gyr Abanian Souvenir", 20775 },
+			    { "Far Eastern Antique", 20776 },
+			    { "Gold Saucer Consolation Prize", 20777 },
+			    { "M Tribe Sundries", 20778 },
+			    { "Resistance Materiel", 20779 },
+			    { "Starcrack", 20780 },
 			    { "Shishu Koban", 20781 },
 			    { "Cotter Dynasty Relic", 20782 },
 			    { "Peaks Pigment", 20783 },
-			    { "Yellow Kudzu Root", 20784 } };
+			    { "Yellow Kudzu Root", 20784 },
+			    { "Gyr Abanian Chub", 20785 },
+			    { "Coral Horse", 20786 },
+			    { "Maiden's Heart", 20787 },
+			    { "Velodyna Salmon", 20788 },
+			    { "Purple Buckler", 20789 }
+            };
 
 			if (Collectables == null)
 			{
@@ -723,7 +739,12 @@ namespace ExBuddy.OrderBotTags.Behaviors
 
 		private bool ShouldPurchaseItem(ShopPurchase shopPurchase)
 		{
-			var info = Data.ShopItemMap[shopPurchase.ShopItem];
+		    if (shopPurchase.IgnoreItem)
+		    {
+		        return false;
+		    }
+
+            var info = Data.ShopItemMap[shopPurchase.ShopItem];
 
 			var itemData = info.ItemData;
 

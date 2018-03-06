@@ -7,8 +7,11 @@
 	using ff14bot;
 	using System.ComponentModel;
 	using System.Threading.Tasks;
+	using ff14bot.Behavior;
+	using ff14bot.Managers;
+	using ff14bot.Navigation;
 
-	[XmlElement("StealthApproachGatherSpot")]
+    [XmlElement("StealthApproachGatherSpot")]
 	public class StealthApproachGatherSpot : GatherSpot
 	{
 		[DefaultValue(true)]
@@ -16,8 +19,9 @@
 		[XmlAttribute("ReturnToApproachLocation")]
 		public bool ReturnToStealthLocation { get; set; }
 
-		[XmlAttribute("StealthLocation")]
-		public Vector3 StealthLocation { get; set; }
+	    [XmlAttribute("StealthLocation")]
+	    [XmlAttribute("ApproachLocation")]
+        public Vector3 StealthLocation { get; set; }
 
 		[XmlAttribute("UnstealthAfter")]
 		public bool UnstealthAfter { get; set; }
@@ -29,7 +33,7 @@
 			var result = true;
 			if (ReturnToStealthLocation)
 			{
-				result &= await StealthLocation.MoveToNoMount(UseMesh, tag.Radius, tag.Node.EnglishName, tag.MovementStopCallback);
+				result &= await StealthLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
 			}
 
 			if (UnstealthAfter && Core.Player.HasAura((int)AbilityAura.Stealth))
@@ -58,15 +62,20 @@
 						stopCallback: tag.MovementStopCallback,
 						dismountAtDestination: true);
 
-			if (result)
-			{
-				await Coroutine.Yield();
-				await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
+            if (!result) return false;
 
-				result = await NodeLocation.MoveToNoMount(UseMesh, tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
-			}
+		    var landed = MovementManager.IsDiving || await CommonTasks.Land();
+		    if (landed && Core.Player.IsMounted)
+		        ActionManager.Dismount();
 
-			return result;
+            Navigator.Stop();
+            await Coroutine.Yield();
+
+		    await tag.CastAura(Ability.Stealth, AbilityAura.Stealth);
+
+		    result = await NodeLocation.MoveToOnGroundNoMount(tag.Distance, tag.Node.EnglishName, tag.MovementStopCallback);
+
+            return result;
 		}
 
 		public override string ToString()
