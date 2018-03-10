@@ -123,8 +123,8 @@ namespace ExBuddy.OrderBotTags.Behaviors
                 casted = casted || Core.Player.IsCasting;
                 await Coroutine.Yield();
             }
-            await Coroutine.Wait(5000, () => CommonBehaviors.IsLoading);
-            await Coroutine.Wait(10000, () => !CommonBehaviors.IsLoading);
+            await Coroutine.Wait(10000, () => CommonBehaviors.IsLoading);
+            await Coroutine.Wait(100000, () => !CommonBehaviors.IsLoading);
             return true;
         }
     }

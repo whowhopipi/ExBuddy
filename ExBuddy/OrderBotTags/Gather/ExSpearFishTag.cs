@@ -39,7 +39,7 @@
 
         protected static Regex SpearFishRegex = new Regex(
 #if RB_CN
-            @"[[\u4e00-\u9fa5A-Za-z0-9·]+获得了|[\u4e00-\u9fa5]+|\ue03c",
+            @"[\u4e00-\u9fa5A-Za-z0-9·]+获得了|[\u4e00-\u9fa5]+|\ue03c",
 #else
             @"You spear(?: a| an| [2-3])? (.+) measuring (\d{1,4}\.\d) ilms!",
 #endif
@@ -198,29 +198,27 @@
         {
             var spearResult = new SpearResult();
             var spearFishAwayMatch = SpearFishGetAwayRegex.Match(message);
-            var spearFishSizeMatch = FishSizeRegex.Match(message);
 #if RB_CN
+            var spearFishSizeMatch = FishSizeRegex.Match(message);
             var spearFishMatch = SpearFishRegex.Matches(message);
 
             if (spearFishSizeMatch.Success)
             {
                 spearResult.Name = spearFishMatch[1].ToString();
                 float.TryParse(spearFishSizeMatch.Groups[1].Value, out float size);
-                spearResult.Size = size;
                 if (spearFishMatch[2].ToString() == "\uE03C")
                     spearResult.IsHighQuality = true;
-            }
 #else
             var spearFishMatch = SpearFishRegex.Match(message);
             if (spearFishMatch.Success)
             {
                 spearResult.Name = spearFishMatch.Groups[1].Value;
-                float.TryParse(spearFishMatch.Groups[2].Value, NumberStyles.Number,CultureInfo.InvariantCulture.NumberFormat, out float size);
-                spearResult.Size = size;
+                float.TryParse(spearFishMatch.Groups[2].Value, NumberStyles.Number,CultureInfo.InvariantCulture.NumberFormat, out var size);
                 if (spearResult.Name[spearResult.Name.Length - 2] == ' ')
                     spearResult.IsHighQuality = true;
-            }
 #endif
+                spearResult.Size = size;
+            }
 
             if (spearFishAwayMatch.Success)
                 spearResult.Name = "none";

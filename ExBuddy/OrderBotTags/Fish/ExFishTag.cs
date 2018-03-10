@@ -504,9 +504,9 @@ namespace ExBuddy.OrderBotTags.Fish
 		protected static Regex FishRegex = new Regex(
 
 #if RB_CN
-            @"[\u4e00-\u9fa5A-Za-z0-9·]+成功钓上了|[\u4e00-\u9fa5]+",
+            @"[\u4e00-\u9fa5A-Za-z0-9·]+成功钓上了|[\u4e00-\u9fa5]+|\ue03c",
 #else
-			@"You land(?: a| an)? (.+) measuring (\d{1,4}\.\d) ilms!",
+            @"You land(?: a| an)? (.+) measuring (\d{1,4}\.\d) ilms!",
 #endif
 			RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
@@ -1153,27 +1153,27 @@ namespace ExBuddy.OrderBotTags.Fish
 		{
 			var fishResult = new FishResult();
 #if RB_CN
-            var match = FishRegex.Matches(message);
             var sizematch = FishSizeRegex.Match(message);
+            var match = FishRegex.Matches(message);
 
             if (sizematch.Success)
             {
                 fishResult.Name = match[1].ToString();
                 float.TryParse(sizematch.Groups[1].Value, out float size);
+                if (match[2].ToString() == "\uE03C")
+                    fishResult.IsHighQuality = true;
 #else
             var match = FishRegex.Match(message);
 
 			if (match.Success)
 			{
 				fishResult.Name = match.Groups[1].Value;
-			    float.TryParse(match.Groups[2].Value, NumberStyles.Number, CultureInfo.InvariantCulture.NumberFormat, out float size);
+			    float.TryParse(match.Groups[2].Value, NumberStyles.Number, CultureInfo.InvariantCulture.NumberFormat, out var size);
+			    if (fishResult.Name[fishResult.Name.Length - 2] == ' ')
+			        fishResult.IsHighQuality = true;
 #endif
                 fishResult.Size = size;
-				if (fishResult.Name[fishResult.Name.Length - 2] == ' ')
-				{
-					fishResult.IsHighQuality = true;
-				}
-			}
+            }
 			FishResult = fishResult;
 			isFishIdentified = true;
 		}

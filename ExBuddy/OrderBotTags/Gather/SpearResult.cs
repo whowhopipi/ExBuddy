@@ -5,9 +5,22 @@
 
     public class SpearResult
     {
-        public string FishName => IsHighQuality ? Name.Substring(0, Name.Length - 2) : Name;
+        public string FishName =>
+#if !RB_CN
+            IsHighQuality
+                ? Name.Substring(0, Name.Length - 2)
+                :
+#endif
+                Name;
 
-        public string FishNames => IsHighQuality ? Name.Substring(0, Name.Length - 3) : Name.Substring(0, Name.Length - 1);
+        public string FishNames =>
+#if !RB_CN
+            IsHighQuality
+                ? Name.Substring(0, Name.Length - 3)
+                : Name.Substring(0, Name.Length - 1);
+#else
+        Name; 
+#endif
 
         public bool IsHighQuality { get; set; }
 
