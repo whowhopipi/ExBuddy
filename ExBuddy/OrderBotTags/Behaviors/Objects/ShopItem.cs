@@ -45,67 +45,91 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         GoblinCup = 101,
 
-        SweetCreamMilk = 102,
+        MoonbeamSilk = 102,
 
-        SweetCreamMilkHq = 103,
+        MoonbeamSilkHq = 103,
 
-        StoneCheese = 104,
+        SkyspringWater = 104,
 
-        StoneCheeseHq = 105,
+        SkyspringWaterHq = 105,
 
-        HeavensEgg = 106,
+        DryadSap = 106,
 
-        HeavensEggHq = 107,
+        DryadSapHq = 107,
 
-        CarbonFiber = 108,
+        OdorlessAnimalFat = 108,
 
-        CarbonFiberHq = 109,
+        OdorlessAnimalFatHq = 109,
 
-        LoaghtanFilet = 110,
+        PurifiedCoke = 110,
 
-        LoaghtanFiletHq = 111,
+        PurifiedCokeHq = 111,
 
-        GoldenApple = 112,
+        Raziqcoat = 112,
 
-        GoldenAppleHq = 113,
+        RaziqcoatHq = 113,
 
-        SolsticeGarlic = 114,
+        SweetCreamMilk = 114,
 
-        SolsticeGarlicHq = 115,
+        SweetCreamMilkHq = 115,
 
-        MatureOliveOil = 116,
+        StoneCheese = 116,
 
-        MatureOliveOilHq = 117,
+        StoneCheeseHq = 117,
 
-        PowderedMermanHorn = 118,
+        HeavensEgg = 118,
 
-        PowderedMermanHornHq = 119,
+        HeavensEggHq = 119,
 
-        BouillonCube = 120,
+        CarbonFiber = 120,
 
-        BouillonCubeHq = 121,
+        CarbonFiberHq = 121,
 
-        OrientalSoySauce = 122,
+        LoaghtanFilet = 122,
 
-        OrientalSoySauceHq = 123,
+        LoaghtanFiletHq = 123,
 
-        OrientalMisoPaste = 124,
+        GoldenApple = 124,
 
-        OrientalMisoPasteHq = 125,
+        GoldenAppleHq = 125,
 
-        HeavenlyKukuruPowder = 126,
+        SolsticeGarlic = 126,
 
-        HeavenlyKukuruPowderHq = 127,
+        SolsticeGarlicHq = 127,
 
-        AdeptsHat = 128,
+        MatureOliveOil = 128,
 
-        AdeptsGown = 129,
+        MatureOliveOilHq = 129,
 
-        AdeptsGloves = 130,
+        PowderedMermanHorn = 130,
 
-        AdeptsHose = 131,
+        PowderedMermanHornHq = 131,
 
-        AdeptsThighboots = 132,
+        HeavenlyKukuruPowder = 132,
+
+        HeavenlyKukuruPowderHq = 133,
+
+        BouillonCube = 134,
+
+        BouillonCubeHq = 135,
+
+        OrientalSoySauce = 136,
+
+        OrientalSoySauceHq = 137,
+
+        OrientalMisoPaste = 138,
+
+        OrientalMisoPasteHq = 139,
+
+        AdeptsHat = 140,
+
+        AdeptsGown = 141,
+
+        AdeptsGloves = 142,
+
+        AdeptsHose = 143,
+
+        AdeptsThighboots = 144,
 
         #endregion RedCrafter58
 
@@ -159,13 +183,27 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         KoshuPork = 300,
 
-        TeaBrick = 301,
+        DzoSirloin = 301,
 
-        CrimsonPepper = 302,
+        DomanRice = 302,
 
-        SecretRecipeBroth = 303,
+        TeaBrick = 303,
 
-        GyrAbanianAlchemic = 304,
+        CrimsonPepper = 304,
+
+        SecretRecipeBroth = 305,
+
+        HoneydewHoney = 306,
+
+        WoolTopCrafter = 307,
+
+        FlannelCrafter = 308,
+
+        NewWorldMacrameCrafter = 309,
+
+        GyrAbanianAlchemic = 310,
+
+        PellitoryCrafter = 311,
 
         #endregion YellowCrafterItems
 
@@ -175,15 +213,15 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         CommercialSurvivalManual = 401,
 
-        RedBalloon = 402,
+        BruteLeech = 402,
 
-        MagmaWorm = 403,
+        RedBalloon = 403,
 
-        FiendWorm = 404,
+        GiantCraneFly = 404,
 
-        BruteLeech = 405,
+        MagmaWorm = 405,
 
-        GiantCraneFly = 406,
+        FiendWorm = 406,
 
         GuerdonIV = 407,
 
@@ -285,29 +323,29 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         TigerskinBootsofGathering = 610,
 
-        SuspendingMinnow = 611,
+        Silkworm = 611,
 
         BreamLure = 612,
 
-        Silkworm = 613,
+        SuspendingMinnow = 613,
 
         #endregion RedGatherer61
 
         #region YellowGathererItems
 
-        WoolTopGatherer = 702,
+        WoolTopGatherer = 700,
 
-        FlannelGatherer = 703,
+        FlannelGatherer = 701,
 
-        NewWorldMacrameGatherer = 704,
+        NewWorldMacrameGatherer = 702,
 
-        PellitoryGatherer = 705,
+        PellitoryGatherer = 703,
 
-        ChocoboRaincoat = 706,
+        ChocoboRaincoat = 704,
 
-        StoneflyLarva = 700,
+        BlueBobbit = 705,
 
-        BlueBobbit = 701,
+        StoneflyLarva = 706,
 
         #endregion YellowGathererItems
 #else
