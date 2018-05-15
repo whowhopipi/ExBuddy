@@ -350,7 +350,6 @@ namespace ExBuddy.OrderBotTags.Behaviors
 					return true;
 				}
 
-
                 if ((Location == Locations.MorDhona || Location == Locations.Idyllshire)
                     && (purchaseItemInfo.ShopType == ShopType.YellowCrafterItems || purchaseItemInfo.ShopType == ShopType.YellowGathererItems))
                 {
@@ -358,43 +357,12 @@ namespace ExBuddy.OrderBotTags.Behaviors
                     continue;
                 }
 
-
-#if RB_CN
-				while (SelectIconString.IsOpen && ticks++ < 5 && Behaviors.ShouldContinue)
-				{
-                    if ((Location == Locations.MorDhona || Location == Locations.Idyllshire) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61))
-                    {
-                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 3);
-                    }
-                    else
-                    {
-                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType);
-                    }
-
-					await shopExchangeCurrency.Refresh(5000);
-				}
-#else
-			    while (SelectIconString.IsOpen && ticks++ < 5 && Behaviors.ShouldContinue)
-			    {
-			        if ((Location == Locations.MorDhona || Location == Locations.Idyllshire) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61))
-			        {
-			            SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 3);
-			        }
-			        else
-			        {
-			            SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType);
-			        }
-
-			        await shopExchangeCurrency.Refresh(5000);
-			    }
-#endif
-
                 ticks = 0;
 				while (SelectIconString.IsOpen && ticks++ < 5 && Behaviors.ShouldContinue)
 				{
                     if ((Location == Locations.MorDhona || Location == Locations.Idyllshire) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61))
                     {
-                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 2);
+                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 3);
                     }
                     else
                     {
