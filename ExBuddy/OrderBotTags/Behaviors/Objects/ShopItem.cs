@@ -551,6 +551,14 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         PellitoryCrafter = 311,
 
+        CompetenceVI = 312,
+
+        CunningVI = 313,
+
+        CommandVI = 314,
+
+        KingcraftDemimateria = 315,
+
         #endregion YellowCrafterItems
 
         #region RedGatherer50
@@ -687,11 +695,37 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         PellitoryGatherer = 703,
 
-        ChocoboRaincoat = 704,
+        DusklightAethersand = 704,
 
-        BlueBobbit = 705,
+        DusklightAethersandHq = 705,
 
-        StoneflyLarva = 706,
+        DawnlightAethersand = 706,
+
+        DawnlightAethersandHq = 707,
+
+        EverbrightAethersand = 708,
+
+        EverbrightAethersandHq = 709,
+
+        EverbornAethersand = 710,
+
+        EverbornAethersandHq = 711,
+
+        EverdeepAethersand = 712,
+
+        EverdeepAethersandHq = 713,
+
+        GuerdonVI = 714,
+
+        GuileVI = 715,
+
+        GraspVI = 716,
+
+        ChocoboRaincoat = 717,
+
+        BlueBobbit = 718,
+
+        StoneflyLarva = 719,
 
         #endregion YellowGathererItems
 #endif

@@ -27,11 +27,15 @@
 #else
         RedCrafter50,
 
+        RedCrafter58,
+
         RedCrafter61,
 
         RedCrafterMasterRecipes,
 
         YellowCrafter,
+
+        YellowCrafterII,
 
         YellowCrafterAugmentation,
 
@@ -39,9 +43,13 @@
 
         RedGatherer50,
 
+        RedGatherer58,
+
         RedGatherer61,
 
         YellowGatherer,
+
+        YellowGathererII,
 
         YellowGathererAugmentation,
 
