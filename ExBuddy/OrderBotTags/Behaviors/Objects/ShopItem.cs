@@ -2,7 +2,7 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 {
     public enum ShopItem
     {
-#if RB_CN
+#if !RB_CN
         #region RedCrafter50
 
         SoulOfTheCrafter = 0,
@@ -205,6 +205,14 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         PellitoryCrafter = 311,
 
+        CompetenceVI = 312,
+
+        CunningVI = 313,
+
+        CommandVI = 314,
+
+        KingcraftDemimateria = 315,
+
         #endregion YellowCrafterItems
 
         #region RedGatherer50
@@ -342,6 +350,32 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
         PellitoryGatherer = 703,
 
         ChocoboRaincoat = 704,
+
+        DusklightAethersand = 1704,
+
+        DusklightAethersandHq = 1705,
+
+        DawnlightAethersand = 1706,
+
+        DawnlightAethersandHq = 1707,
+
+        EverbrightAethersand = 1708,
+
+        EverbrightAethersandHq = 1709,
+
+        EverbornAethersand = 1710,
+
+        EverbornAethersandHq = 1711,
+
+        EverdeepAethersand = 1712,
+
+        EverdeepAethersandHq = 1713,
+
+        GuerdonVI = 1714,
+
+        GuileVI = 1715,
+
+        GraspVI = 1716,
 
         BlueBobbit = 705,
 

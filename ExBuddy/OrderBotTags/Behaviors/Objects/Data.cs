@@ -102,7 +102,7 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         public static readonly Dictionary<ShopItem, ShopItemInfo> ShopItemMap = new Dictionary<ShopItem, ShopItemInfo>
         {
-#if RB_CN
+#if !RB_CN
             #region RedCrafter50
 
             {
@@ -1154,6 +1154,50 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                     Yield = 1
                 }
             },
+            {
+                ShopItem.CompetenceVI,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.CompetenceVI - 300,
+                    ShopType = ShopType.YellowCrafterItems,
+                    ItemId = 18025,
+                    Cost = 1500,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.CunningVI,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.CunningVI - 300,
+                    ShopType = ShopType.YellowCrafterItems,
+                    ItemId = 18026,
+                    Cost = 1500,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.CommandVI,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.CommandVI - 300,
+                    ShopType = ShopType.YellowCrafterItems,
+                    ItemId = 18027,
+                    Cost = 1500,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.KingcraftDemimateria,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.KingcraftDemimateria - 300,
+                    ShopType = ShopType.YellowCrafterItems,
+                    ItemId = 23181,
+                    Cost = 50,
+                    Yield = 1
+                }
+            },
 
             #endregion YellowCrafterItems
 
@@ -1831,6 +1875,149 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                     ShopType = ShopType.YellowGathererItems,
                     ItemId = 15945,
                     Cost = 500,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.DusklightAethersand,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.DusklightAethersand - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20013,
+                    Cost = 60,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.DusklightAethersandHq,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.DusklightAethersandHq - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20013,
+                    Cost = 100,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.DawnlightAethersand,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.DawnlightAethersand - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20014,
+                    Cost = 60,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.DawnlightAethersandHq,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.DawnlightAethersandHq - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20014,
+                    Cost = 100,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.EverbrightAethersand,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.EverbrightAethersand - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20015,
+                    Cost = 85,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.EverbrightAethersandHq,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.EverbrightAethersandHq - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20015,
+                    Cost = 125,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.EverbornAethersand,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.EverbornAethersand - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20016,
+                    Cost = 85,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.EverbornAethersandHq,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.EverbornAethersandHq - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20016,
+                    Cost = 125,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.EverdeepAethersand,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.EverdeepAethersand - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20017,
+                    Cost = 85,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.EverdeepAethersandHq,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.EverdeepAethersandHq - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 20017,
+                    Cost = 125,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.GuerdonVI,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.GuerdonVI - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 18022,
+                    Cost = 1500,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.GuileVI,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.GuileVI - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 18023,
+                    Cost = 1500,
+                    Yield = 1
+                }
+            },
+            {
+                ShopItem.GraspVI,
+                new ShopItemInfo
+                {
+                    Index = (int) ShopItem.GraspVI - 700,
+                    ShopType = ShopType.YellowGathererItems,
+                    ItemId = 18024,
+                    Cost = 1500,
                     Yield = 1
                 }
             },
