@@ -263,7 +263,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
 
 			StatusText = Localization.Localization.ExTurnInCollectable_Move + masterPieceSupplyNpc.NpcId;
 
-			await masterPieceSupplyNpc.Location.MoveTo(radius: 3.9f, name: Location + " NpcId: " + masterPieceSupplyNpc.NpcId);
+			await masterPieceSupplyNpc.Location.MoveTo(radius: 2.9f, name: Location + " NpcId: " + masterPieceSupplyNpc.NpcId);
 
 			return false;
 		}

@@ -1183,7 +1183,7 @@ namespace ExBuddy.OrderBotTags.Fish
 #if RB_CN
             if (e.ChatLogEntry.MessageType == (MessageType)2115 && e.ChatLogEntry.Contents.Contains("成功钓上了"))
 #else
-			if (e.ChatLogEntry.MessageType == (MessageType)2115 && e.ChatLogEntry.Contents.StartsWith("You land"))
+			if (e.ChatLogEntry.MessageType == (MessageType)2115 && e.ChatLogEntry.Contents.StartsWith("You land") && !e.ChatLogEntry.Contents.StartsWith("You land a fish usable with Mooch II"))
 #endif
 			{
 				SetFishResult(e.ChatLogEntry.Contents);
