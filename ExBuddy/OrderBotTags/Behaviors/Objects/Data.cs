@@ -38,14 +38,14 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
                     {
                         AetheryteId = 75,
                         ZoneId = 478,
-                        Location = new Vector3("-18.29561, 206.5211, 45.12088"),
+                        Location = new Vector3("-18.51838, 206.4994, 49.47974"),
                         NpcId = 1012300
                     },
                     new ShopExchangeCurrency
                     {
                         AetheryteId = 75,
                         ZoneId = 478,
-                        Location = new Vector3("-20.6455, 206.5211, 47.25714"),
+                        Location = new Vector3("-20.7711, 206.4994, 51.29588"),
                         NpcId = 1012301
                     }
                 }
