@@ -2,7 +2,7 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 {
     public enum ShopItem
     {
-#if !RB_CN
+#if RB_CN
         #region RedCrafter50
 
         SoulOfTheCrafter = 0,

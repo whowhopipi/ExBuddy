@@ -102,7 +102,7 @@ namespace ExBuddy.OrderBotTags.Behaviors.Objects
 
         public static readonly Dictionary<ShopItem, ShopItemInfo> ShopItemMap = new Dictionary<ShopItem, ShopItemInfo>
         {
-#if !RB_CN
+#if RB_CN
             #region RedCrafter50
 
             {
