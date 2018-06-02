@@ -656,7 +656,12 @@ namespace ExBuddy.OrderBotTags.Behaviors
 			    { "Coral Horse", 20786 },
 			    { "Maiden's Heart", 20787 },
 			    { "Velodyna Salmon", 20788 },
-			    { "Purple Buckler", 20789 }
+			    { "Purple Buckler", 20789 },
+			    { "Gyr Abanian Remedies", 23143 },
+			    { "Anti-shark Harpoon", 23144 },
+			    { "Coerthan Cold-weather Gear", 23145 },
+			    { "Sui-no-Sato Special", 23146 },
+			    { "Cloud Pearl", 23147 }
             };
 
 			if (Collectables == null)
