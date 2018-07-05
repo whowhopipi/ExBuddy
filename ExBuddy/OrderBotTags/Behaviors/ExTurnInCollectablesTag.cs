@@ -263,7 +263,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
 
 			StatusText = Localization.Localization.ExTurnInCollectable_Move + masterPieceSupplyNpc.NpcId;
 
-			await masterPieceSupplyNpc.Location.MoveTo(radius: 3.9f, name: Location + " NpcId: " + masterPieceSupplyNpc.NpcId);
+			await masterPieceSupplyNpc.Location.MoveTo(radius: 2.9f, name: Location + " NpcId: " + masterPieceSupplyNpc.NpcId);
 
 			return false;
 		}
@@ -350,7 +350,7 @@ namespace ExBuddy.OrderBotTags.Behaviors
 					return true;
 				}
 
-
+#if RB_CN
                 if ((Location == Locations.MorDhona || Location == Locations.Idyllshire)
                     && (purchaseItemInfo.ShopType == ShopType.YellowCrafterItems || purchaseItemInfo.ShopType == ShopType.YellowGathererItems))
                 {
@@ -358,13 +358,12 @@ namespace ExBuddy.OrderBotTags.Behaviors
                     continue;
                 }
 
-
-#if RB_CN
+                ticks = 0;
 				while (SelectIconString.IsOpen && ticks++ < 5 && Behaviors.ShouldContinue)
 				{
                     if ((Location == Locations.MorDhona || Location == Locations.Idyllshire) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61))
                     {
-                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 2);
+                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 3);
                     }
                     else
                     {
@@ -374,37 +373,31 @@ namespace ExBuddy.OrderBotTags.Behaviors
 					await shopExchangeCurrency.Refresh(5000);
 				}
 #else
-			    while (SelectIconString.IsOpen && ticks++ < 5 && Behaviors.ShouldContinue)
-			    {
-			        if ((Location == Locations.MorDhona || Location == Locations.Idyllshire) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61))
-			        {
-			            SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 3);
-			        }
-			        else
-			        {
-			            SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType);
-			        }
 
-			        await shopExchangeCurrency.Refresh(5000);
-			    }
-#endif
+                if ((Location == Locations.MorDhona)
+                    && (purchaseItemInfo.ShopType == ShopType.YellowCrafterItems || purchaseItemInfo.ShopType == ShopType.YellowGathererItems))
+                {
+                    Logger.Warn(Localization.Localization.ExTurnInCollectable_FailedPurchaseMorDhona, purchaseItemData.EnglishName);
+                    continue;
+                }
 
                 ticks = 0;
-				while (SelectIconString.IsOpen && ticks++ < 5 && Behaviors.ShouldContinue)
-				{
-                    if ((Location == Locations.MorDhona || Location == Locations.Idyllshire) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer61))
+                while (SelectIconString.IsOpen && ticks++ < 5 && Behaviors.ShouldContinue)
+                {
+                    if ((Location == Locations.MorDhona) && (purchaseItemInfo.ShopType == ShopType.RedGatherer50 || purchaseItemInfo.ShopType == ShopType.RedGatherer58))
                     {
-                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 2);
+                        SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType - 5);
                     }
                     else
                     {
                         SelectIconString.ClickSlot((uint)purchaseItemInfo.ShopType);
                     }
 
-					await shopExchangeCurrency.Refresh(5000);
-				}
+                    await shopExchangeCurrency.Refresh(5000);
+                }
+#endif
 
-				if (ticks > 5 || !shopExchangeCurrency.IsValid)
+                if (ticks > 5 || !shopExchangeCurrency.IsValid)
 				{
 					Logger.Error(Localization.Localization.ExTurnInCollectable_InteractingTimeout);
 					if (SelectIconString.IsOpen)
@@ -663,7 +656,12 @@ namespace ExBuddy.OrderBotTags.Behaviors
 			    { "Coral Horse", 20786 },
 			    { "Maiden's Heart", 20787 },
 			    { "Velodyna Salmon", 20788 },
-			    { "Purple Buckler", 20789 }
+			    { "Purple Buckler", 20789 },
+			    { "Gyr Abanian Remedies", 23143 },
+			    { "Anti-shark Harpoon", 23144 },
+			    { "Coerthan Cold-weather Gear", 23145 },
+			    { "Sui-no-Sato Special", 23146 },
+			    { "Cloud Pearl", 23147 }
             };
 
 			if (Collectables == null)
